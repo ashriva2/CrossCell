@@ -1,0 +1,35 @@
+﻿@model CrossSell_App.DataAccess.Portfolio
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Portfolio</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Portfolio_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Portfolio_Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Portfolio_Type.Portfolio_Type_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Portfolio_Type.Portfolio_Type_Name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Portfolio_Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

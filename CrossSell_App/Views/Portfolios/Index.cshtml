@@ -1,0 +1,40 @@
+﻿@model IEnumerable<CrossSell_App.DataAccess.Portfolio>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Portfolio_Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Portfolio_Type.Portfolio_Type_Name)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Portfolio_Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Portfolio_Type.Portfolio_Type_Name)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Portfolio_Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Portfolio_Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Portfolio_Id })
+        </td>
+    </tr>
+}
+
+</table>
