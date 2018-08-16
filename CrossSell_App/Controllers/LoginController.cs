@@ -1,4 +1,5 @@
-﻿using CrossSell_App.Models;
+﻿using CrossSell_App.DataAccess;
+using CrossSell_App.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,8 @@ namespace CrossSell_App.Controllers
 {
     public class LoginController : Controller
     {
+
+        private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
         // GET: Login
         public ActionResult Index()
         {
@@ -39,11 +42,13 @@ namespace CrossSell_App.Controllers
 
             //return View("Index");
             string strDDLValue = Request.Form["Role"].ToString();
+            //var data = db.CrossSells.Where(x => x.Company_Id == 1).ToList();
+
 
             if(strDDLValue=="Admin")
                return Redirect("/Home/Index");
             else
-                return Redirect("/Home/Index");
+                return Redirect("/PortfolioAgileLab/Index");
         }
     }
 }

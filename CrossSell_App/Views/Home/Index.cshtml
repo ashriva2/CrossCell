@@ -3,117 +3,204 @@
 }
 
 
+<style type="text/css">
+    #block_container, #chart1 {
+        display: inline;
+    }
+</style>
 
 
-    <div class="lead">
-        Account Cross Sell</p>
-        PAL (Portofolio Agile Lab)
-    </div>
-    <div style="float: right;font-size: x-small;">
-        Legends:
-        * : Leader
-        + : Growth Potential
-    </div>
-    <div class="wrapper">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
-        <canvas id="chart"></canvas>
-        <script>
-        var labels = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 50];
-
-        var data = [90, 80, 60, 80, 90, 0, 0, 0, 0, 0, 0];
-        var data2 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-        var data3 = [90, 0, 60, 80, 90, 0, 0, 0, 70, 0, 0];
-        var data4 = [90, 0, 0, 80, 0, 0, 0, 0, 70, 0, 90];
-
-        var labels2 = ['*+', '+', '', '+', '', '', '', '', '', '', '', ''];
-        var labels3 = ['', '', '', '', '', '', '', '', '', '', '', ''];
-        var labels4 = ['*', '', '+', '+', '+', '', '', '', '*+', '', ''];
-        var labels5 = ['+', '', '', '+', '+', '', '+', '+', '+', '', '+'];
-
-        var yLable = ['NextGen AMS', 'NextGen SAP', 'DCX', 'Cloud', 'CyberSecurity', 'Digital Mfg', 'AI', 'Chatbots', 'Devops', 'Blockchain', 'End to End Offering']
-
-        var chart = new Chart('chart', {
-            type: 'bar',
-            data: {
-                labels: yLable,
-                labels2: labels2,
-                datasets: [{
-                    backgroundColor: '#ccddee',
-                    borderColor: '#5566aa',
-                    data: data,
-                    lbl: labels2,
-                    label: 'Schneider',
-                },
-                {
-                    backgroundColor: '#22cc22',
-                    borderColor: '#22cc22',
-                    data: data2,
-                    lbl: labels3,
-                    label: 'Daimler',
-                },
-                {
-                    backgroundColor: '#FF0000',
-                    borderColor: '#FF0000',
-                    data: data3,
-                    lbl: labels4,
-                    label: 'Disney',
-                },
-                {
-                    backgroundColor: '#0000CD',
-                    borderColor: '#0000CD',
-                    data: data4,
-                    lbl: labels5,
-                    label: 'McDonalds',
-                }]
-            },
-            options: {
-                legend: {
-                    display: true,
-                    position: 'bottom',
-                    labels: {
-                        fontColor: 'rgb(255, 99, 132)'
+<div id="block_container">
+    <div style="width:50% !important;float:left">
+        <a href='@Url.Action("PALReport", "Home")'>
+            <div class="lead" style="text-align: center;">
+                Portofolio Agile Lab (PAL)
+            </div>
+            <div style="font-size: x-small;margin-bottom:20px;text-align: center;">
+                Legends:
+                * : Leader
+                + : Growth Potential
+            </div>
+            <div class="wrapper" id="bloc1">
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+                <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                <canvas id="chart"></canvas>
+                <script>
+                    function getData() {
+                        $.ajax({
+                            type: "POST",
+                            url: "/Home/GetData",
+                            //data: '{name: "' + $("#txtName").val() + '" }',
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function (response) {
+                                debugger;
+                                DisplayChart(response);
+                            },
+                            failure: function (response) {
+                                alert(response.responseText);
+                            },
+                            error: function (response) {
+                                alert(response.responseText);
+                            }
+                        });
                     }
-                },
-                tooltip: false,
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            max: 100
-                        }
-                    }]
-                },
-                plugins: {
-                    datalabels: {
-                        align: 'end',
-                        anchor: 'end',
-                        backgroundColor: null,
-                        borderColor: null,
-                        borderRadius: 4,
-                        borderWidth: 1,
-                        color: function (context) {
-                            var value = context.dataset.data[context.dataIndex];
-                            return context.dataset.backgroundColor;
-                            //return value < 20 ? '#ff2020'
-                            //	: value < 50 ? '#223388'
-                            //  : '#22cc22'
-                        },
-                        font: {
-                            size: 11,
-                            weight: 600
-                        },
-                        offset: 4,
-                        padding: 0,
-                        formatter: function (value, context) {
-                            var lblValue = context.dataset.lbl[context.dataIndex];
-                            var lblData = context.dataIndex;
-                            //return lblData;
-                            return lblValue;
-                        }
-                    }
-                }
-            }
-        });
+                    getData();
 
-        </script>
+                    // var labels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 5];
+
+                    //var data = [9, 8, 04, 4, 0, 0, 0, 0, 0, 0, 0];
+                    //var data2 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+                    //var data3 = [9, 0, 6, 8, 9, 0, 0, 0, 7, 0, 0];
+                    //var data4 = [9, 0, 0, 8, 0, 0, 0, 0, 7, 0, 9];
+
+                    //var labels2 = ['*+', '+', '', '+', '', '', '', '', '', '', '', ''];
+                    //var labels3 = ['', '', '', '', '', '', '', '', '', '', '', ''];
+                    //var labels4 = ['*', '', '+', '+', '+', '', '', '', '*+', '', ''];
+                    //var labels5 = ['+', '', '', '+', '+', '', '+', '+', '+', '', '+'];
+
+                    //var yLable = ['NextGen AMS', 'NextGen SAP', 'DCX', 'Cloud', 'CyberSecurity', 'Digital Mfg', 'AI', 'Chatbots', 'Devops', 'Blockchain', 'End to End Offering']
+
+                    function DisplayChart(chartData) {
+
+                        //  var labels = chartData.labels;
+                        debugger;
+                        var data = chartData.a[0];
+                        var data2 = chartData.a[1];
+                        var data3 = chartData.a[2];
+                        var data4 = chartData.a[3];
+
+                        var labels2 = chartData.IsLeadOrTobe[0];
+                        var labels3 = chartData.IsLeadOrTobe[1];
+                        var labels4 = chartData.IsLeadOrTobe[2];
+                        var labels5 = chartData.IsLeadOrTobe[3];
+
+                        var yLable = ['NextGen AMS', 'NextGen SAP', 'DCX', 'Cloud', 'CyberSecurity', 'Digital Mfg', 'AI', 'Chatbots', 'Devops', 'Blockchain', 'End to End Offering'];
+
+                        var chart = new Chart('chart', {
+                            type: 'bar',
+                            data: {
+                                labels: yLable,
+                                labels2: labels2,
+                                datasets: [{
+                                    backgroundColor: '#ccddee',
+                                    borderColor: '#5566aa',
+                                    data: data,
+                                    lbl: labels2,
+                                    label: 'Schneider',
+                                },
+                                {
+                                    backgroundColor: '#22cc22',
+                                    borderColor: '#22cc22',
+                                    data: data2,
+                                    lbl: labels3,
+                                    label: 'Daimler',
+                                },
+                                {
+                                    backgroundColor: '#FF0000',
+                                    borderColor: '#FF0000',
+                                    data: data3,
+                                    lbl: labels4,
+                                    label: 'Disney',
+                                },
+                                {
+                                    backgroundColor: '#0000CD',
+                                    borderColor: '#0000CD',
+                                    data: data4,
+                                    lbl: labels5,
+                                    label: 'McDonalds',
+                                }]
+                            },
+                            options: {
+                                legend: {
+                                    display: true,
+                                    position: 'bottom',
+                                    labels: {
+                                        fontColor: 'rgb(255, 99, 132)'
+                                    }
+                                },
+                                tooltip: false,
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            max: 10
+                                        }
+                                    }]
+                                },
+                                plugins: {
+                                    datalabels: {
+                                        align: 'end',
+                                        anchor: 'end',
+                                        backgroundColor: null,
+                                        borderColor: null,
+                                        borderRadius: 4,
+                                        borderWidth: 1,
+                                        color: function (context) {
+                                            var value = context.dataset.data[context.dataIndex];
+                                            return context.dataset.backgroundColor;
+                                            //return value < 20 ? '#ff2020'
+                                            //	: value < 50 ? '#223388'
+                                            //  : '#22cc22'
+                                        },
+                                        font: {
+                                            size: 15,
+                                            weight: 600
+                                        },
+                                        offset: 4,
+                                        padding: 0,
+                                        formatter: function (value, context) {
+                                            var lblValue = context.dataset.lbl[context.dataIndex];
+                                            var lblData = context.dataIndex;
+                                            //return lblData;
+                                            return lblValue;
+                                        }
+                                    }
+                                }
+                            }
+                        });
+
+                    }
+                </script>
+            </div>
+            </a>
     </div>
+    <div style="width:50% !important;float:left">
+        <a href='@Url.Action("DPBReport", "Home")'>
+            <div class="lead" style="margin-left:50px;text-align: center;">
+                Digital Picture Benchmark (DPB)
+            </div>
+            <div>
+                <canvas id="chart1"></canvas>
+                <script>
+
+                    var chart = new Chart('chart1', {
+                        type: 'radar',
+                        data: {
+                            labels: ['Customer', 'Employee', 'Partner', 'CIO', 'CDO', 'CEO'],
+                            datasets: [{
+                                label: 'Schindler',
+                                data: [53, 69, 55, 43, 50, 75],
+                                borderColor: '#0000CD',
+                                fill: false,
+                            },
+                            {
+                                label: 'McDonalds',
+                                data: [33, 79, 25, 63, 10, 35],
+                                borderColor: '#22cc22',
+                                fill: false,
+                            }]
+                        },
+                        options: {
+                            scale: {
+                                display: true,
+
+                            }
+                        },
+                    });
+
+                </script>
+            </div>
+            </a>
+    </div>
+</div>

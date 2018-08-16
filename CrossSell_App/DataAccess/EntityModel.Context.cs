@@ -32,5 +32,8 @@ namespace CrossSell_App.DataAccess
         public virtual DbSet<Portfolio> Portfolios { get; set; }
         public virtual DbSet<Portfolio_Type> Portfolio_Type { get; set; }
         public virtual DbSet<Questioner> Questioners { get; set; }
+        public virtual DbSet<Portfolio_Agile_Lab> Portfolio_Agile_Lab { get; set; }
+        public virtual DbSet<UserAccess> UserAccesses { get; set; }
+        public virtual DbSet<UserRole> UserRoles { get; set; }
     }
 }

@@ -1,0 +1,155 @@
+﻿@model IEnumerable<CrossSell_App.DataAccess.Portfolio_Agile_Lab>
+
+@{
+    /**/
+
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>  @ViewBag.Company_Name</h2>
+
+@using (Html.BeginForm("Edit","PortfolioAgileLab",FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    @*<div class="form-horizontal">
+            <h4>Portfolio_Agile_Lab</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Pal_Id)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Company_Id, "Company_Id", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("Company_Id", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Company_Id, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Portfolio_Id, "Portfolio_Id", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("Portfolio_Id", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Portfolio_Id, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Current_Usage, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Current_Usage, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Current_Usage, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Future_Scope, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.Future_Scope)
+                        @Html.ValidationMessageFor(model => model.Future_Scope, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.IsMarketLead, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.IsMarketLead)
+                        @Html.ValidationMessageFor(model => model.IsMarketLead, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+            </div>
+        </div>*@
+
+<table class="table">
+    <tr>
+
+        <th>
+        
+        </th>
+        <th>
+            @Html.Label("Current Usage")
+        </th>
+        <th>
+            @Html.Label("Future Scope")
+        </th>
+        <th>
+            @Html.Label("Market Lead")
+        </th>
+
+
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+
+        <tr>
+            @Html.HiddenFor(model=>item.Pal_Id, item.Portfolio.Portfolio_Name+""+ item.Pal_Id)
+            <td>
+                @Html.DisplayFor(model => item.Portfolio.Portfolio_Name, null, item.Portfolio.Portfolio_Name)
+            </td>
+            <td>
+
+                @Html.EditorFor(model => item.Current_Usage, item.Portfolio.Portfolio_Name + "" + "Current_Usage", item.Portfolio.Portfolio_Name+""+"Current_Usage",  new { htmlAttributes = new { @class = "form-control" }})
+             
+                @Html.ValidationMessageFor(model => item.Current_Usage, "", new { @class = "text-danger" })
+            </td>
+            <td>
+
+                @Html.EditorFor(model => item.Future_Scope, null, item.Portfolio.Portfolio_Name + "" + "Future_Scope" )
+                @Html.ValidationMessageFor(model => item.Future_Scope, "", new { @class = "text-danger" })
+            </td>
+            <td>
+                @Html.EditorFor(model => item.IsMarketLead, null, item.Portfolio.Portfolio_Name + "" + "IsMarketLead")
+                @Html.ValidationMessageFor(model => item.IsMarketLead, "", new { @class = "text-danger" })
+            </td>
+
+        </tr>
+    }
+
+    @*@for (int i=0; i < Model.Count();i++)
+    {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => modelItem.Portfoli.Portfolio_Name[i])
+            </td>
+            @*<td>
+               
+                @Html.EditorFor(modelItem => modelItem.Current_Usage, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(modelItem => modelItem.Current_Usage, "", new { @class = "text-danger" })
+            </td>
+            <td>
+
+                @Html.EditorFor(modelItem => modelItem.Future_Scope)
+                @Html.ValidationMessageFor(modelItem => modelItem.Future_Scope, "", new { @class = "text-danger" })
+            </td>
+            <td>
+                @Html.EditorFor(modelItem => modelItem.IsMarketLead)
+                @Html.ValidationMessageFor(modelItem => modelItem.IsMarketLead, "", new { @class = "text-danger" })
+            </td>*@
+
+        @*</tr>
+    }*@
+
+</table>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

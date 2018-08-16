@@ -11,24 +11,24 @@ namespace CrossSell_App.DataAccess
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class Portfolio
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Portfolio()
         {
             this.CrossSells = new HashSet<CrossSell>();
+            this.Portfolio_Agile_Lab = new HashSet<Portfolio_Agile_Lab>();
         }
     
         public int Portfolio_Id { get; set; }
-
-        [Required(ErrorMessage = "Portfolio Name is required")]
         public string Portfolio_Name { get; set; }
         public int Portfolio_Type_Id { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CrossSell> CrossSells { get; set; }
         public virtual Portfolio_Type Portfolio_Type { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Portfolio_Agile_Lab> Portfolio_Agile_Lab { get; set; }
     }
 }

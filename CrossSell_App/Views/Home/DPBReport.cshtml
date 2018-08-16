@@ -1,0 +1,63 @@
+﻿
+@{
+    ViewBag.Title = "DPBReport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<style type="text/css">
+    #block_container, #chart1 {
+        display: inline;
+    }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+<div id="block_container">
+
+    <div style="width:100% !important;float:left">
+        <div class="lead" style="margin-left:50px;text-align: center;">
+            Digital Picture Benchmark (DPB)
+        </div>
+        <div>
+            <canvas id="chart1"></canvas>
+            <script>
+
+                var chart = new Chart('chart1', {
+                    type: 'radar',
+                    data: {
+                        labels: ['Customer', 'Employee', 'Partner', 'CIO', 'CDO', 'CEO'],
+                        datasets: [{
+                            label: 'Schindler',
+                            data: [53, 69, 55, 43, 50, 75],
+                            borderColor: '#0000CD',
+                            fill: false,
+                        },
+                        {
+                            label: 'McDonalds',
+                            data: [33, 79, 25, 63, 10, 35],
+                            borderColor: '#22cc22',
+                            fill: false,
+                        }]
+                    },
+                    options: {
+                        scale: {
+                            display: true,
+
+                        }
+                    },
+                    plugins: {
+                        datalabels: {
+                            font: {
+                                size: 15,
+                                weight: 600
+                            },
+                        }
+                    },
+                });
+
+            </script>
+        </div>
+    </div>
+</div>

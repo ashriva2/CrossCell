@@ -14,6 +14,7 @@ namespace CrossSell_App.Controllers
     {
         private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
 
+      
         // GET: Companies
         public ActionResult Index()
         {
@@ -46,10 +47,29 @@ namespace CrossSell_App.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Company_Id,Company_Name,IsActive")] Company company)
+        public ActionResult Create([Bind(Include = "Company_Id,Company_Name,IsActive,Company_Contacts,Company_Admin")] Company company)
         {
             if (ModelState.IsValid)
             {
+
+                //logic to enter the users 
+                if (company.Company_Admin != "")
+                {
+                    UserRole users = new UserRole();
+                    users.EmailId = company.Company_Admin;
+                    users.IsAdmin = true;
+                    SaveAdminAndContacts(users);
+                }
+
+                if (company.Company_Contacts != "")
+                {
+                    UserRole users = new UserRole();
+                    users.EmailId = company.Company_Admin;
+                    users.IsAdmin = false;
+                    SaveAdminAndContacts(users);
+                }
+
+
                 db.Companies.Add(company);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -57,6 +77,14 @@ namespace CrossSell_App.Controllers
 
             return View(company);
         }
+
+
+        public void SaveAdminAndContacts(UserRole users)
+        {
+            db.UserRoles.Add(users);
+            db.SaveChanges();
+        }
+
 
         // GET: Companies/Edit/5
         public ActionResult Edit(int? id)
@@ -78,10 +106,29 @@ namespace CrossSell_App.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Company_Id,Company_Name,IsActive")] Company company)
+        public ActionResult Edit([Bind(Include = "Company_Id,Company_Name,IsActive,Company_Contacts,Company_Admin")] Company company)
         {
             if (ModelState.IsValid)
             {
+
+
+                if (company.Company_Admin != "")
+                {
+                    UserRole users = new UserRole();
+                    users.EmailId = company.Company_Admin;
+                    users.IsAdmin = true;
+                    SaveAdminAndContacts(users);
+                }
+
+                if (company.Company_Contacts != "")
+                {
+                    UserRole users = new UserRole();
+                    users.EmailId = company.Company_Admin;
+                    users.IsAdmin = false;
+                    SaveAdminAndContacts(users);
+                }
+
+
                 db.Entry(company).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

@@ -43,43 +43,31 @@
 
     @using (Html.BeginForm())
     {
-        <div class="bs-example" style="border:2px solid gray;">
+        <div class="bs-example" style="border:2px solid gray; height:275px">
 
             <div class="form-group centerlook">
                 <h1> Login </h1>
             </div>
             <div class="form-group centerlook">
-                <label>User Name: </label>
-                @Html.EditorFor(model => model.UserName)*
+                <label>User Name:</label>
+                @Html.EditorFor(model => model.UserName) *
                 @Html.ValidationMessageFor(model => model.UserName)
             </div>
             <div class="form-group centerlook">
-                <label>Password:</label>
+                <label> &nbsp Password:</label>
                 @Html.EditorFor(model => model.Password) *
                 @Html.ValidationMessageFor(model => model.Password)
 
             </div>
             <div class="form-group centerlook" >
-                <label>Role:</label>
+                <label style="padding-left:3em">Role:</label>
                 @*@Html.DropDownList("GenreId", String.Empty)*@
                 <select name="Role">
                     <option value="Admin">Admin</option>
                     <option value="Customers">Customers</option>
                 </select>
             </div>
-            @*<div class="form-group error">
-                    @if (@ViewBag.Failedcount != null)
-                    {
-
-                        <label> Failed Attempt count is: @ViewBag.Failedcount</label>
-                    }
-
-                    @if (@ViewBag.NotValidUser != null)
-                    {
-
-                        <label> @ViewBag.NotValidUser</label>
-                    }
-                </div>*@
+      
             <div class="loginbtn">
 
                 <input type="submit" value="Login" class="btn btn-primary" />

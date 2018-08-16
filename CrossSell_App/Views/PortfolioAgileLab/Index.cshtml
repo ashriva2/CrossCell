@@ -1,0 +1,66 @@
+﻿@model IEnumerable<CrossSell_App.DataAccess.Portfolio_Agile_Lab>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<h2>Index</h2>*@
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.Label(" Company")
+        </th>
+        <th>
+            @Html.Label("Portfolio")
+        </th>
+        <th>
+            @Html.Label("Current Usage")
+          
+        </th>
+        <th>
+            @Html.Label("Market lead")
+        </th>
+        <th>
+            @Html.Label("Current Usage")
+        </th>
+        <th>
+            @Html.Label("Future Scope")
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Company.Company_Name)
+           
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Portfolio.Portfolio_Name)
+         
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Current_Usage)
+            
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Future_Scope)
+            
+
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsMarketLead)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Company_Id }) 
+           
+            @*@Html.ActionLink("Delete", "Delete", new { id=item.Company_Id })*@
+        </td>
+    </tr>
+}
+
+</table>

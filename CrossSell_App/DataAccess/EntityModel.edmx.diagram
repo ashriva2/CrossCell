@@ -18,6 +18,15 @@
         <AssociationConnector Association="PAL_DigitalPicModel.FK_Questioner_Metadata_Id" ManuallyRouted="false" />
         <AssociationConnector Association="PAL_DigitalPicModel.FK_Objectives_Questioner" ManuallyRouted="false" />
         <AssociationConnector Association="PAL_DigitalPicModel.FK__Portfolio__Portf__1367E606" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="PAL_DigitalPicModel.Portfolio_Agile_Lab" Width="1.5" PointX="13.25" PointY="5.875" />
+        <AssociationConnector Association="PAL_DigitalPicModel.FK_Portfolio_Agile_Lab_Company_Id" />
+        <AssociationConnector Association="PAL_DigitalPicModel.FK_Portfolio_Agile_Lab_Portfolio_Id" />
+        <EntityTypeShape EntityType="PAL_DigitalPicModel.UserAccess" Width="1.5" PointX="5.25" PointY="9.125" />
+        <EntityTypeShape EntityType="PAL_DigitalPicModel.UserRole" Width="1.5" PointX="3" PointY="9.125" />
+        <AssociationConnector Association="PAL_DigitalPicModel.FK_UserAccess_CompanyId" />
+        <AssociationConnector Association="PAL_DigitalPicModel.FK_UserAccess_UserRole" />
+        <AssociationConnector Association="PAL_DigitalPicModel.FK_Objectives_Metadata" />
+        <AssociationConnector Association="PAL_DigitalPicModel.FK_Objectives_Objectives" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

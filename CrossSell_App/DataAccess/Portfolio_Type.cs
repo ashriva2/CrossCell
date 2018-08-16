@@ -11,7 +11,7 @@ namespace CrossSell_App.DataAccess
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
+    
     public partial class Portfolio_Type
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -21,8 +21,6 @@ namespace CrossSell_App.DataAccess
         }
     
         public int Portfolio_Type_Id { get; set; }
-
-        [Required(ErrorMessage = "Portfolio Type Name is required")]
         public string Portfolio_Type_Name { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

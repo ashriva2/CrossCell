@@ -1,0 +1,59 @@
+﻿@model CrossSell_App.DataAccess.Portfolio_Agile_Lab
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Portfolio_Agile_Lab</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Current_Usage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Current_Usage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Future_Scope)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Future_Scope)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsMarketLead)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsMarketLead)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Company.Company_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Company.Company_Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Portfolio.Portfolio_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Portfolio.Portfolio_Name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Pal_Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

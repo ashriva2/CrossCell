@@ -159,8 +159,11 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MetadatasController.cs" />
+    <Compile Include="Controllers\ObjectivesController.cs" />
     <Compile Include="Controllers\PortfoliosController.cs" />
     <Compile Include="Controllers\PortfolioTypeController.cs" />
+    <Compile Include="Controllers\PortfolioAgileLabController.cs" />
+    <Compile Include="Controllers\QuestionersController.cs" />
     <Compile Include="DataAccess\Company.cs">
       <DependentUpon>EntityModel.tt</DependentUpon>
     </Compile>
@@ -191,16 +194,29 @@
     <Compile Include="DataAccess\Portfolio.cs">
       <DependentUpon>EntityModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataAccess\Portfolio_Agile_Lab.cs">
+      <DependentUpon>EntityModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataAccess\Portfolio_Type.cs">
       <DependentUpon>EntityModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DataAccess\Questioner.cs">
       <DependentUpon>EntityModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataAccess\Repository.cs" />
+    <Compile Include="DataAccess\UserAccess.cs">
+      <DependentUpon>EntityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\UserRole.cs">
+      <DependentUpon>EntityModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ChartMappingData.cs" />
+    <Compile Include="Models\ObjectiveModel.cs" />
     <Compile Include="Models\Portfolio.cs" />
+    <Compile Include="Models\PortfolioAgileLab.cs" />
     <Compile Include="Models\PortfolioType.cs" />
     <Compile Include="Models\UserDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -283,6 +299,24 @@
     <Content Include="Views\Metadatas\Index.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Views\Login\LoginPage.cshtml" />
+    <Content Include="Views\Shared\_LayoutCustomer.cshtml" />
+    <Content Include="Views\PortfolioAgileLab\Create.cshtml" />
+    <Content Include="Views\PortfolioAgileLab\Delete.cshtml" />
+    <Content Include="Views\PortfolioAgileLab\Details.cshtml" />
+    <Content Include="Views\PortfolioAgileLab\Edit.cshtml" />
+    <Content Include="Views\PortfolioAgileLab\Index.cshtml" />
+    <Content Include="Views\Home\PALReport.cshtml" />
+    <Content Include="Views\Home\DPBReport.cshtml" />
+    <Content Include="Views\Questioners\Create.cshtml" />
+    <Content Include="Views\Questioners\Delete.cshtml" />
+    <Content Include="Views\Questioners\Details.cshtml" />
+    <Content Include="Views\Questioners\Edit.cshtml" />
+    <Content Include="Views\Questioners\Index.cshtml" />
+    <Content Include="Views\Objectives\Create.cshtml" />
+    <Content Include="Views\Objectives\Delete.cshtml" />
+    <Content Include="Views\Objectives\Details.cshtml" />
+    <Content Include="Views\Objectives\Edit.cshtml" />
+    <Content Include="Views\Objectives\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

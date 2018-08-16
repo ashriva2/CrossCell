@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+@*<h2>Index</h2>*@
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -13,7 +13,7 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Portfolio_Type_Name)
+            @Html.Label("Portfolio Type")
         </th>
         <th></th>
     </tr>
@@ -25,7 +25,7 @@
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Portfolio_Type_Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Portfolio_Type_Id }) |
+            @*@Html.ActionLink("Details", "Details", new { id=item.Portfolio_Type_Id }) |*@
             @Html.ActionLink("Delete", "Delete", new { id=item.Portfolio_Type_Id })
         </td>
     </tr>
