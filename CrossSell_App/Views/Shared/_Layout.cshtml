@@ -1,6 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
+
     <style>
         #urlddl {
             margin-top: 15px !important;
@@ -18,7 +19,6 @@
 
         .dropbtn {
             background-color: Transparent;
-           
             color: #9d9d9d;
             padding: 9px;
             font-size: 14px;
@@ -170,8 +170,8 @@
                         <div class="dropdown">
                             <button class="dropbtn" style="color:#0070ad">PAL</button>
                             <div class="dropdown-content">
-                                @Html.ActionLink("Portfolio Report", "PALReport", "Home", new { style = "color:#0070ad" })
-                                @Html.ActionLink("Portfolio Details", "Index", "PortfolioAgileLab", new { style = "color:#0070ad" })
+                                @Html.ActionLink("Portfolio Report", "PALReport", "Home")
+                                @Html.ActionLink("Portfolio Details", "Index", "PortfolioAgileLab")
 
                             </div>
                         </div>
@@ -181,8 +181,8 @@
                         <div class="dropdown">
                             <button class="dropbtn"style="color:#0070ad">DPB</button>
                             <div class="dropdown-content">
-                                @Html.ActionLink("Digital Picture BenchMark Report", "DPBReport", "Home", new { style = "color:#0070ad" })
-                                @Html.ActionLink("DPB Questionnaire", "Create", "Objectives", new { style = "color:#0070ad" })
+                                @Html.ActionLink("Digital Picture BenchMark Report", "DPBReport", "Home")
+                                @Html.ActionLink("DPB Questionnaire", "Create", "Objectives")
 
                             </div>
                         </div>
