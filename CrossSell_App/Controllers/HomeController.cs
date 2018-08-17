@@ -84,8 +84,8 @@ namespace CrossSell_App.Controllers
                     if (item.Company_Id == data.Company_Id)
                     {
                         
-                        string IsMarketLead= data.IsMarketLead ? true ? "L" : "":"";
-                        string IsFutureScope=data.Future_Scope ? true ? "*" : "":"";
+                        string IsMarketLead= data.IsMarketLead ? true ? "*" : "":"";
+                        string IsFutureScope=data.Future_Scope ? true ? "+" : "":"";
                         CurrentUsagePerCompany.Add(IsMarketLead+ IsFutureScope);
                     }
                     

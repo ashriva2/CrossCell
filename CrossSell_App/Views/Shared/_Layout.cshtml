@@ -85,7 +85,7 @@
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li> @Html.ActionLink("Cross Sale App", "Index", "Home", new { style = "font-weight:bold;color:black" })</li>
+                        <li> @Html.ActionLink("Portofolio Agile Lab", "Index", "Home", new { style = "font-weight:bold;color:black" })</li>
                         <li>@Html.ActionLink("Dashboard", "Index", "Home")</li>
                         @*<li>@Html.ActionLink("Portfolio Agile Lab", "Index", "PortfolioAgileLab")</li>*@
                         <li>
@@ -94,8 +94,8 @@
                             <div class="dropdown">
                                 <button class="dropbtn">PAL</button>
                                 <div class="dropdown-content">
-                                    @Html.ActionLink("Portfolio Agile Lab Report", "PALReport", "Home")
-                                    @Html.ActionLink("Portfolio Agile Lab", "Index", "PortfolioAgileLab")
+                                    @Html.ActionLink("Portfolio Report", "PALReport", "Home")
+                                    @Html.ActionLink("Portfolio Details", "Index", "PortfolioAgileLab")
 
                                 </div>
                             </div>
@@ -117,32 +117,20 @@
                                 <button class="dropbtn">DPB</button>
                                 <div class="dropdown-content">
                                     @Html.ActionLink("Digital Picture BenchMark Report", "DPBReport", "Home")
-                                    @Html.ActionLink("DPB Questioners", "Create", "Objectives")
+                                    @Html.ActionLink("DPB Questionnaire", "Create", "Objectives")
 
                                 </div>
                             </div>
                         </li>
                         <li></li>
                         <li>
-                            @*@Html.DropDownList(
-                        "url",
-                        new SelectList(new[]
-                        {
-                            new SelectListItem { Text = "Digital Picture BenchMark Report", Value = Url.Action("DPBReport", "Home") },
-                             new SelectListItem { Text = "DPB Questioners ", Value = Url.Action("Index", "Objectives") }
-
-                        }, "Value", "Text"),
-                        "-- DPB ---",
-                        new { id = "urlddl1" }*@
-
-
-                            <div class="dropdown">
+                     <div class="dropdown">
                                 <button class="dropbtn">Masters</button>
                                 <div class="dropdown-content">
                                     @Html.ActionLink("Portfolios", "Index", "Portfolios")
                                     @Html.ActionLink("Portfolio Type", "Index", "PortfolioType")
                                     @Html.ActionLink("Companies", "Index", "Companies")
-                                    @Html.ActionLink("Questioners Type", "Index", "Questioners")
+                                    @Html.ActionLink("Questionnaire Type", "Index", "Questioners")
                                     @Html.ActionLink("Section", "Index", "Metadatas")
 
 
@@ -153,27 +141,7 @@
                         <li>
 
 
-                            @*@Html.DropDownList(
-                           "url",
-                           new SelectList(new[]
-                           {
-                               new SelectListItem { Text = "Portfolios", Value = Url.Action("Index", "Portfolios") },
-                               new SelectListItem { Text = "Portfolio Type", Value = Url.Action("Index", "PortfolioType") },
-                               new SelectListItem { Text = "Companies ", Value = Url.Action("Index", "Companies") },
-                               new SelectListItem { Text = "Questioners ", Value = Url.Action("Index", "Questioners") },
-                               new SelectListItem { Text = "Metadata ", Value = Url.Action("Index", "Metadatas") }
-
-
-                           }, "Value", "Text"),
-                           "-- Masters ---",
-                           new { id = "urlddl2" }
-                        )*@
-
-                        </li>
-                        @*<li>@Html.ActionLink("Digital Picture Lab", "Index", "Metadatas")</li>*@
-                        @*<li>@Html.ActionLink("Portfolios", "Index", "Portfolios")</li>
-                    <li>@Html.ActionLink("Portfolio Type", "Index", "PortfolioType")</li>
-                    <li>@Html.ActionLink("Companies", "Index", "Companies")</li>*@
+                           
 
                     </ul>
                 </div>

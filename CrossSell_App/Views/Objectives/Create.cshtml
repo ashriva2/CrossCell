@@ -4,19 +4,20 @@
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<script src="~/Scripts/CustomScripts.js"></script>
 <h2>Create</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
+    var counter = 0;
 
-
-    foreach (var item in ViewBag.SectionList)
-    {
-        var secData = Model.Where(x => x.Metadata_Id == item.Metadata_Id).ToList();
-        <table class="table" border="1">
+                foreach (var item in ViewBag.SectionList)
+                {
+        counter++;
+                    var secData = Model.Where(x => x.Metadata_Id == item.Metadata_Id).ToList();
+        <table class="table" border="1" id=@counter>
             <tr>
                 <th colspan="8">
                     @item.Metadata_Name
@@ -33,47 +34,49 @@
                 <th>Max</th>
                 <th>Score of Max</th>
             </tr>
-           
+
+
             @foreach (CrossSell_App.Models.ObjectivesModel ques in secData)
-            {
+        {
                 <tr>
-                    <td>
+                    <td id="QuestionText">
                         @Html.DisplayFor(modelitem => ques.QuestionText)
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelitem => ques.Comments)
+                    <td id="comments">
+                        @Html.EditorFor(modelitem => ques.Comments)
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelitem => ques.Level)
+                    <td id="level">
+                        @Html.EditorFor(modelitem => ques.Level)
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelitem => ques.Weight)
+                    <td id="weight">
+                        @Html.EditorFor(modelitem => ques.Weight)
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelitem => ques.Answer)
+                    <td id="answer">
+                        @Html.EditorFor(modelitem => ques.Answer)
                     </td>
-                    <td>
+                    <td id="score">
                         @Html.DisplayFor(modelitem => ques.Score)
                     </td>
-                    <td>
+                    <td id="max">
                         @Html.DisplayFor(modelitem => ques.Max)
                     </td>
-                    <td>
+                    <td id="maxscore">
                         @Html.DisplayFor(modelitem => ques.Score_Max)
                     </td>
                 </tr>
+
             }
                 <tr>
-                    <td colspan="5">
+                    <td colspan="5" id="total">
                         Total @item.Metadata_Name
                     </td>
-                    <td>
+                    <td id="total_score">
                         24
                     </td>
-                    <td>
+                    <td id="total_Max">
                         24
                     </td>
-                    <td>
+                    <td id="total_ScoreMax">
                         54%
                     </td>
                 </tr>
