@@ -51,7 +51,7 @@ namespace CrossSell_App.Controllers
             List<int>[] a = new List<int>[100];
             List<string>[] IsLeadOrTobe = new List<string>[100];
 
-            var DataFromPAL = db.Portfolio_Agile_Lab.ToList();
+            var DataFromPAL = db.Portfolio_Agile_Lab.ToList().OrderBy(x=>x.Portfolio_Id);
             //need to check the number of company present
 
 
@@ -83,9 +83,26 @@ namespace CrossSell_App.Controllers
                 {
                     if (item.Company_Id == data.Company_Id)
                     {
+                        string IsMarketLead;
+                        string IsFutureScope;
+                        if (data.IsMarketLead==true)
+                      
+                            IsMarketLead = "*";
                         
-                        string IsMarketLead= data.IsMarketLead ? true ? "*" : "":"";
-                        string IsFutureScope=data.Future_Scope ? true ? "+" : "":"";
+                        else
+                            IsMarketLead = "";
+
+                        if (data.Future_Scope == true)
+
+                            IsFutureScope = "+";
+
+                        else
+                            IsFutureScope = "";
+
+                        //string IsMarketLead= data.IsMarketLead ? true ? "*" : "":"";
+                        //string IsFutureScope=data.Future_Scope ? true ? "+" : "":"";
+
+
                         CurrentUsagePerCompany.Add(IsMarketLead+ IsFutureScope);
                     }
                     

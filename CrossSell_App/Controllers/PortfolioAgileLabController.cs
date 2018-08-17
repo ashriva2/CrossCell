@@ -205,10 +205,7 @@ namespace CrossSell_App.Controllers
             //}
             //ViewBag.Company_Id = new SelectList(db.Companies, "Company_Id", "Company_Name", portfolio_Agile_Lab.Company_Id);
             //ViewBag.Portfolio_Id = new SelectList(db.Portfolios, "Portfolio_Id", "Portfolio_Name", portfolio_Agile_Lab.Portfolio_Id);
-            return RedirectToAction("Edit",new
-            {
-                id=CompanyId
-            });
+            return RedirectToAction("Index");
         }
 
 
