@@ -13,38 +13,43 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayName("Comments")
+            @Html.DisplayNameFor(model => model.Comments)
         </th>
         <th>
-            @Html.DisplayName("Weight")
+            @Html.DisplayNameFor(model => model.Weight)
         </th>
         <th>
-            @Html.DisplayName("Max Score")
+            @Html.DisplayNameFor(model => model.Score_Max)
         </th>
         <th>
-            @Html.DisplayName("Max")
+            @Html.DisplayNameFor(model => model.Max)
         </th>
         <th>
-            @Html.DisplayName("Answer")
+            @Html.DisplayNameFor(model => model.Answer)
         </th>
         <th>
-            @Html.DisplayName("Score")
+            @Html.DisplayNameFor(model => model.Score)
         </th>
         <th>
-            @Html.DisplayName("Level")
-        </th>
-        <th>
-            @Html.DisplayName("Metadata")
+            @Html.DisplayNameFor(model => model.Level)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.IsActive)
         </th>
         <th>
-
-            @Html.DisplayName("Company Name")
+            @Html.DisplayNameFor(model => model.Company.Company_Name)
         </th>
         <th>
-            @Html.DisplayName("Questioner")
+            @Html.DisplayNameFor(model => model.Questioner.Questioner1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Metadata.Metadata_Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Objectives1.Comments)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Objective1.Comments)
         </th>
         <th></th>
     </tr>
@@ -73,9 +78,6 @@
             @Html.DisplayFor(modelItem => item.Level)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Metadata_Id)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.IsActive)
         </td>
         <td>
@@ -83,6 +85,15 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Questioner.Questioner1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Metadata.Metadata_Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Objectives1.Comments)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Objective1.Comments)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Objective_Id }) |

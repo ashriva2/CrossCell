@@ -29,24 +29,44 @@
                     data: {
                         labels: ['Customer', 'Employee', 'Partner', 'CIO', 'CDO', 'CEO'],
                         datasets: [{
-                            label: 'Schindler',
+                            label: 'Schneider',
                             data: [53, 69, 55, 43, 50, 75],
-                            borderColor: '#0000CD',
+                            borderColor: '#3dcd58',
+                            fill: false,
+                        },
+                        {
+                            label: 'Daimler',
+                            data: [33, 53, 27, 43, 20, 35],
+                            borderColor: '#7b7c81',
+                            fill: false,
+                        },
+                        {
+                            label: 'Disney',
+                            data: [23, 69, 85, 73, 20, 55],
+                            borderColor: '#0795e6',
                             fill: false,
                         },
                         {
                             label: 'McDonalds',
-                            data: [33, 79, 25, 63, 10, 35],
-                            borderColor: '#22cc22',
+                            data: [53, 89, 15, 23, 40, 95],
+                            borderColor: '#ffc111',
                             fill: false,
                         }]
                     },
                     options: {
+                        legend: {
+                            display: true,
+                            position: 'bottom',
+                            labels: {
+                                fontColor: 'rgb(255, 99, 132)'
+                            }
+                        },  
                         scale: {
                             display: true,
 
                         }
                     },
+                   
                     plugins: {
                         datalabels: {
                             font: {

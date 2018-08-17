@@ -218,6 +218,7 @@
     <Compile Include="Models\Portfolio.cs" />
     <Compile Include="Models\PortfolioAgileLab.cs" />
     <Compile Include="Models\PortfolioType.cs" />
+    <Compile Include="Models\SectionModel.cs" />
     <Compile Include="Models\UserDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

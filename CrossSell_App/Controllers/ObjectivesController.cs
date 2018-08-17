@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
-using System.Dynamic;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -19,7 +18,7 @@ namespace CrossSell_App.Controllers
         // GET: Objectives
         public ActionResult Index()
         {
-            var objectives = db.Objectives.Include(o => o.Company).Include(o => o.Questioner).ToList();
+            var objectives = db.Objectives.Include(o => o.Company).Include(o => o.Questioner).Include(o => o.Metadata).Include(o => o.Objectives1).Include(o => o.Objective1);
             return View(objectives.ToList());
         }
 
@@ -42,18 +41,63 @@ namespace CrossSell_App.Controllers
         public ActionResult Create()
         {
 
-            var Questioners1 = db.Questioners.ToList();
 
-            //dynamic mymodel = new ExpandoObject();
-
-            //mymodel.Questioners = Questioners1;
-            //mymodel.Objectives = new List<Objective>();
 
             ViewBag.Company_Id = new SelectList(db.Companies, "Company_Id", "Company_Name");
             ViewBag.Questioner_Id = new SelectList(db.Questioners, "Questioner_Id", "Questioner1");
-            return View(Questioners1.ToList());
-           
-            //return View();
+            ViewBag.Metadata_Id = new SelectList(db.Metadatas, "Metadata_Id", "Metadata_Name");
+            ViewBag.Objective_Id = new SelectList(db.Objectives, "Objective_Id", "Comments");
+            ViewBag.Objective_Id = new SelectList(db.Objectives, "Objective_Id", "Comments");
+
+            ObjectivesModel Data = new ObjectivesModel();
+            List<ObjectivesModel> DataList =new List<ObjectivesModel>();
+            List<SectionModel> SectionModelList = new List<SectionModel>();
+            var sectionList = db.Metadatas.ToList();
+            foreach(var sect in sectionList)
+            {
+                SectionModel obj = new SectionModel()
+                {
+                    Metadata_Id=sect.Metadata_Id,
+                    Metadata_Name=sect.Metadata_Name,
+                    IsActive=sect.IsActive
+                };
+                SectionModelList.Add(obj);
+
+
+
+            }
+
+            ViewBag.SectionList = SectionModelList;
+
+            foreach (var item in db.Metadatas.ToList())
+            {
+                try
+                {
+                    
+
+                    //DataList.Add(DataInput);
+                    var getQuesForMeta = db.Questioners.Where(x => x.Metadata_Id == item.Metadata_Id).ToList();
+                    foreach (var ques in getQuesForMeta)
+                    {
+                        ObjectivesModel DataInput = new ObjectivesModel();
+                        DataInput.MetaDataText = item.Metadata_Name;
+
+                        DataInput.QuestionText = ques.Questioner1;
+                        DataInput.Metadata_Id = item.Metadata_Id;
+                        DataList.Add(DataInput);
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+
+            
+
+          
+
+            return View(DataList);
         }
 
         // POST: Objectives/Create
@@ -61,20 +105,21 @@ namespace CrossSell_App.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(FormCollection questioner)
+        public ActionResult Create([Bind(Include = "Objective_Id,Comments,Weight,Score_Max,Max,Answer,Score,Level,Metadata_Id,IsActive,Questioner_Id,Company_Id")] Objective objective)
         {
-            
+            if (ModelState.IsValid)
+            {
+                db.Objectives.Add(objective);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
 
-            //if (ModelState.IsValid)
-            //{
-            //    db.Objectives.Add(objective);
-            //    db.SaveChanges();
-            //    return RedirectToAction("Index");
-            //}
-
-            //ViewBag.Company_Id = new SelectList(db.Companies, "Company_Id", "Company_Name", objective.Company_Id);
-            //ViewBag.Questioner_Id = new SelectList(db.Questioners, "Questioner_Id", "Questioner1", objective.Questioner_Id);
-            return View();
+            ViewBag.Company_Id = new SelectList(db.Companies, "Company_Id", "Company_Name", objective.Company_Id);
+            ViewBag.Questioner_Id = new SelectList(db.Questioners, "Questioner_Id", "Questioner1", objective.Questioner_Id);
+            ViewBag.Metadata_Id = new SelectList(db.Metadatas, "Metadata_Id", "Metadata_Name", objective.Metadata_Id);
+            ViewBag.Objective_Id = new SelectList(db.Objectives, "Objective_Id", "Comments", objective.Objective_Id);
+            ViewBag.Objective_Id = new SelectList(db.Objectives, "Objective_Id", "Comments", objective.Objective_Id);
+            return View(objective);
         }
 
         // GET: Objectives/Edit/5
@@ -91,6 +136,9 @@ namespace CrossSell_App.Controllers
             }
             ViewBag.Company_Id = new SelectList(db.Companies, "Company_Id", "Company_Name", objective.Company_Id);
             ViewBag.Questioner_Id = new SelectList(db.Questioners, "Questioner_Id", "Questioner1", objective.Questioner_Id);
+            ViewBag.Metadata_Id = new SelectList(db.Metadatas, "Metadata_Id", "Metadata_Name", objective.Metadata_Id);
+            ViewBag.Objective_Id = new SelectList(db.Objectives, "Objective_Id", "Comments", objective.Objective_Id);
+            ViewBag.Objective_Id = new SelectList(db.Objectives, "Objective_Id", "Comments", objective.Objective_Id);
             return View(objective);
         }
 
@@ -109,6 +157,9 @@ namespace CrossSell_App.Controllers
             }
             ViewBag.Company_Id = new SelectList(db.Companies, "Company_Id", "Company_Name", objective.Company_Id);
             ViewBag.Questioner_Id = new SelectList(db.Questioners, "Questioner_Id", "Questioner1", objective.Questioner_Id);
+            ViewBag.Metadata_Id = new SelectList(db.Metadatas, "Metadata_Id", "Metadata_Name", objective.Metadata_Id);
+            ViewBag.Objective_Id = new SelectList(db.Objectives, "Objective_Id", "Comments", objective.Objective_Id);
+            ViewBag.Objective_Id = new SelectList(db.Objectives, "Objective_Id", "Comments", objective.Objective_Id);
             return View(objective);
         }
 

@@ -16,7 +16,7 @@
             <div class="lead" style="text-align: center;">
                 Portofolio Agile Lab (PAL)
             </div>
-            <div style="font-size: x-small;margin-bottom:20px;text-align: center;">
+            <div style="font-size: x-small;margin-bottom:20px;text-align: right;">
                 Legends:
                 * : Leader
                 + : Growth Potential
@@ -84,29 +84,29 @@
                                 labels: yLable,
                                 labels2: labels2,
                                 datasets: [{
-                                    backgroundColor: '#ccddee',
-                                    borderColor: '#5566aa',
+                                    backgroundColor: '#3dcd58',
+                                    borderColor: '#3dcd58',
                                     data: data,
                                     lbl: labels2,
                                     label: 'Schneider',
                                 },
                                 {
-                                    backgroundColor: '#22cc22',
-                                    borderColor: '#22cc22',
+                                    backgroundColor: '#7b7c81',
+                                    borderColor: '#7b7c81',
                                     data: data2,
                                     lbl: labels3,
                                     label: 'Daimler',
                                 },
                                 {
-                                    backgroundColor: '#FF0000',
-                                    borderColor: '#FF0000',
+                                    backgroundColor: '#0795e6',
+                                    borderColor: '#0795e6',
                                     data: data3,
                                     lbl: labels4,
                                     label: 'Disney',
                                 },
                                 {
-                                    backgroundColor: '#0000CD',
-                                    borderColor: '#0000CD',
+                                    backgroundColor: '	#ffc111',
+                                    borderColor: '	#ffc111',
                                     data: data4,
                                     lbl: labels5,
                                     label: 'McDonalds',
@@ -179,23 +179,42 @@
                         data: {
                             labels: ['Customer', 'Employee', 'Partner', 'CIO', 'CDO', 'CEO'],
                             datasets: [{
-                                label: 'Schindler',
+                                label: 'Schneider',
                                 data: [53, 69, 55, 43, 50, 75],
-                                borderColor: '#0000CD',
+                                borderColor: '#3dcd58',
                                 fill: false,
                             },
                             {
-                                label: 'McDonalds',
-                                data: [33, 79, 25, 63, 10, 35],
-                                borderColor: '#22cc22',
+                                label: 'Daimler',
+                                data: [33, 53, 27, 43, 20, 35],
+                                borderColor: '#7b7c81',
                                 fill: false,
-                            }]
+                                },
+                                {
+                                    label: 'Disney',
+                                    data: [23, 69, 85, 73, 20, 55],
+                                    borderColor: '#0795e6',
+                                    fill: false,
+                                },
+                                {
+                                    label: 'McDonalds',
+                                    data: [53, 89, 15, 23, 40, 95],
+                                    borderColor: '#ffc111',
+                                    fill: false,
+                                }]
                         },
                         options: {
                             scale: {
                                 display: true,
 
-                            }
+                            },
+                            legend: {
+                                display: true,
+                                position: 'bottom',
+                                labels: {
+                                    fontColor: 'rgb(255, 99, 132)'
+                                }
+                            },
                         },
                     });
 

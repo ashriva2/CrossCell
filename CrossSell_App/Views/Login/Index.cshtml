@@ -41,9 +41,15 @@
 </head>
 <body>
 
+    <div class="navbar navbar-inverse navbar-fixed-top" style="background-image: url(http://psa.sogeti.nl/i/top_bg.gif);background-color: white;height:70px">
+        <a href='@Url.Action("Index", "Home")'>
+            <img src="http://psa.sogeti.nl/i/logo_sogeti.gif" alt="Sogeti" class="logo" style="float:left;margin-left: 40px;margin-top: 15px;">
+        </a>
+    </div>
+
     @using (Html.BeginForm())
     {
-        <div class="bs-example" style="border:2px solid gray; height:275px">
+        <div class="bs-example" style="margin-top:8% ; height:275px">
 
             <div class="form-group centerlook">
                 <h1> Login </h1>
@@ -59,7 +65,7 @@
                 @Html.ValidationMessageFor(model => model.Password)
 
             </div>
-            <div class="form-group centerlook" >
+            <div class="form-group centerlook">
                 <label style="padding-left:3em">Role:</label>
                 @*@Html.DropDownList("GenreId", String.Empty)*@
                 <select name="Role">
@@ -67,7 +73,7 @@
                     <option value="Customers">Customers</option>
                 </select>
             </div>
-      
+
             <div class="loginbtn">
 
                 <input type="submit" value="Login" class="btn btn-primary" />

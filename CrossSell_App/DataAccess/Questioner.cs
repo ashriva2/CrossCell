@@ -11,7 +11,7 @@ namespace CrossSell_App.DataAccess
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
     public partial class Questioner
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -22,6 +22,7 @@ namespace CrossSell_App.DataAccess
     
         public int Questioner_Id { get; set; }
         public int Metadata_Id { get; set; }
+        [Required(ErrorMessage = "Questions  is required")]
         public string Questioner1 { get; set; }
         public Nullable<bool> IsActive { get; set; }
     

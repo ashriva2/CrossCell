@@ -23,18 +23,21 @@ namespace CrossSell_App.Models
         public int Questioner_Id { get; set; }
         public int Company_Id { get; set; }
 
+        public string QuestionText { get; set; }
+        public string MetaDataText { get; set; }
 
 
-        List<Company> Company { get; set; }
-        List<Questioner> Questioner { get; set; }
-        List<Metadata> Metadata { get; set; }
 
-        public ObjectivesModel()
-        {
-            Company = db.Companies.ToList();
-            Questioner = db.Questioners.ToList();
-            Metadata = db.Metadatas.ToList();
-        }
+        public List<Company> Company { get; set; }
+        public List<Questioner> Questioner { get; set; }
+        public List<SectionModel> Metadata { get; set; }
+
+        //public ObjectivesModel()
+        //{
+        //    Company = db.Companies.ToList();
+        //    Questioner = db.Questioners.ToList();
+            
+        //}
 
 
     }
