@@ -99,7 +99,6 @@
                 @Html.DisplayFor(model => item.Portfolio.Portfolio_Name, null, item.Portfolio.Portfolio_Name)
             </td>
             <td>
-
                 @Html.EditorFor(model => item.Current_Usage, item.Portfolio.Portfolio_Name + "" + "Current_Usage", item.Portfolio.Portfolio_Name+""+"Current_Usage",  new { htmlAttributes = new { @class = "form-control" }})
              
                 @Html.ValidationMessageFor(model => item.Current_Usage, "", new { @class = "text-danger" })

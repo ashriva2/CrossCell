@@ -1,9 +1,19 @@
 ﻿function getSectionData()
 {
-    $("tr.item").each(function () {
+    $("tr.item").each(function (i, row) {
 
-        var id = $(this).attr("title");
-        var email = $(this).val();
+        var $row = $(row),
+
+        var obj = new Object();
+        obj.questions = $(this).attr("title");
+        obj.comments = $(this).attr("title");
+        obj.level = $(this).attr("title");
+        obj.weight = $(this).attr("title");
+        obj.answers = $(this).attr("title");
+        obj.score = $(this).attr("title");
+        obj.max = $(this).attr("title");
+        obj.max_score = $(this).attr("title");
+        
 
         item = {}
         item["title"] = id;
