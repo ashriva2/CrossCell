@@ -1,66 +1,87 @@
 ﻿@model IEnumerable<CrossSell_App.DataAccess.Portfolio_Agile_Lab>
-
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @*<h2>Index</h2>*@
+<div>
+    <div style="width: 50%;float: left;">
+        <p> @Html.ActionLink("Create New", "Create")</p>
+    </div>
+    <div style="width: 50%;float: right;">
+        @{ var ddlCompanyId = 0;}
+        @Html.DropDownListFor(model => ddlCompanyId, (List<SelectListItem>)@ViewBag.fillCompanyddl, "-- Select Status --", new { @class = "form-control", @style = "float: right; width: 50%;margin-bottom: 10px;" , @onchange = "showPortfolio(this.value)" })
+    </div>
+    <div>
+        <table class="table" style="margin-top:10px">
+            <tr>
+                <th>
+                    @Html.Label(" Company")
+                </th>
+                <th>
+                    @Html.Label("Portfolio")
+                </th>
+                <th>
+                    @Html.Label("Current Usage")
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.Label(" Company")
-        </th>
-        <th>
-            @Html.Label("Portfolio")
-        </th>
-        <th>
-            @Html.Label("Current Usage")
-          
-        </th>
-        <th>
-            @Html.Label("Market lead")
-        </th>
-        @*<th>
-            @Html.Label("Current Usage")
-        </th>*@
-        <th>
-            @Html.Label("Future Scope")
-        </th>
-    </tr>
+                </th>
+                <th>
+                    @Html.Label("Market lead")
+                </th>
+                @*<th>
+                        @Html.Label("Current Usage")
+                    </th>*@
+                <th>
+                    @Html.Label("Future Scope")
+                </th>
+                <th></th>
+            </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Company.Company_Name)
-           
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Portfolio.Portfolio_Name)
-         
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Current_Usage)
-            
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Future_Scope)
-            
+            @foreach (var item in Model)
+            {
+                <tr id="@item.Company_Id" class="@item.Company_Id">
+                    <td>                        
+                        @Html.DisplayFor(modelItem => item.Company.Company_Name)
 
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsMarketLead)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Company_Id }) 
-           
-            @*@Html.ActionLink("Delete", "Delete", new { id=item.Company_Id })*@
-        </td>
-    </tr>
-}
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Portfolio.Portfolio_Name)
 
-</table>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Current_Usage)
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Future_Scope)
+
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsMarketLead)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Company_Id })
+
+                        @*@Html.ActionLink("Delete", "Delete", new { id=item.Company_Id })*@
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+<script>
+    function showPortfolio(ele) {   
+        $("." + ele).hide();
+        if(ele != 1)
+            $(".1").show();
+        if (ele != 2)
+            $(".2").show();
+        if (ele != 3)
+            $(".3").show();
+        if (ele != 4)
+            $(".4").show();
+       
+    }
+</script>
