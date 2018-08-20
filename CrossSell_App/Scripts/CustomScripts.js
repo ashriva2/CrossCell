@@ -1,23 +1,26 @@
-﻿function getSectionData()
+﻿$("#save_objective").click(function () 
 {
-    $("tr.item").each(function (i, row) {
+    alert("I am in custom script");
+    $("tr.objective_data").find('td').each(function (i) {
 
-        var $row = $(row),
+        //var $row = $(row),
+  
+        console.log($(this).text());
+                //var obj = new Object();
+        //obj.questions = $(this).find("input.name").val();
+        //obj.comments = $(this).find("input.name").val();
+        //obj.level = $(this).find("input.name").val();
+        //obj.weight = $(this).find("input.name").val();
+        //obj.answers = $(this).find("input.name").val();
+        //obj.score = $(this).find("input.name").val();
+        //obj.max = $(this).find("input.name").val();
+        //obj.max_score = $(this).find("input.name").val();
 
-        var obj = new Object();
-        obj.questions = $(this).attr("title");
-        obj.comments = $(this).attr("title");
-        obj.level = $(this).attr("title");
-        obj.weight = $(this).attr("title");
-        obj.answers = $(this).attr("title");
-        obj.score = $(this).attr("title");
-        obj.max = $(this).attr("title");
-        obj.max_score = $(this).attr("title");
         
 
-        item = {}
-        item["title"] = id;
-        item["email"] = email;
+        //item = {}
+        //item["title"] = id;
+        //item["email"] = email;
         
 
         //$("tr.item").each(function () {
@@ -31,4 +34,4 @@
     });
 
 
-}
+})

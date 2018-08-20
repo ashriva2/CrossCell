@@ -4,9 +4,9 @@
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<script src="~/Scripts/CustomScripts.js"></script>
+@*<script src="~/Scripts/CustomScripts.js"></script>*@
 <h2>Create</h2>
-
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -37,33 +37,35 @@
 
 
             @foreach (CrossSell_App.Models.ObjectivesModel ques in secData)
-        {
-                <tr>
+            {
+                var count =0;
+                <tr class="objective_data">
                     <td id="QuestionText">
-                        @Html.DisplayFor(modelitem => ques.QuestionText)
+                        @Html.DisplayFor(modelitem => ques.QuestionText,"")
                     </td>
-                    <td id="comments">
-                        @Html.EditorFor(modelitem => ques.Comments)
+                    <td >
+                        @Html.EditorFor(modelitem => ques.Comments, new { id = "ques_Comments"+ count, @class = "comments" })
                     </td>
-                    <td id="level">
-                        @Html.EditorFor(modelitem => ques.Level)
+                    <td >
+                        @Html.EditorFor(modelitem => ques.Level, new { id = "ques_Level" + count, @class = "level" })
                     </td>
-                    <td id="weight">
-                        @Html.EditorFor(modelitem => ques.Weight)
+                    <td >
+                        @Html.EditorFor(modelitem => ques.Weight, new { id = "ques_Weight" + count, @class = "weight" })
                     </td>
-                    <td id="answer">
-                        @Html.EditorFor(modelitem => ques.Answer)
+                    <td>
+                        @Html.EditorFor(modelitem => ques.Answer, new { id = "ques_Answer" + count, @class = "answer" })
                     </td>
-                    <td id="score">
-                        @Html.DisplayFor(modelitem => ques.Score)
+                    <td >
+                        @Html.DisplayFor(modelitem => ques.Score, new { id = "ques_Score" + count, @class = "score" })
                     </td>
-                    <td id="max">
-                        @Html.DisplayFor(modelitem => ques.Max)
+                    <td>
+                        @Html.DisplayFor(modelitem => ques.Max, new { id = "ques_Max" + count, @class = "max" })
                     </td>
-                    <td id="maxscore">
-                        @Html.DisplayFor(modelitem => ques.Score_Max)
+                    <td>
+                        @Html.DisplayFor(modelitem => ques.Score_Max, new { id = "ques_Score_Max" + count, @class = "maxscore" })
                     </td>
                 </tr>
+                count++;
 
             }
                 <tr>
@@ -85,5 +87,70 @@
     }
 }
 <div>
+    <input type="button" id="save_objective" />
     @Html.ActionLink("Back to List", "Index")
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+       
+        $("#save_objective").click(function () {
+            alert("I am in custom script");
+            $(".table").find('tr').each(function (i, el) {
+                debugger;
+                var $tds = $(this).find('td');
+                if ($tds.prevObject[0].firstElementChild.tagName != 'TH') {
+                  
+                    
+                    var obj = new Object();
+           
+                    obj.questions = $tds.eq(0).text();
+                    obj.comments = $tds.eq(1).val();
+                    obj.level = $tds.eq(2).text();
+                    obj.weight = $tds.eq(3).text();
+                    obj.answers = $tds.eq(4).text();
+                    obj.score = $tds.eq(5).text();
+                    obj.max = $tds.eq(6).text();
+                    obj.max_score = $tds.eq(7).text();
+                   // jsonObj.push(item);
+                }
+            });
+            //$("tr.objective_data").each(function (i,el) {
+
+            //    //var $row = $(row),
+
+            //    //console.log($(this).text());
+            //    var obj = new Object();
+            //    debugger;
+            //  //  obj.questions = $(this).find("input.name").val();
+            //    obj.comments = $(this).find("input.ques.Comments").val();
+            //    obj.level = $(this).find("input.level").val();
+            //    obj.weight = $(this).find("input.weight").val();
+            //    obj.answers = $(this).find("input.answer").val();
+            //    obj.score = $(this).find("input.score").val();
+            //    obj.max = $(this).find("input.max").val();
+            //    obj.max_score = $(this).find("input.maxscore").val();
+
+
+
+                
+
+            //    //item = {}
+            //    //item["title"] = id;
+            //    //item["email"] = email;
+
+
+            //    //$("tr.item").each(function () {
+            //    //    var quantity1 = $(this).find("input.name").val(),
+            //    //        quantity2 = $(this).find("input.id").val();
+            //    //    console.log(quantity1);
+            //    //    console.log(quantity2);
+            //    //});
+
+            //    //jsonObj.push(item);
+            //});
+
+
+        })
+    })
+</script>
