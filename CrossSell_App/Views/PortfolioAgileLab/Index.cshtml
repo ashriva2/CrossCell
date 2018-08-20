@@ -7,11 +7,11 @@
 @*<h2>Index</h2>*@
 <div>
     <div style="width: 50%;float: left;">
-        <p> @Html.ActionLink("Create New", "Create")</p>
+        <p style="MARGIN-TOP: 20PX;"> @Html.ActionLink("Create New", "Create")</p>
     </div>
     <div style="width: 50%;float: right;">
         @{ var ddlCompanyId = 0;}
-        @Html.DropDownListFor(model => ddlCompanyId, (List<SelectListItem>)@ViewBag.fillCompanyddl, "-- Select Company --", new { @class = "form-control", @style = "float: right; width: 50%;margin-bottom: 10px;", @onchange = "showPortfolio(this.value)", value = '0' })
+        @Html.DropDownListFor(model => ddlCompanyId, (List<SelectListItem>)@ViewBag.fillCompanyddl, "-- Select Company --", new { @class = "form-control", @style = "float: right; width: 50%;margin-bottom: 10px;MARGIN-TOP: 20PX;", @onchange = "showPortfolio(this.value)", value = '0' })
     </div>
     <div>
         <table class="table" style="margin-top:10px">

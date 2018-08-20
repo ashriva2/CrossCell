@@ -1,26 +1,13 @@
-﻿$("#save_objective").click(function () 
+﻿function getSectionData()
 {
-    alert("I am in custom script");
-    $("tr.objective_data").find('td').each(function (i) {
+    $("tr.item").each(function () {
+        \
+        var id = $(this).attr("title");
+        var email = $(this).val();
 
-        //var $row = $(row),
-  
-        console.log($(this).text());
-                //var obj = new Object();
-        //obj.questions = $(this).find("input.name").val();
-        //obj.comments = $(this).find("input.name").val();
-        //obj.level = $(this).find("input.name").val();
-        //obj.weight = $(this).find("input.name").val();
-        //obj.answers = $(this).find("input.name").val();
-        //obj.score = $(this).find("input.name").val();
-        //obj.max = $(this).find("input.name").val();
-        //obj.max_score = $(this).find("input.name").val();
-
-        
-
-        //item = {}
-        //item["title"] = id;
-        //item["email"] = email;
+        item = {}
+        item["title"] = id;
+        item["email"] = email;
         
 
         //$("tr.item").each(function () {
@@ -34,4 +21,4 @@
     });
 
 
-})
+}

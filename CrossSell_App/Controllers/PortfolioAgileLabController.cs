@@ -16,7 +16,7 @@ namespace CrossSell_App.Controllers
 
 
         static int CompanyId = 0;
-       
+
 
         // GET: Portfolio_Agile_Lab
         public ActionResult Index()
@@ -69,7 +69,7 @@ namespace CrossSell_App.Controllers
                 {
                     //db.Entry(portfolio_Agile_Lab).State = EntityState.Modified;
                     Portfolio_Agile_Lab UpdateData = new Portfolio_Agile_Lab();
-                    UpdateData = db.Portfolio_Agile_Lab.Where(x => x.Portfolio_Id == portfolio_Agile_Lab.Portfolio_Id && x.Company_Id== portfolio_Agile_Lab.Company_Id).FirstOrDefault();
+                    UpdateData = db.Portfolio_Agile_Lab.Where(x => x.Portfolio_Id == portfolio_Agile_Lab.Portfolio_Id && x.Company_Id == portfolio_Agile_Lab.Company_Id).FirstOrDefault();
                     UpdateData.Current_Usage = portfolio_Agile_Lab.Current_Usage;
                     UpdateData.IsMarketLead = portfolio_Agile_Lab.IsMarketLead;
                     UpdateData.Future_Scope = portfolio_Agile_Lab.Future_Scope;
@@ -109,7 +109,7 @@ namespace CrossSell_App.Controllers
                 return HttpNotFound();
             }
             ViewBag.Company_Name = portfolio_Agile_Lab[0].Company.Company_Name;
-            CompanyId= portfolio_Agile_Lab[0].Company.Company_Id;
+            CompanyId = portfolio_Agile_Lab[0].Company.Company_Id;
             ViewBag.Company_Id = new SelectList(db.Companies, "Company_Id", "Company_Name", portfolio_Agile_Lab[0].Company_Id);
             //ViewBag.Portfolio_Id = new SelectList(db.Portfolios, "Portfolio_Id", "Portfolio_Name", portfolio_Agile_Lab[0].Portfolio_Id);
             return View(portfolio_Agile_Lab.ToList());
@@ -124,11 +124,11 @@ namespace CrossSell_App.Controllers
         {
 
             string NextGen_AMSCurrent_Usage = Request.Form["NextGen AMSCurrent_Usage"].ToString();
-           
+
             bool NextGen_AMSFuture_Scope = Convert.ToBoolean(Request.Form["NextGen AMSFuture_Scope"].Split(',')[0]);
-            
+
             bool NextGen_AMSIsMarketLead = Convert.ToBoolean(Request.Form["NextGen AMSIsMarketLead"].Split(',')[0]);
-            Update_Portfolio_Agile_LabData(1,NextGen_AMSCurrent_Usage, NextGen_AMSFuture_Scope, NextGen_AMSIsMarketLead);
+            Update_Portfolio_Agile_LabData(1, NextGen_AMSCurrent_Usage, NextGen_AMSFuture_Scope, NextGen_AMSIsMarketLead);
 
 
 
@@ -212,7 +212,7 @@ namespace CrossSell_App.Controllers
 
         //Save the models data
 
-        public void Update_Portfolio_Agile_LabData(int PortfolioId,string Curr_Usg, bool FutrFcsd, bool IsMrktLd)
+        public void Update_Portfolio_Agile_LabData(int PortfolioId, string Curr_Usg, bool FutrFcsd, bool IsMrktLd)
         {
             Portfolio_Agile_Lab portfolio_Agile_Lab = db.Portfolio_Agile_Lab.Where(x => x.Company_Id == CompanyId && x.Portfolio_Id == PortfolioId).FirstOrDefault();
 
@@ -258,8 +258,8 @@ namespace CrossSell_App.Controllers
             }
             base.Dispose(disposing);
         }
-
-        private List<SelectListItem> FillCompanyDropDown() {
+        private List<SelectListItem> FillCompanyDropDown()
+        {
 
             List<SelectListItem> listItems = new List<SelectListItem>();
             var companyList = db.Companies.ToList();
@@ -269,7 +269,7 @@ namespace CrossSell_App.Controllers
                 listItems.Add(new SelectListItem
                 {
                     Text = item.Company_Name,
-                    Value =Convert.ToString(item.Company_Id)
+                    Value = Convert.ToString(item.Company_Id)
                 });
             }
 

@@ -83,6 +83,7 @@ namespace CrossSell_App.Controllers
                         DataInput.MetaDataText = item.Metadata_Name;
 
                         DataInput.QuestionText = ques.Questioner1;
+                        DataInput.Questioner_Id = ques.Questioner_Id;
                         DataInput.Metadata_Id = item.Metadata_Id;
                         DataList.Add(DataInput);
                     }
@@ -104,22 +105,52 @@ namespace CrossSell_App.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Objective_Id,Comments,Weight,Score_Max,Max,Answer,Score,Level,Metadata_Id,IsActive,Questioner_Id,Company_Id")] Objective objective)
+        //[ValidateAntiForgeryToken]
+        public ActionResult CreateData(List<ObjectivesModel> jsonObj)
         {
-            if (ModelState.IsValid)
+            //if (ModelState.IsValid)
+            //{
+            //    db.Objectives.Add(objective);
+            //    db.SaveChanges();
+            //    return RedirectToAction("Index");
+            //}
+            foreach(var item in jsonObj)
             {
-                db.Objectives.Add(objective);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
 
-            ViewBag.Company_Id = new SelectList(db.Companies, "Company_Id", "Company_Name", objective.Company_Id);
-            ViewBag.Questioner_Id = new SelectList(db.Questioners, "Questioner_Id", "Questioner1", objective.Questioner_Id);
-            ViewBag.Metadata_Id = new SelectList(db.Metadatas, "Metadata_Id", "Metadata_Name", objective.Metadata_Id);
-            ViewBag.Objective_Id = new SelectList(db.Objectives, "Objective_Id", "Comments", objective.Objective_Id);
-            ViewBag.Objective_Id = new SelectList(db.Objectives, "Objective_Id", "Comments", objective.Objective_Id);
-            return View(objective);
+                try
+                {
+                    Objective saveData = new Objective()
+                    {
+                        Company_Id = 1,
+                        Metadata_Id = item.Metadata_Id,
+                        Questioner_Id = item.Questioner_Id,
+                        Comments = item.Comments,
+                        Level = item.Level,
+                        Score = item.Score,
+                        Score_Max = item.Score_Max,
+                        Max = item.Max,
+                        Weight = item.Weight,
+                        Answer = item.Answer
+
+
+
+                    };
+
+
+                    db.Objectives.Add(saveData);
+                    db.SaveChanges();
+                }
+                catch(Exception e)
+                {
+
+                }
+            }
+            //ViewBag.Company_Id = new SelectList(db.Companies, "Company_Id", "Company_Name", objective.Company_Id);
+            //ViewBag.Questioner_Id = new SelectList(db.Questioners, "Questioner_Id", "Questioner1", objective.Questioner_Id);
+            //ViewBag.Metadata_Id = new SelectList(db.Metadatas, "Metadata_Id", "Metadata_Name", objective.Metadata_Id);
+            //ViewBag.Objective_Id = new SelectList(db.Objectives, "Objective_Id", "Comments", objective.Objective_Id);
+            //ViewBag.Objective_Id = new SelectList(db.Objectives, "Objective_Id", "Comments", objective.Objective_Id);
+            return View();
         }
 
         // GET: Objectives/Edit/5

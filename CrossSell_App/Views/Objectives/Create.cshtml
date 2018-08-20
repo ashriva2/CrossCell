@@ -6,20 +6,19 @@
 }
 @*<script src="~/Scripts/CustomScripts.js"></script>*@
 <h2>Create</h2>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
     var counter = 0;
 
-                foreach (var item in ViewBag.SectionList)
-                {
+    foreach (var item in ViewBag.SectionList)
+    {
         counter++;
-                    var secData = Model.Where(x => x.Metadata_Id == item.Metadata_Id).ToList();
-        <table class="table" border="1" id=@counter>
-            <tr>
-                <th colspan="8">
+        var secData = Model.Where(x => x.Metadata_Id == item.Metadata_Id).ToList();
+        <table class="table" border="1" id="table_@counter">
+            <tr name="@item.Metadata_Id">
+                <th colspan="8" name="@item.Metadata_Id">
                     @item.Metadata_Name
                 </th>
             </tr>
@@ -38,50 +37,59 @@
 
             @foreach (CrossSell_App.Models.ObjectivesModel ques in secData)
             {
-                var count =0;
-                <tr class="objective_data">
+                var count = @ques.Questioner_Id;
+                <tr class="objective_data" id="@ques.Questioner_Id">
                     <td id="QuestionText">
-                        @Html.DisplayFor(modelitem => ques.QuestionText,"")
+                        
+                        @Html.DisplayFor(modelitem => ques.QuestionText, "")
+                       
+
                     </td>
-                    <td >
-                        @Html.EditorFor(modelitem => ques.Comments, new { id = "ques_Comments"+ count, @class = "comments" })
+                    <td>
+                        @Html.EditorFor(modelitem => ques.Comments, new { id = string.Format("ques_Comments{0}", count) })
                     </td>
-                    <td >
+                    <td>
                         @Html.EditorFor(modelitem => ques.Level, new { id = "ques_Level" + count, @class = "level" })
                     </td>
-                    <td >
+                    <td>
                         @Html.EditorFor(modelitem => ques.Weight, new { id = "ques_Weight" + count, @class = "weight" })
                     </td>
-                    <td>
-                        @Html.EditorFor(modelitem => ques.Answer, new { id = "ques_Answer" + count, @class = "answer" })
-                    </td>
-                    <td >
-                        @Html.DisplayFor(modelitem => ques.Score, new { id = "ques_Score" + count, @class = "score" })
+                    <td class="ques_answer">
+                        @Html.TextBoxFor(modelitem => ques.Answer, new { id = "ques_Answer" + count, @class = "answer" })
                     </td>
                     <td>
-                        @Html.DisplayFor(modelitem => ques.Max, new { id = "ques_Max" + count, @class = "max" })
+                        <div id="ques_Score_@count" class="ques_score">
+                            @Html.DisplayFor(modelitem => ques.Score, new { id = "ques_Score" + count, @class = "score", })
+                        </div>
                     </td>
                     <td>
-                        @Html.DisplayFor(modelitem => ques.Score_Max, new { id = "ques_Score_Max" + count, @class = "maxscore" })
+                        <div id="ques_max_@count" class="ques_max">
+                            @Html.DisplayFor(modelitem => ques.Max, new { id = "ques_Max" + count, @class = "max" })
+                            </div>
                     </td>
+                    <td>
+                        <div id="score_max_@count" class="score_max">
+                            @Html.DisplayFor(modelitem => ques.Score_Max, new { id = "ques_Score_Max" + count, @class = "maxscore" })
+                   </div>
+                            </td>
                 </tr>
-                count++;
+               
 
             }
-                <tr>
-                    <td colspan="5" id="total">
-                        Total @item.Metadata_Name
-                    </td>
-                    <td id="total_score">
-                        24
-                    </td>
-                    <td id="total_Max">
-                        24
-                    </td>
-                    <td id="total_ScoreMax">
-                        54%
-                    </td>
-                </tr>
+            <tr>
+                <td colspan="5" id="total">
+                    Total @item.Metadata_Name
+                </td>
+                <td id="total_score_table_@counter">
+                    @*24*@
+                </td>
+                <td id="total_Max_table_@counter">
+                   
+                </td>
+                <td id="total_ScoreMax_table_@counter">
+                   
+                </td>
+            </tr>
         </table>
 
     }
@@ -90,65 +98,128 @@
     <input type="button" id="save_objective" />
     @Html.ActionLink("Back to List", "Index")
 </div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 
 <script type="text/javascript">
+
+
     $(document).ready(function () {
-       
-        $("#save_objective").click(function () {
-            alert("I am in custom script");
-            $(".table").find('tr').each(function (i, el) {
-                debugger;
-                var $tds = $(this).find('td');
-                if ($tds.prevObject[0].firstElementChild.tagName != 'TH') {
-                  
-                    
-                    var obj = new Object();
-           
-                    obj.questions = $tds.eq(0).text();
-                    obj.comments = $tds.eq(1).val();
-                    obj.level = $tds.eq(2).text();
-                    obj.weight = $tds.eq(3).text();
-                    obj.answers = $tds.eq(4).text();
-                    obj.score = $tds.eq(5).text();
-                    obj.max = $tds.eq(6).text();
-                    obj.max_score = $tds.eq(7).text();
-                   // jsonObj.push(item);
+
+
+        $(".answer").on("change", function (event) {
+
+            debugger;
+
+            if (event.currentTarget.parentElement.children.length > 0) {
+                var row_id = event.currentTarget.parentElement.parentElement.getAttribute('id');
+
+                // Update score column
+                var score = 0;
+                if ($("#ques_Answer ").val() != "") {
+
+                    score = $('#' + row_id + ' td input')[2].value * this.value
+
+                    $("#ques_Score_" + row_id)[0].innerHTML = score;
+                     // Update Max column
+                    var max= $('#' + row_id + ' td input')[2].value * 3
+
+                    $("#ques_max_" + row_id)[0].innerHTML = max;
+                    var scoreOfmax = 0;
+                   
+                    if (max != 0) {
+                        scoreOfmax = score / max;
+                        scoreOfmax = scoreOfmax.toFixed(2);
+
+                    }
+                    else
+                        scoreOfmax = 0;
+                   
+
+                    $("#score_max_" + row_id)[0].innerHTML = scoreOfmax;
+
+
                 }
-            });
-            //$("tr.objective_data").each(function (i,el) {
 
-            //    //var $row = $(row),
+                var tableid = event.currentTarget.parentElement.parentElement.parentElement.parentElement.getAttribute('Id');
 
-            //    //console.log($(this).text());
-            //    var obj = new Object();
-            //    debugger;
-            //  //  obj.questions = $(this).find("input.name").val();
-            //    obj.comments = $(this).find("input.ques.Comments").val();
-            //    obj.level = $(this).find("input.level").val();
-            //    obj.weight = $(this).find("input.weight").val();
-            //    obj.answers = $(this).find("input.answer").val();
-            //    obj.score = $(this).find("input.score").val();
-            //    obj.max = $(this).find("input.max").val();
-            //    obj.max_score = $(this).find("input.maxscore").val();
+                var totalscore = 0
+                var total_Max = 0;
+                var total_ScoreMax = 0;
+                $("#"+tableid+" tbody").find('tr').each(function (i, el) {
+                    debugger;
+                    var $tds = $(this).find('td');
+                    if ($tds.prevObject[0].firstElementChild.tagName != 'TH') {
+                        if ($tds.eq(5).children('div').length > 0 && ($tds.eq(5).children('div')[0].innerHTML != undefined || $tds.eq(5).children('div')[0].innerHTML != "") && ($tds.eq(5).children('div')[0].innerHTML.trim())!="") {
+                            totalscore = parseFloat(totalscore) + parseFloat($tds.eq(5).children('div')[0].innerHTML);
+                          
+                           
+                        }
+                        if ($tds.eq(6).children('div').length > 0 && ($tds.eq(6).children('div')[0].innerHTML != undefined || $tds.eq(6).children('div')[0].innerHTML != "") && ($tds.eq(6).children('div')[0].innerHTML.trim()) != "") {
+                            total_Max = parseFloat(total_Max) + parseFloat($tds.eq(6).children('div')[0].innerHTML);
+                        }
+                        if ($tds.eq(7).children('div').length > 0 && ($tds.eq(7).children('div')[0].innerHTML != undefined || $tds.eq(7).children('div')[0].innerHTML != "") &&  ($tds.eq(6).children('div')[0].innerHTML.trim()) != "") {
+                            total_ScoreMax = parseFloat(total_ScoreMax) + parseFloat($tds.eq(7).children('div')[0].innerHTML);
+                        }
+                    }
+                })
 
-
-
+                $("#total_score_" + tableid)[0].innerHTML = totalscore;
+                $("#total_Max_" + tableid)[0].innerHTML = total_Max;
+                $("#total_ScoreMax_" + tableid)[0].innerHTML = total_ScoreMax;
+               
+                 
                 
 
-            //    //item = {}
-            //    //item["title"] = id;
-            //    //item["email"] = email;
+            }
 
 
-            //    //$("tr.item").each(function () {
-            //    //    var quantity1 = $(this).find("input.name").val(),
-            //    //        quantity2 = $(this).find("input.id").val();
-            //    //    console.log(quantity1);
-            //    //    console.log(quantity2);
-            //    //});
+        });
+       
 
-            //    //jsonObj.push(item);
-            //});
+        var jsonObj = new Array();
+        $("#save_objective").click(function () {
+            //  alert("I am in custom script");
+            //$(".table tbody").find('tr > td').each(function (i, el) {
+            $(".table tbody").find('tr').each(function (i, el) {
+               // debugger;
+                var $tds = $(this).find('td');
+                if ($tds.prevObject[0].firstElementChild.tagName != 'TH') {
+
+
+                    var obj = new Object();
+                    debugger;
+                    if ($tds.eq(4).children('input')[0] != undefined && $tds.eq(4).children('input')[0].value != "" && $tds.eq(4).children('input')[0].value != undefined && $tds.eq(4).children('input')[0].value.trim() != "") {
+                        obj.Metadata_Id = $tds.prevObject[0].previousElementSibling.previousElementSibling.getAttribute("name");
+                        obj.Questioner_Id = $tds.prevObject[0].getAttribute("id");// $tds.eq(0).text();
+                        obj.Comments = $tds.eq(1).children('input')[0].value;
+                        obj.Level = $tds.eq(2).children('input')[0].value;
+                        obj.Weight = $tds.eq(3).children('input')[0].value;
+                        obj.Answer = $tds.eq(4).children('input')[0].value;
+                        obj.Score = $tds.eq(5).children('div')[0].innerHTML;
+                        obj.Max = $tds.eq(6).children('div')[0].innerHTML;
+                        obj.Score_Max = $tds.eq(7).children('div')[0].innerHTML;
+                        jsonObj.push(obj);
+                    }
+                }
+            });
+
+     $.ajax({
+         type: 'POST',
+          url: '@Url.Action("CreateData", "Objectives")',
+         contentType: 'application/json; charset=utf-8',
+         data: JSON.stringify(jsonObj),
+         dataType: 'json',
+         success: function (result) {
+             CheckIfInvoiceFound(result);
+         },
+        error: function (xhr) {
+        alert('Error: ' + xhr.statusText);
+         },
+
+         async: true,
+         processData: false
+      });
+
 
 
         })
