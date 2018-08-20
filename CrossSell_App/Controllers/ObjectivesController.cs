@@ -121,7 +121,7 @@ namespace CrossSell_App.Controllers
                 {
                     Objective saveData = new Objective()
                     {
-                        Company_Id = 1,
+                        Company_Id = 3,
                         Metadata_Id = item.Metadata_Id,
                         Questioner_Id = item.Questioner_Id,
                         Comments = item.Comments,

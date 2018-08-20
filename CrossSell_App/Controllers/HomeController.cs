@@ -51,7 +51,7 @@ namespace CrossSell_App.Controllers
             List<int>[] a = new List<int>[100];
             List<string>[] IsLeadOrTobe = new List<string>[100];
 
-            var DataFromPAL = db.Portfolio_Agile_Lab.ToList().OrderBy(x=>x.Portfolio_Id);
+            var DataFromPAL = db.Portfolio_Agile_Lab.ToList().OrderBy(x => x.Portfolio_Id);
             //need to check the number of company present
 
 
@@ -62,13 +62,13 @@ namespace CrossSell_App.Controllers
             //filter all the list of Current Usage
             foreach (var item in CompanyList)
             {
-                
+
                 List<int> CurrentUsagePerCompany = new List<int>();
-                foreach(var data in DataFromPAL)
+                foreach (var data in DataFromPAL)
                 {
-                    if(item.Company_Id== data.Company_Id)
-                    CurrentUsagePerCompany.Add(data.Current_Usage);
-                    
+                    if (item.Company_Id == data.Company_Id)
+                        CurrentUsagePerCompany.Add(data.Current_Usage);
+
                 }
                 a[countOfUsage] = CurrentUsagePerCompany;
                 countOfUsage++;
@@ -77,7 +77,7 @@ namespace CrossSell_App.Controllers
             //filter all the list of Labels for * and +
             foreach (var item in CompanyList)
             {
-               
+
                 List<string> CurrentUsagePerCompany = new List<string>();
                 foreach (var data in DataFromPAL)
                 {
@@ -85,10 +85,10 @@ namespace CrossSell_App.Controllers
                     {
                         string IsMarketLead;
                         string IsFutureScope;
-                        if (data.IsMarketLead==true)
-                      
+                        if (data.IsMarketLead == true)
+
                             IsMarketLead = "*";
-                        
+
                         else
                             IsMarketLead = "";
 
@@ -103,15 +103,15 @@ namespace CrossSell_App.Controllers
                         //string IsFutureScope=data.Future_Scope ? true ? "+" : "":"";
 
 
-                        CurrentUsagePerCompany.Add(IsMarketLead+ IsFutureScope);
+                        CurrentUsagePerCompany.Add(IsMarketLead + IsFutureScope);
                     }
-                    
+
                 }
                 IsLeadOrTobe[countOfLeadsToBe] = CurrentUsagePerCompany;
                 countOfLeadsToBe++;
             }
 
-            var FinalChartDataSeries = new { a = a, IsLeadOrTobe = IsLeadOrTobe};
+            var FinalChartDataSeries = new { a = a, IsLeadOrTobe = IsLeadOrTobe };
 
             //return Json(new
             //{
@@ -123,7 +123,35 @@ namespace CrossSell_App.Controllers
             return Json(FinalChartDataSeries, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult GetDPBReportData()
+        {
+            var objectivesList = db.Objectives.ToList();
+            var companyList = db.Companies.ToList();
+            var metaDataList = db.Metadatas.OrderBy(x=>x.Metadata_Id).ToList();
+            int count = 0;
+            List<double?>[] dataseries = new List<double?>[100];
+            
+
+            foreach (var cmp in companyList) {
+                var companyObjectives = objectivesList.Where(t => t.Company_Id == cmp.Company_Id).ToList();
+
+                List<double?> customerSeries  = new List<double?>();
+                foreach(var mtdata in metaDataList)
+                {
+                    var metadata = companyObjectives.Where(x => x.Metadata_Id == mtdata.Metadata_Id).Select(t=>t.Score_Max).Sum();
+
+                    customerSeries.Add(metadata);
+
+                }
+
+                dataseries[count] = customerSeries;
+
+                count++;
+            }
 
 
+
+            return Json(dataseries, JsonRequestBehavior.AllowGet);
+        }
     }
 }
