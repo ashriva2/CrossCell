@@ -11,7 +11,7 @@
     </div>
     <div style="width: 50%;float: right;">
         @{ var ddlCompanyId = 0;}
-        @Html.DropDownListFor(model => ddlCompanyId, (List<SelectListItem>)@ViewBag.fillCompanyddl, "-- Select Status --", new { @class = "form-control", @style = "float: right; width: 50%;margin-bottom: 10px;" , @onchange = "showPortfolio(this.value)" })
+        @Html.DropDownListFor(model => ddlCompanyId, (List<SelectListItem>)@ViewBag.fillCompanyddl, "-- Select Company --", new { @class = "form-control", @style = "float: right; width: 50%;margin-bottom: 10px;", @onchange = "showPortfolio(this.value)", value = '0' })
     </div>
     <div>
         <table class="table" style="margin-top:10px">
@@ -41,7 +41,7 @@
             @foreach (var item in Model)
             {
                 <tr id="@item.Company_Id" class="@item.Company_Id">
-                    <td>                        
+                    <td>
                         @Html.DisplayFor(modelItem => item.Company.Company_Name)
 
                     </td>
@@ -72,15 +72,19 @@
     </div>
 </div>
 <script>
-    function showPortfolio(ele) {   
-        $("." + ele).show();
-        if(ele != 1)
-            $(".1").hide();
-        if (ele != 2)
-            $(".2").hide();
-        if (ele != 3)
-            $(".3").hide();
-        if (ele != 4)
-            $(".4").hide();       
+    function showPortfolio(ele) {
+        if (ele !== "") {
+            $("." + ele).show();
+            if (ele != 1)
+                $(".1").hide();
+            if (ele != 2)
+                $(".2").hide();
+            if (ele != 3)
+                $(".3").hide();
+            if (ele != 4)
+                $(".4").hide();
+        } else {
+            $(".1,.2,.3,.4").show();
+        }
     }
 </script>
