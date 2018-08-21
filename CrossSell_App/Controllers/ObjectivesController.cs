@@ -51,12 +51,12 @@ namespace CrossSell_App.Controllers
             ViewBag.Objective_Id = new SelectList(db.Objectives, "Objective_Id", "Comments");
 
             ObjectivesModel Data = new ObjectivesModel();
-            List<ObjectivesModel> DataList =new List<ObjectivesModel>();
+            List<ObjectivesModel> DataList = new List<ObjectivesModel>();
             List<SectionModel> SectionModelList = new List<SectionModel>();
             var sectionList = db.Metadatas.ToList();
             //checking if the data exists for the particular company id in db
             //Company Id is hardcoded 
-            var companyData = db.Objectives.Where(x => x.Company_Id == companyId).OrderBy(x=>x.Objective_Id).ToList();
+            var companyData = db.Objectives.Where(x => x.Company_Id == companyId).OrderBy(x => x.Objective_Id).ToList();
 
             if (companyData.Count == 0)
             {
@@ -130,7 +130,7 @@ namespace CrossSell_App.Controllers
                         var getQuesForMeta = db.Questioners.Where(x => x.Metadata_Id == item.Metadata_Id).ToList();
                         foreach (var ques in getQuesForMeta)
                         {
-                            var dataExist = db.Objectives.Where(x => x.Metadata_Id == ques.Metadata_Id && x.Questioner_Id == ques.Questioner_Id).FirstOrDefault();
+                            var dataExist = db.Objectives.Where(x => x.Metadata_Id == ques.Metadata_Id && x.Questioner_Id == ques.Questioner_Id && x.Company_Id == companyId).FirstOrDefault();
                             if (dataExist != null)
                             {
                                 ObjectivesModel DataInput = new ObjectivesModel();
@@ -140,7 +140,7 @@ namespace CrossSell_App.Controllers
                                 DataInput.Questioner_Id = ques.Questioner_Id;
                                 DataInput.Metadata_Id = item.Metadata_Id;
                                 DataInput.Level = dataExist.Level;
-                                DataInput.Weight = dataExist.Weight ;
+                                DataInput.Weight = dataExist.Weight;
                                 DataInput.Answer = dataExist.Answer;
                                 DataInput.Score = dataExist.Score;
                                 DataInput.Score_Max = dataExist.Score_Max;
@@ -169,9 +169,9 @@ namespace CrossSell_App.Controllers
 
             }
 
-            
 
-          
+
+
 
             return View(DataList);
         }
@@ -185,8 +185,8 @@ namespace CrossSell_App.Controllers
         {
 
             string message;
-            
-            foreach(var item in jsonObj)
+
+            foreach (var item in jsonObj)
             {
 
                 try
@@ -197,7 +197,7 @@ namespace CrossSell_App.Controllers
                     {
                         Objective saveData = new Objective()
                         {
-                            Company_Id = 3,
+                            Company_Id = item.Company_Id,
                             Metadata_Id = item.Metadata_Id,
                             Questioner_Id = item.Questioner_Id,
                             Comments = item.Comments,
@@ -252,7 +252,7 @@ namespace CrossSell_App.Controllers
             //ViewBag.Metadata_Id = new SelectList(db.Metadatas, "Metadata_Id", "Metadata_Name", objective.Metadata_Id);
             //ViewBag.Objective_Id = new SelectList(db.Objectives, "Objective_Id", "Comments", objective.Objective_Id);
             //ViewBag.Objective_Id = new SelectList(db.Objectives, "Objective_Id", "Comments", objective.Objective_Id);
-           
+
         }
 
         // GET: Objectives/Edit/5

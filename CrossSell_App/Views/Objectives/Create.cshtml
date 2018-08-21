@@ -199,7 +199,8 @@
                         obj.Answer = $tds.eq(4).children('input')[0].value;
                         obj.Score = $tds.eq(5).children('div')[0].innerHTML;
                         obj.Max = $tds.eq(6).children('div')[0].innerHTML;
-                        obj.Score_Max = $tds.eq(7).children('div')[0].innerHTML;
+						obj.Score_Max = $tds.eq(7).children('div')[0].innerHTML;
+						obj.Company_Id = $("#ddlCompanyId").val();
                         jsonObj.push(obj);
                     }
                 }
