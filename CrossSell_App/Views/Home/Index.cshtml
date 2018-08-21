@@ -176,54 +176,90 @@
             </div>
             <div>
                 <canvas id="chart1"></canvas>
-                <script>
+               <script>
 
-                    var chart = new Chart('chart1', {
-                        type: 'radar',
-                        data: {
-                            labels: ['Customer', 'Employee', 'Partner', 'CIO', 'CDO', 'CEO'],
-                            datasets: [{
-                                label: 'Schneider',
-                                data: [53, 69, 35, 43, 50, 75],
-                                borderColor: '#3dcd58',
-                                fill: false,
-                            },
-                            {
-                                label: 'Daimler',
-                                data: [33, 53, 27, 43, 20, 35],
-                                borderColor: '#7b7c81',
-                                fill: false,
-                                },
-                                {
-                                    label: 'Disney',
-                                    data: [61,78, 48, 71, 67, 72],
-                                    borderColor: '#0795e6',
-                                    fill: false,
-                                },
-                                {
-                                    label: 'McDonalds',
-                                    data: [55, 35, 0, 0,0, 0],
-                                    borderColor: '#ffc111',
-                                    fill: false,
-                                }]
-                        },
-                        options: {
-                            scale: {
-                                display: true,
+                   getDPBData();
+                   function getDPBData() {
+                       $.ajax({
+                           type: "POST",
+                           url: "/Home/GetDPBReportData",
+                           //data: '{name: "' + $("#txtName").val() + '" }',
+                           contentType: "application/json; charset=utf-8",
+                           dataType: "json",
+                           success: function (response) {
+                               debugger;
+                               DisplayDPBChart(response);
+                           },
+                           failure: function (response) {
+                               alert(response.responseText);
+                           },
+                           error: function (response) {
+                               alert(response.responseText);
+                           }
+                       });
+                   }
 
-                            },
-                            legend: {
-                                display: true,
-                                position: 'bottom',
-                                labels: {
-                                    fontColor: 'rgb(255, 99, 132)'
-                                }
-                            },
-                        },
-                    });
+
+                   function DisplayDPBChart(chartData) {
+
+                       debugger;
+
+                       var data1 = chartData[0];
+                       var data2 = chartData[1];
+                       var data3 = chartData[2];
+                       var data4 = chartData[3];
+
+                       var chart = new Chart('chart1', {
+                           type: 'radar',
+                           data: {
+                               labels: ['Customer', 'Employee', 'Partner', 'CIO', 'CDO', 'CEO'],
+                               datasets: [{
+                                   label: 'Schneider',
+                                   data: data1,//[53, 69, 35, 43, 50, 75],
+                                   borderColor: '#3dcd58',
+                                   fill: false,
+                               },
+                               {
+                                   label: 'Daimler',
+                                   data: data2,//[33, 53, 27, 43, 20, 35],
+                                   borderColor: '#7b7c81',
+                                   fill: false,
+                               },
+                               {
+                                   label: 'Disney',
+                                   data: data3,//[61, 78, 48, 71, 67, 72],
+                                   borderColor: '#0795e6',
+                                   fill: false,
+                               },
+                               {
+                                   label: 'McDonalds',
+                                   data: data4,//[55, 35, 0, 0, 0, 0],
+                                   borderColor: '#ffc111',
+                                   fill: false,
+                               }]
+                           },
+                           options: {
+                               legend: {
+                                   display: true,
+                                   position: 'bottom',
+                                   labels: {
+                                       fontColor: 'rgb(255, 99, 132)'
+                                   }
+                               },
+                               scale: {
+                                   display: true,
+
+                               }
+                           },
+
+                          
+                       });
+                   }
+
 
                 </script>
             </div>
             </a>
     </div>
+
 </div>

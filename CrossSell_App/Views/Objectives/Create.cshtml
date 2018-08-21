@@ -180,6 +180,7 @@
         $("#save_objective").click(function () {
             //  alert("I am in custom script");
             //$(".table tbody").find('tr > td').each(function (i, el) {
+          
             $(".table tbody").find('tr').each(function (i, el) {
                // debugger;
                 var $tds = $(this).find('td');
@@ -187,9 +188,10 @@
 
 
                     var obj = new Object();
-                    //debugger;
+                    debugger;
+                   // var $metadata = $(this).closest('table').children('tr:first');
                     if ($tds.eq(4).children('input')[0] != undefined && $tds.eq(4).children('input')[0].value != "" && $tds.eq(4).children('input')[0].value != undefined && $tds.eq(4).children('input')[0].value.trim() != "") {
-                        obj.Metadata_Id = $tds.prevObject[0].previousElementSibling.previousElementSibling.getAttribute("name");
+                        obj.Metadata_Id = $tds.prevObject[0].parentElement.children[0].firstElementChild.getAttribute('name');
                         obj.Questioner_Id = $tds.prevObject[0].getAttribute("id");// $tds.eq(0).text();
                         obj.Comments = $tds.eq(1).children('input')[0].value;
                         obj.Level = $tds.eq(2).children('input')[0].value;

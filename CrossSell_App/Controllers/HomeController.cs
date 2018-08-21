@@ -139,7 +139,7 @@ namespace CrossSell_App.Controllers
                 foreach(var mtdata in metaDataList)
                 {
                     var metadata = companyObjectives.Where(x => x.Metadata_Id == mtdata.Metadata_Id).Select(t=>t.Score_Max).Sum();
-
+                    metadata = Math.Round((Double)metadata, 2);
                     customerSeries.Add(metadata);
 
                 }

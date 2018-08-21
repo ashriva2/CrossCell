@@ -123,7 +123,7 @@ namespace CrossSell_App.Controllers
         public ActionResult Edit(FormCollection form)
         {
 
-            string NextGen_AMSCurrent_Usage = Request.Form["NextGen AMSCurrent_Usage"].ToString();
+            string NextGen_AMSCurrent_Usage = Convert.ToString(Request.Form["NextGen AMSCurrent_Usage"]);
 
             bool NextGen_AMSFuture_Scope = Convert.ToBoolean(Request.Form["NextGen AMSFuture_Scope"].Split(',')[0]);
 
@@ -132,64 +132,64 @@ namespace CrossSell_App.Controllers
 
 
 
-            string NextGen_SAPCurrent_Usage = Request.Form["NextGen SAPCurrent_Usage"].ToString();
+            string NextGen_SAPCurrent_Usage = Convert.ToString(Request.Form["NextGen SAPCurrent_Usage"]);
             bool NextGen_SAPFuture_Scope = Convert.ToBoolean(Request.Form["NextGen SAPFuture_Scope"].Split(',')[0]);
             bool NextGen_SAPIsMarketLead = Convert.ToBoolean(Request.Form["NextGen SAPIsMarketLead"].Split(',')[0]);
 
             Update_Portfolio_Agile_LabData(2, NextGen_SAPCurrent_Usage, NextGen_SAPFuture_Scope, NextGen_SAPIsMarketLead);
 
 
-            string DCXCurrent_Usage = Request.Form["DCXCurrent_Usage"].ToString();
-            bool DCXFuture_Scope = Convert.ToBoolean(Request.Form["DCXFuture_Scope"].Split(',')[0]);
-            bool DCXIsMarketLead = Convert.ToBoolean(Request.Form["DCXIsMarketLead"].Split(',')[0]);
+            string DCXCurrent_Usage = Convert.ToString(Request.Form["DCXCurrent_Usage"]);
+            bool DCXFuture_Scope = Convert.ToBoolean(Convert.ToString(Request.Form["DCXFuture_Scope"]).Split(',')[0]);
+            bool DCXIsMarketLead = Convert.ToBoolean(Convert.ToString(Request.Form["DCXIsMarketLead"]).Split(',')[0]);
 
             Update_Portfolio_Agile_LabData(3, DCXCurrent_Usage, DCXFuture_Scope, DCXIsMarketLead);
 
-            string CloudCurrent_Usage = Request.Form["CloudCurrent_Usage"].ToString();
-            bool CloudFuture_Scope = Convert.ToBoolean(Request.Form["CloudFuture_Scope"].Split(',')[0]);
-            bool CloudIsMarketLead = Convert.ToBoolean(Request.Form["CloudIsMarketLead"].Split(',')[0]);
+            string CloudCurrent_Usage = Convert.ToString(Request.Form["CloudCurrent_Usage"]);
+            bool CloudFuture_Scope = Convert.ToBoolean(Convert.ToString(Request.Form["CloudFuture_Scope"]).Split(',')[0]);
+            bool CloudIsMarketLead = Convert.ToBoolean(Convert.ToString(Request.Form["CloudIsMarketLead"]).Split(',')[0]);
 
             Update_Portfolio_Agile_LabData(4, CloudCurrent_Usage, CloudFuture_Scope, CloudIsMarketLead);
 
-            string CyberSecurityCurrent_Usage = Request.Form["CyberSecurityCurrent_Usage"].ToString();
-            bool CyberSecurityFuture_Scope = Convert.ToBoolean(Request.Form["CyberSecurityFuture_Scope"].Split(',')[0]);
-            bool CyberSecurityIsMarketLead = Convert.ToBoolean(Request.Form["CyberSecurityIsMarketLead"].Split(',')[0]);
+            string CyberSecurityCurrent_Usage = Convert.ToString(Request.Form["CyberSecurityCurrent_Usage"]);
+            bool CyberSecurityFuture_Scope = Convert.ToBoolean(Convert.ToString(Request.Form["CyberSecurityFuture_Scope"]).Split(',')[0]);
+            bool CyberSecurityIsMarketLead = Convert.ToBoolean(Convert.ToString(Request.Form["CyberSecurityIsMarketLead"]).Split(',')[0]);
 
             Update_Portfolio_Agile_LabData(5, CyberSecurityCurrent_Usage, CyberSecurityFuture_Scope, CyberSecurityIsMarketLead);
 
-            string DigitalMfgCurrent_Usage = Request.Form["Digital MfgCurrent_Usage"].ToString();
-            bool DigitalMfgFuture_Scope = Convert.ToBoolean(Request.Form["Digital MfgFuture_Scope"].Split(',')[0]);
-            bool DigitalMfgIsMarketLead = Convert.ToBoolean(Request.Form["Digital MfgIsMarketLead"].Split(',')[0]);
+            string DigitalMfgCurrent_Usage = Convert.ToString(Request.Form["Digital MfgCurrent_Usage"]);
+            bool DigitalMfgFuture_Scope = Convert.ToBoolean(Convert.ToString(Request.Form["Digital MfgFuture_Scope"]).Split(',')[0]);
+            bool DigitalMfgIsMarketLead = Convert.ToBoolean(Convert.ToString(Request.Form["Digital MfgIsMarketLead"]).Split(',')[0]);
 
             Update_Portfolio_Agile_LabData(6, DigitalMfgCurrent_Usage, DigitalMfgFuture_Scope, DigitalMfgIsMarketLead);
 
-            string AICurrent_Usage = Request.Form["AICurrent_Usage"].ToString();
-            bool AIFuture_Scope = Convert.ToBoolean(Request.Form["AIFuture_Scope"].Split(',')[0]);
-            bool AIIsMarketLead = Convert.ToBoolean(Request.Form["AIIsMarketLead"].Split(',')[0]);
+            string AICurrent_Usage = Convert.ToString(Request.Form["AICurrent_Usage"]);
+            bool AIFuture_Scope = Convert.ToBoolean(Convert.ToString(Request.Form["AIFuture_Scope"]).Split(',')[0]);
+            bool AIIsMarketLead = Convert.ToBoolean(Convert.ToString(Request.Form["AIIsMarketLead"]).Split(',')[0]);
 
             Update_Portfolio_Agile_LabData(7, AICurrent_Usage, AIFuture_Scope, AIIsMarketLead);
 
-            string ChatbotsCurrent_Usage = Request.Form["ChatbotsCurrent_Usage"].ToString();
-            bool ChatbotsFuture_Scope = Convert.ToBoolean(Request.Form["ChatbotsFuture_Scope"].Split(',')[0]);
-            bool ChatbotsMarketLead = Convert.ToBoolean(Request.Form["ChatbotsIsMarketLead"].Split(',')[0]);
+            string ChatbotsCurrent_Usage = Convert.ToString(Request.Form["ChatbotsCurrent_Usage"]);
+            bool ChatbotsFuture_Scope = Convert.ToBoolean(Convert.ToString(Request.Form["ChatbotsFuture_Scope"]).Split(',')[0]);
+            bool ChatbotsMarketLead = Convert.ToBoolean(Convert.ToString(Request.Form["ChatbotsIsMarketLead"]).Split(',')[0]);
 
             Update_Portfolio_Agile_LabData(8, ChatbotsCurrent_Usage, ChatbotsFuture_Scope, ChatbotsMarketLead);
 
-            string DevOpsCurrent_Usage = Request.Form["DevOpsCurrent_Usage"].ToString();
-            bool DevOpsFuture_Scope = Convert.ToBoolean(Request.Form["DevOpsFuture_Scope"].Split(',')[0]);
-            bool DevOpsIsMarketLead = Convert.ToBoolean(Request.Form["DevOpsIsMarketLead"].Split(',')[0]);
+            string DevOpsCurrent_Usage = Convert.ToString(Request.Form["DevOpsCurrent_Usage"]);
+            bool DevOpsFuture_Scope = Convert.ToBoolean(Convert.ToString(Request.Form["DevOpsFuture_Scope"]).Split(',')[0]);
+            bool DevOpsIsMarketLead = Convert.ToBoolean(Convert.ToString(Request.Form["DevOpsIsMarketLead"]).Split(',')[0]);
 
             Update_Portfolio_Agile_LabData(9, DevOpsCurrent_Usage, DevOpsFuture_Scope, DevOpsIsMarketLead);
 
-            string BlockchainCurrent_Usage = Request.Form["BlockchainCurrent_Usage"].ToString();
-            bool BlockchainFuture_Scope = Convert.ToBoolean(Request.Form["BlockchainFuture_Scope"].Split(',')[0]);
-            bool BlockchainIsMarketLead = Convert.ToBoolean(Request.Form["BlockchainIsMarketLead"].Split(',')[0]);
+            string BlockchainCurrent_Usage = Convert.ToString(Request.Form["BlockchainCurrent_Usage"]);
+            bool BlockchainFuture_Scope = Convert.ToBoolean(Convert.ToString(Request.Form["BlockchainFuture_Scope"]).Split(',')[0]);
+            bool BlockchainIsMarketLead = Convert.ToBoolean(Convert.ToString(Request.Form["BlockchainIsMarketLead"]).Split(',')[0]);
 
             Update_Portfolio_Agile_LabData(10, BlockchainCurrent_Usage, BlockchainFuture_Scope, BlockchainIsMarketLead);
 
-            string End2EndOfferingCurrent_Usage = Request.Form["End To End Offering Current_Usage"].ToString();
-            bool End2EndOfferingFuture_Scope = Convert.ToBoolean(Request.Form["End To End Offering Future_Scope"].Split(',')[0]);
-            bool End2EndOfferingIsMarketLead = Convert.ToBoolean(Request.Form["End To End Offering IsMarketLead"].Split(',')[0]);
+            string End2EndOfferingCurrent_Usage = Convert.ToString(Request.Form["End To End Offering Current_Usage"]);
+            bool End2EndOfferingFuture_Scope = Convert.ToBoolean(Convert.ToString(Request.Form["End To End Offering Future_Scope"]).Split(',')[0]);
+            bool End2EndOfferingIsMarketLead = Convert.ToBoolean(Convert.ToString(Request.Form["End To End Offering IsMarketLead"]).Split(',')[0]);
 
             Update_Portfolio_Agile_LabData(11, End2EndOfferingCurrent_Usage, End2EndOfferingFuture_Scope, End2EndOfferingIsMarketLead);
 
