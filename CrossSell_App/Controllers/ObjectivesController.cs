@@ -192,7 +192,7 @@ namespace CrossSell_App.Controllers
                 try
                 {
 
-                    var dataExist = db.Objectives.Where(x => x.Company_Id == item.Company_Id && x.Metadata_Id == item.Metadata_Id).FirstOrDefault();
+                    var dataExist = db.Objectives.Where(x => x.Company_Id == item.Company_Id && x.Metadata_Id == item.Metadata_Id && x.Questioner_Id==item.Questioner_Id).FirstOrDefault();
                     if (dataExist == null)
                     {
                         Objective saveData = new Objective()
