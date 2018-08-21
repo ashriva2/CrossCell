@@ -133,6 +133,9 @@
             .topnav input[type=text] {
                 border: 1px solid #ccc;
             }
+        a.my-class {
+            color: #0070ad !important
+        }
     </style>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -161,9 +164,11 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li> @Html.ActionLink("Portofolio Agile Lab", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Dashboard", "Index", "Home")</li>
-                    @*<li>@Html.ActionLink("Portfolio Agile Lab", "Index", "PortfolioAgileLab")</li>*@
+                    
+                    <li> <a href="/Home/Index" style="color:#0070ad">Portofolio Agile Lab</a></li>
+                 
+                    <li><a href="/Home/Index" style="color:#0070ad">Dashboard</a></li>
+                    
                     <li>
 
 
