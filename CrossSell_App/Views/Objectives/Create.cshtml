@@ -95,7 +95,7 @@
     }
 }
 <div>
-    <input type="button" id="save_objective" />
+    <input type="button"  value="Save" id="save_objective"  class="btn btn-primary"/>
     @Html.ActionLink("Back to List", "Index")
 </div>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
@@ -187,7 +187,7 @@
 
 
                     var obj = new Object();
-                    debugger;
+                    //debugger;
                     if ($tds.eq(4).children('input')[0] != undefined && $tds.eq(4).children('input')[0].value != "" && $tds.eq(4).children('input')[0].value != undefined && $tds.eq(4).children('input')[0].value.trim() != "") {
                         obj.Metadata_Id = $tds.prevObject[0].previousElementSibling.previousElementSibling.getAttribute("name");
                         obj.Questioner_Id = $tds.prevObject[0].getAttribute("id");// $tds.eq(0).text();
@@ -210,7 +210,8 @@
          data: JSON.stringify(jsonObj),
          dataType: 'json',
          success: function (result) {
-             CheckIfInvoiceFound(result);
+             debugger;
+             alert(result);
          },
         error: function (xhr) {
         alert('Error: ' + xhr.statusText);

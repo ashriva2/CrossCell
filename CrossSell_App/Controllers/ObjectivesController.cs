@@ -53,45 +53,119 @@ namespace CrossSell_App.Controllers
             List<ObjectivesModel> DataList =new List<ObjectivesModel>();
             List<SectionModel> SectionModelList = new List<SectionModel>();
             var sectionList = db.Metadatas.ToList();
-            foreach(var sect in sectionList)
+            //checking if the data exists for the particular company id in db
+            //Company Id is hardcoded 
+            var companyData = db.Objectives.Where(x => x.Company_Id == 1).OrderBy(x=>x.Objective_Id).ToList();
+
+            if (companyData.Count == 0)
             {
-                SectionModel obj = new SectionModel()
+                foreach (var sect in sectionList)
                 {
-                    Metadata_Id=sect.Metadata_Id,
-                    Metadata_Name=sect.Metadata_Name,
-                    IsActive=sect.IsActive
-                };
-                SectionModelList.Add(obj);
-
-
-
-            }
-
-            ViewBag.SectionList = SectionModelList;
-
-            foreach (var item in db.Metadatas.ToList())
-            {
-                try
-                {
-                    
-
-                    //DataList.Add(DataInput);
-                    var getQuesForMeta = db.Questioners.Where(x => x.Metadata_Id == item.Metadata_Id).ToList();
-                    foreach (var ques in getQuesForMeta)
+                    SectionModel obj = new SectionModel()
                     {
-                        ObjectivesModel DataInput = new ObjectivesModel();
-                        DataInput.MetaDataText = item.Metadata_Name;
+                        Metadata_Id = sect.Metadata_Id,
+                        Metadata_Name = sect.Metadata_Name,
+                        IsActive = sect.IsActive
+                    };
+                    SectionModelList.Add(obj);
 
-                        DataInput.QuestionText = ques.Questioner1;
-                        DataInput.Questioner_Id = ques.Questioner_Id;
-                        DataInput.Metadata_Id = item.Metadata_Id;
-                        DataList.Add(DataInput);
+
+
+                }
+
+                ViewBag.SectionList = SectionModelList;
+
+                foreach (var item in db.Metadatas.ToList())
+                {
+                    try
+                    {
+
+
+                        //DataList.Add(DataInput);
+                        var getQuesForMeta = db.Questioners.Where(x => x.Metadata_Id == item.Metadata_Id).ToList();
+                        foreach (var ques in getQuesForMeta)
+                        {
+                            ObjectivesModel DataInput = new ObjectivesModel();
+                            DataInput.MetaDataText = item.Metadata_Name;
+
+                            DataInput.QuestionText = ques.Questioner1;
+                            DataInput.Questioner_Id = ques.Questioner_Id;
+                            DataInput.Metadata_Id = item.Metadata_Id;
+                            DataList.Add(DataInput);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
                     }
                 }
-                catch (Exception ex)
+            }
+
+            else
+            {
+                foreach (var sect in sectionList)
                 {
+                    SectionModel obj = new SectionModel()
+                    {
+                        Metadata_Id = sect.Metadata_Id,
+                        Metadata_Name = sect.Metadata_Name,
+                        IsActive = sect.IsActive
+                    };
+                    SectionModelList.Add(obj);
+
+
 
                 }
+
+                ViewBag.SectionList = SectionModelList;
+
+                foreach (var item in db.Metadatas.ToList())
+                {
+                    try
+                    {
+
+
+                        //DataList.Add(DataInput);
+                        var getQuesForMeta = db.Questioners.Where(x => x.Metadata_Id == item.Metadata_Id).ToList();
+                        foreach (var ques in getQuesForMeta)
+                        {
+                            var dataExist = db.Objectives.Where(x => x.Metadata_Id == ques.Metadata_Id && x.Questioner_Id == ques.Questioner_Id).FirstOrDefault();
+                            if (dataExist != null)
+                            {
+                                ObjectivesModel DataInput = new ObjectivesModel();
+                                DataInput.MetaDataText = item.Metadata_Name;
+
+                                DataInput.QuestionText = ques.Questioner1;
+                                DataInput.Questioner_Id = ques.Questioner_Id;
+                                DataInput.Metadata_Id = item.Metadata_Id;
+                                DataInput.Level = dataExist.Level;
+                                DataInput.Weight = dataExist.Weight ;
+                                DataInput.Answer = dataExist.Answer;
+                                DataInput.Score = dataExist.Score;
+                                DataInput.Score_Max = dataExist.Score_Max;
+                                DataInput.Max = dataExist.Max;
+                                DataInput.Comments = dataExist.Comments;
+                                DataList.Add(DataInput);
+                            }
+                            else
+                            {
+                                ObjectivesModel DataInput = new ObjectivesModel();
+                                DataInput.MetaDataText = item.Metadata_Name;
+
+                                DataInput.QuestionText = ques.Questioner1;
+                                DataInput.Questioner_Id = ques.Questioner_Id;
+                                DataInput.Metadata_Id = item.Metadata_Id;
+                                DataList.Add(DataInput);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                }
+
+
             }
 
             
@@ -108,49 +182,76 @@ namespace CrossSell_App.Controllers
         //[ValidateAntiForgeryToken]
         public ActionResult CreateData(List<ObjectivesModel> jsonObj)
         {
-            //if (ModelState.IsValid)
-            //{
-            //    db.Objectives.Add(objective);
-            //    db.SaveChanges();
-            //    return RedirectToAction("Index");
-            //}
+
+            string message;
+            
             foreach(var item in jsonObj)
             {
 
                 try
                 {
-                    Objective saveData = new Objective()
+
+                    var dataExist = db.Objectives.Where(x => x.Company_Id == item.Company_Id && x.Metadata_Id == item.Metadata_Id).FirstOrDefault();
+                    if (dataExist == null)
                     {
-                        Company_Id = 3,
-                        Metadata_Id = item.Metadata_Id,
-                        Questioner_Id = item.Questioner_Id,
-                        Comments = item.Comments,
-                        Level = item.Level,
-                        Score = item.Score,
-                        Score_Max = item.Score_Max,
-                        Max = item.Max,
-                        Weight = item.Weight,
-                        Answer = item.Answer
+                        Objective saveData = new Objective()
+                        {
+                            Company_Id = 3,
+                            Metadata_Id = item.Metadata_Id,
+                            Questioner_Id = item.Questioner_Id,
+                            Comments = item.Comments,
+                            Level = item.Level,
+                            Score = item.Score,
+                            Score_Max = item.Score_Max,
+                            Max = item.Max,
+                            Weight = item.Weight,
+                            Answer = item.Answer
 
 
 
-                    };
+                        };
 
 
-                    db.Objectives.Add(saveData);
-                    db.SaveChanges();
+                        db.Objectives.Add(saveData);
+                        db.SaveChanges();
+
+                    }
+
+                    else
+                    {
+
+                        //dataExist.Company_Id = 3;
+                        //dataExist.Metadata_Id = item.Metadata_Id;
+                        //dataExist.Questioner_Id = item.Questioner_Id;
+                        dataExist.Comments = item.Comments;
+                        dataExist.Level = item.Level;
+                        dataExist.Score = item.Score;
+                        dataExist.Score_Max = item.Score_Max;
+                        dataExist.Max = item.Max;
+                        dataExist.Weight = item.Weight;
+                        dataExist.Answer = item.Answer;
+
+                        db.SaveChanges();
+
+
+
+                    }
                 }
-                catch(Exception e)
-                {
 
+                catch (Exception e)
+                {
+                    message = "Some thing went wrong . Please contact IT team ";
+                    return Json(message, JsonRequestBehavior.AllowGet);
                 }
             }
+            message = "Date saved successfully";
+            return Json(message, JsonRequestBehavior.AllowGet);
             //ViewBag.Company_Id = new SelectList(db.Companies, "Company_Id", "Company_Name", objective.Company_Id);
             //ViewBag.Questioner_Id = new SelectList(db.Questioners, "Questioner_Id", "Questioner1", objective.Questioner_Id);
             //ViewBag.Metadata_Id = new SelectList(db.Metadatas, "Metadata_Id", "Metadata_Name", objective.Metadata_Id);
             //ViewBag.Objective_Id = new SelectList(db.Objectives, "Objective_Id", "Comments", objective.Objective_Id);
             //ViewBag.Objective_Id = new SelectList(db.Objectives, "Objective_Id", "Comments", objective.Objective_Id);
-            return View();
+           
         }
 
         // GET: Objectives/Edit/5
