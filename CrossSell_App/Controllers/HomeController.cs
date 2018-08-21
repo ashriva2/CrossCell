@@ -20,11 +20,13 @@ namespace CrossSell_App.Controllers
 
         public ActionResult PALReport()
         {
+           // ViewBag.fillCompanyddl = FillCompanyDropDown();
             return View();
         }
 
         public ActionResult DPBReport()
         {
+            //ViewBag.fillCompanyddl = FillCompanyDropDown();
             return View();
         }
 
@@ -32,6 +34,9 @@ namespace CrossSell_App.Controllers
         {
             return View();
         }
+
+
+
 
         public JsonResult GetData()
         {
@@ -127,7 +132,7 @@ namespace CrossSell_App.Controllers
         {
             var objectivesList = db.Objectives.ToList();
             var companyList = db.Companies.ToList();
-            var metaDataList = db.Metadatas.OrderBy(x=>x.Metadata_Id).ToList();
+            var metaDataList = db.Metadatas.Where(x=>x.Metadata_Id!=7).OrderBy(x=>x.Metadata_Id).ToList();
             int count = 0;
             List<double?>[] dataseries = new List<double?>[100];
             
@@ -153,5 +158,27 @@ namespace CrossSell_App.Controllers
 
             return Json(dataseries, JsonRequestBehavior.AllowGet);
         }
+
+        //private List<SelectListItem> FillCompanyDropDown()
+        //{
+
+        //    List<SelectListItem> listItems = new List<SelectListItem>();
+        //    var companyList = db.Companies.ToList();
+            
+        //    foreach (var item in companyList)
+        //    {
+        //        listItems.Add(new SelectListItem
+        //        {
+        //            Text = item.Company_Name,
+        //            Value = Convert.ToString(item.Company_Id),
+                   
+        //        });
+
+
+        //    }
+            
+
+        //    return listItems;
+        //}
     }
 }
