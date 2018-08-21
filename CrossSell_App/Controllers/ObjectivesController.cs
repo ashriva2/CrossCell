@@ -38,9 +38,10 @@ namespace CrossSell_App.Controllers
         }
 
         // GET: Objectives/Create
-        public ActionResult Create()
+        public ActionResult Create(int companyId)
         {
 
+            ViewBag.fillCompanyddl = FillCompanyDropDown(companyId);
 
 
             ViewBag.Company_Id = new SelectList(db.Companies, "Company_Id", "Company_Name");
@@ -55,7 +56,7 @@ namespace CrossSell_App.Controllers
             var sectionList = db.Metadatas.ToList();
             //checking if the data exists for the particular company id in db
             //Company Id is hardcoded 
-            var companyData = db.Objectives.Where(x => x.Company_Id == 1).OrderBy(x=>x.Objective_Id).ToList();
+            var companyData = db.Objectives.Where(x => x.Company_Id == companyId).OrderBy(x=>x.Objective_Id).ToList();
 
             if (companyData.Count == 0)
             {
@@ -328,6 +329,25 @@ namespace CrossSell_App.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private List<SelectListItem> FillCompanyDropDown(int val)
+        {
+
+            List<SelectListItem> listItems = new List<SelectListItem>();
+            var companyList = db.Companies.ToList();
+
+            foreach (var item in companyList)
+            {
+                listItems.Add(new SelectListItem
+                {
+                    Text = item.Company_Name,
+                    Value = Convert.ToString(item.Company_Id),
+                    Selected = val == item.Company_Id ? true : false
+                });
+            }
+
+            return listItems;
         }
     }
 }

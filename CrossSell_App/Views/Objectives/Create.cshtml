@@ -9,7 +9,11 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
+    <div style="width: 50%;float: right;">
+        @{ var ddlCompanyId = 0;}
+        @Html.DropDownListFor(model => ddlCompanyId, (List<SelectListItem>)@ViewBag.fillCompanyddl, new { @class = "form-control", @style = "float: right; width: 50%;margin-bottom: 10px;MARGIN-TOP: 20PX;" })
 
+    </div>
     var counter = 0;
 
     foreach (var item in ViewBag.SectionList)
@@ -40,9 +44,9 @@
                 var count = @ques.Questioner_Id;
                 <tr class="objective_data" id="@ques.Questioner_Id">
                     <td id="QuestionText">
-                        
+
                         @Html.DisplayFor(modelitem => ques.QuestionText, "")
-                       
+
 
                     </td>
                     <td>
@@ -65,15 +69,15 @@
                     <td>
                         <div id="ques_max_@count" class="ques_max">
                             @Html.DisplayFor(modelitem => ques.Max, new { id = "ques_Max" + count, @class = "max" })
-                            </div>
+                        </div>
                     </td>
                     <td>
                         <div id="score_max_@count" class="score_max">
                             @Html.DisplayFor(modelitem => ques.Score_Max, new { id = "ques_Score_Max" + count, @class = "maxscore" })
-                   </div>
-                            </td>
+                        </div>
+                    </td>
                 </tr>
-               
+
 
             }
             <tr>
@@ -83,19 +87,15 @@
                 <td id="total_score_table_@counter">
                     @*24*@
                 </td>
-                <td id="total_Max_table_@counter">
-                   
-                </td>
-                <td id="total_ScoreMax_table_@counter">
-                   
-                </td>
+                <td id="total_Max_table_@counter"></td>
+                <td id="total_ScoreMax_table_@counter"></td>
             </tr>
         </table>
 
     }
 }
 <div>
-    <input type="button"  value="Save" id="save_objective"  class="btn btn-primary"/>
+    <input type="button" value="Save" id="save_objective" class="btn btn-primary" />
     @Html.ActionLink("Back to List", "Index")
 </div>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
@@ -120,12 +120,12 @@
                     score = $('#' + row_id + ' td input')[2].value * this.value
 
                     $("#ques_Score_" + row_id)[0].innerHTML = score;
-                     // Update Max column
-                    var max= $('#' + row_id + ' td input')[2].value * 3
+                    // Update Max column
+                    var max = $('#' + row_id + ' td input')[2].value * 3
 
                     $("#ques_max_" + row_id)[0].innerHTML = max;
                     var scoreOfmax = 0;
-                   
+
                     if (max != 0) {
                         scoreOfmax = score / max;
                         scoreOfmax = scoreOfmax.toFixed(2);
@@ -133,7 +133,7 @@
                     }
                     else
                         scoreOfmax = 0;
-                   
+
 
                     $("#score_max_" + row_id)[0].innerHTML = scoreOfmax;
 
@@ -145,19 +145,19 @@
                 var totalscore = 0
                 var total_Max = 0;
                 var total_ScoreMax = 0;
-                $("#"+tableid+" tbody").find('tr').each(function (i, el) {
+                $("#" + tableid + " tbody").find('tr').each(function (i, el) {
                     debugger;
                     var $tds = $(this).find('td');
                     if ($tds.prevObject[0].firstElementChild.tagName != 'TH') {
-                        if ($tds.eq(5).children('div').length > 0 && ($tds.eq(5).children('div')[0].innerHTML != undefined || $tds.eq(5).children('div')[0].innerHTML != "") && ($tds.eq(5).children('div')[0].innerHTML.trim())!="") {
+                        if ($tds.eq(5).children('div').length > 0 && ($tds.eq(5).children('div')[0].innerHTML != undefined || $tds.eq(5).children('div')[0].innerHTML != "") && ($tds.eq(5).children('div')[0].innerHTML.trim()) != "") {
                             totalscore = parseFloat(totalscore) + parseFloat($tds.eq(5).children('div')[0].innerHTML);
-                          
-                           
+
+
                         }
                         if ($tds.eq(6).children('div').length > 0 && ($tds.eq(6).children('div')[0].innerHTML != undefined || $tds.eq(6).children('div')[0].innerHTML != "") && ($tds.eq(6).children('div')[0].innerHTML.trim()) != "") {
                             total_Max = parseFloat(total_Max) + parseFloat($tds.eq(6).children('div')[0].innerHTML);
                         }
-                        if ($tds.eq(7).children('div').length > 0 && ($tds.eq(7).children('div')[0].innerHTML != undefined || $tds.eq(7).children('div')[0].innerHTML != "") &&  ($tds.eq(6).children('div')[0].innerHTML.trim()) != "") {
+                        if ($tds.eq(7).children('div').length > 0 && ($tds.eq(7).children('div')[0].innerHTML != undefined || $tds.eq(7).children('div')[0].innerHTML != "") && ($tds.eq(6).children('div')[0].innerHTML.trim()) != "") {
                             total_ScoreMax = parseFloat(total_ScoreMax) + parseFloat($tds.eq(7).children('div')[0].innerHTML);
                         }
                     }
@@ -166,30 +166,30 @@
                 $("#total_score_" + tableid)[0].innerHTML = totalscore;
                 $("#total_Max_" + tableid)[0].innerHTML = total_Max;
                 $("#total_ScoreMax_" + tableid)[0].innerHTML = total_ScoreMax;
-               
-                 
-                
+
+
+
 
             }
 
 
         });
-       
+
 
         var jsonObj = new Array();
         $("#save_objective").click(function () {
             //  alert("I am in custom script");
             //$(".table tbody").find('tr > td').each(function (i, el) {
-          
+
             $(".table tbody").find('tr').each(function (i, el) {
-               // debugger;
+                // debugger;
                 var $tds = $(this).find('td');
                 if ($tds.prevObject[0].firstElementChild.tagName != 'TH') {
 
 
                     var obj = new Object();
                     debugger;
-                   // var $metadata = $(this).closest('table').children('tr:first');
+                    // var $metadata = $(this).closest('table').children('tr:first');
                     if ($tds.eq(4).children('input')[0] != undefined && $tds.eq(4).children('input')[0].value != "" && $tds.eq(4).children('input')[0].value != undefined && $tds.eq(4).children('input')[0].value.trim() != "") {
                         obj.Metadata_Id = $tds.prevObject[0].parentElement.children[0].firstElementChild.getAttribute('name');
                         obj.Questioner_Id = $tds.prevObject[0].getAttribute("id");// $tds.eq(0).text();
@@ -205,26 +205,31 @@
                 }
             });
 
-     $.ajax({
-         type: 'POST',
-          url: '@Url.Action("CreateData", "Objectives")',
-         contentType: 'application/json; charset=utf-8',
-         data: JSON.stringify(jsonObj),
-         dataType: 'json',
-         success: function (result) {
-             debugger;
-             alert(result);
-         },
-        error: function (xhr) {
-        alert('Error: ' + xhr.statusText);
-         },
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("CreateData", "Objectives")',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(jsonObj),
+                dataType: 'json',
+                success: function (result) {
+                    debugger;
+                    alert(result);
+                },
+                error: function (xhr) {
+                    alert('Error: ' + xhr.statusText);
+                },
 
-         async: true,
-         processData: false
-      });
+                async: true,
+                processData: false
+            });
 
 
 
         })
-    })
+    });
+
+    $('#ddlCompanyId').on('change', function (event) {
+        window.location.href = "/Objectives/Create?companyId=" + $(event.target)[0].value;
+        $("#ddlCompanyId").val($(event.target)[0].value);
+    });
 </script>
