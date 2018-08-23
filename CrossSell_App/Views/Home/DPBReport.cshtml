@@ -13,7 +13,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-
+<div style="width: 50%;float: right;">
+    @{ var ddlCompanyId = 0;}
+    @Html.DropDownListFor(model => ddlCompanyId, (List<SelectListItem>)@ViewBag.fillCompanyddl, "-- Select Company --", new { @class = "form-control", @style = "float: right; width: 50%;margin-bottom: 10px;MARGIN-TOP: 20PX;", @onchange = "showDPBGraph(this.value)", value = '0' })
+</div>
 <div id="block_container">
 
     <div style="width:100% !important;float:left">
@@ -24,6 +27,10 @@
             <canvas id="chart1"></canvas>
             <script>
                 getData();
+                var data1 = [];
+                var data2 = [];
+                var data3 = [];
+                var data4 = [];
                 function getData() {
                     $.ajax({
                         type: "POST",
@@ -33,7 +40,7 @@
                         dataType: "json",
                         success: function (response) {
                             debugger;
-                            DisplayChart(response);
+                            initializeChartSeries(response);
                         },
                         failure: function (response) {
                             alert(response.responseText);
@@ -43,16 +50,17 @@
                         }
                     });
                 }
-
-
-                function DisplayChart(chartData) {
-                  
+                function initializeChartSeries(chartData) {
                     debugger;
 
-                    var data1 = chartData[0];
-                    var data2 = chartData[1];
-                    var data3 = chartData[2];
-                    var data4 = chartData[3];
+                    data1 = chartData[0];
+                    data2 = chartData[1];
+                    data3 = chartData[2];
+                    data4 = chartData[3];
+                    DisplayChart(data1, data2, data3, data4);
+                }
+
+                function DisplayChart(dpbData1, dpbData2, dpbData3, dpbData4) {                 
 
                     var chart = new Chart('chart1', {
                         type: 'radar',
@@ -60,25 +68,25 @@
                             labels: ['Customer', 'Employee', 'Partner', 'CIO', 'CDO', 'CEO'],
                             datasets: [{
                                 label: 'Schneider',
-                                data: data1,//[53, 69, 35, 43, 50, 75],
+                                data: dpbData1,//[53, 69, 35, 43, 50, 75],
                                 borderColor: '#3dcd58',
                                 fill: false,
                             },
                             {
                                 label: 'Daimler',
-                                data: data2,//[33, 53, 27, 43, 20, 35],
+                                data: dpbData2,//[33, 53, 27, 43, 20, 35],
                                 borderColor: '#7b7c81',
                                 fill: false,
                             },
                             {
                                 label: 'Disney',
-                                data: data3,//[61, 78, 48, 71, 67, 72],
+                                data: dpbData3,//[61, 78, 48, 71, 67, 72],
                                 borderColor: '#0795e6',
                                 fill: false,
                             },
                             {
                                 label: 'McDonalds',
-                                data: data4,//[55, 35, 0, 0, 0, 0],
+                                data: dpbData4,//[55, 35, 0, 0, 0, 0],
                                 borderColor: '#ffc111',
                                 fill: false,
                             }]
@@ -106,6 +114,50 @@
                             }
                         },
                     });
+                }
+
+
+                function showDPBGraph(ele) {
+                    debugger;
+                    if (ele !== "") {
+
+                        if (ele == 1) {
+                            var dpbData1 = data1;
+                            var dpbData2 = [];
+                            var dpbData3 = [];
+                            var dpbData4 = [];
+                            DisplayChart(dpbData1, dpbData2, dpbData3, dpbData4)
+                        }
+
+                        if (ele == 2) {
+                            var dpbData1 = [];
+                            var dpbData2 = data2;
+                            var dpbData3 = [];
+                            var dpbData4 = [];
+                            DisplayChart(dpbData1, dpbData2, dpbData3, dpbData4)
+                        }
+
+                        if (ele == 3) {
+                            var dpbData1 = [];
+                            var dpbData2 = [];
+                            var dpbData3 = data3;
+                            var dpbData4 = [];
+                            DisplayChart(dpbData1, dpbData2, dpbData3, dpbData4)
+                        }
+                        if (ele == 4) {
+                            var dpbData1 = [];
+                            var dpbData2 = [];
+                            var dpbData3 = [];
+                            var dpbData4 = data4;
+                            DisplayChart(dpbData1, dpbData2, dpbData3, dpbData4)
+                        }
+                    }else {
+                        var dpbData1 = data1;
+                        var dpbData2 = data2;
+                        var dpbData3 = data3;
+                        var dpbData4 = data4;
+                        DisplayChart(dpbData1, dpbData2, dpbData3, dpbData4)
+                    }
                 }
 
             </script>
