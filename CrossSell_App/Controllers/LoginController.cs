@@ -27,9 +27,10 @@ namespace CrossSell_App.Controllers
             {
                 string strDDLValue = Request.Form["Role"].ToString();
                 string userName = Convert.ToString(Request.Form["UserName"]);
-               
+                string password = Convert.ToString(Request.Form["Password"]);
 
-                    FormsAuthentication.SetAuthCookie(userName, false);
+
+                FormsAuthentication.SetAuthCookie(userName, false);
                 if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
                     && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
                 {
@@ -37,12 +38,15 @@ namespace CrossSell_App.Controllers
                 }
                 else
                 {
-                    if (strDDLValue == "Admin" && (userName == "admin"|| userName == "Admin"))
+                    if (strDDLValue == "Admin" && (userName == "admin" || userName == "Admin") && password=="admin")
+                    {
                         return Redirect("/Home/Index");
+                    }
 
                     else
                     {
                         ModelState.AddModelError("", "The user name or password provided is incorrect.");
+                        ViewBag.Message = "The user name or password provided is incorrect.";
                     }
                 }
 
