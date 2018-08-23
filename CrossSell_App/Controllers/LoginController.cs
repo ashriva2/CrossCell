@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace CrossSell_App.Controllers
 {
@@ -18,37 +19,43 @@ namespace CrossSell_App.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult Index(UserDetails model, FormCollection form )
+        public ActionResult Index(UserDetails model, FormCollection form,string returnUrl)
         {
-            //ConsumerBankingEntities cbe = new ConsumerBankingEntities();
-            //var s = cbe.GetCBLoginInfo(model.UserName, model.Password);
+            
 
-            //var item = s.FirstOrDefault();
-            //if (item == "Success")
-            //{
+            if(ModelState.IsValid)
+            {
+                string strDDLValue = Request.Form["Role"].ToString();
+                string userName = Convert.ToString(Request.Form["UserName"]);
+               
 
-            //    return View("UserLandingView");
-            //}
-            //else if (item == "User Does not Exists")
+                    FormsAuthentication.SetAuthCookie(userName, false);
+                if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
+                    && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
+                {
+                    return Redirect(returnUrl);
+                }
+                else
+                {
+                    if (strDDLValue == "Admin" && (userName == "admin"|| userName == "Admin"))
+                        return Redirect("/Home/Index");
 
-            //{
-            //    ViewBag.NotValidUser = item;
+                    else
+                    {
+                        ModelState.AddModelError("", "The user name or password provided is incorrect.");
+                    }
+                }
 
-            //}
-            //else
-            //{
-            //    ViewBag.Failedcount = item;
-            //}
 
-            //return View("Index");
-            string strDDLValue = Request.Form["Role"].ToString();
+                
+                
+                    //return Redirect("/PortfolioAgileLab/Index");
+            }
+
             //var data = db.CrossSells.Where(x => x.Company_Id == 1).ToList();
 
-
-            if(strDDLValue=="Admin")
-               return Redirect("/Home/Index");
-            else
-                return Redirect("/PortfolioAgileLab/Index");
+            return View(model);
+            
         }
     }
 }
