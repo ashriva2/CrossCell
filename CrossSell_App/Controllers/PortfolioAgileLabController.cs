@@ -19,9 +19,9 @@ namespace CrossSell_App.Controllers
 
 
         // GET: Portfolio_Agile_Lab
-        public ActionResult Index()
+        public ActionResult Index(int companyId)
         {
-            ViewBag.fillCompanyddl = FillCompanyDropDown();
+            ViewBag.fillCompanyddl = FillCompanyDropDown(companyId);
             var portfolio_Agile_Lab = db.Portfolio_Agile_Lab.Include(p => p.Company).Include(p => p.Portfolio);
             return View(portfolio_Agile_Lab.ToList());
         }
@@ -258,7 +258,7 @@ namespace CrossSell_App.Controllers
             }
             base.Dispose(disposing);
         }
-        private List<SelectListItem> FillCompanyDropDown()
+        private List<SelectListItem> FillCompanyDropDown(int companyId)
         {
 
             List<SelectListItem> listItems = new List<SelectListItem>();
@@ -269,7 +269,8 @@ namespace CrossSell_App.Controllers
                 listItems.Add(new SelectListItem
                 {
                     Text = item.Company_Name,
-                    Value = Convert.ToString(item.Company_Id)
+                    Value = Convert.ToString(item.Company_Id),
+                    Selected = companyId == item.Company_Id ? true : false
                 });
             }
 

@@ -11,7 +11,10 @@
         display: inline;
     }
 </style>
-
+<div style="width: 50%;float: right;">
+    @{ var ddlCompanyId = 0;}
+    @Html.DropDownListFor(model => ddlCompanyId, (List<SelectListItem>)@ViewBag.fillCompanyddl, "-- Select Company --", new { @class = "form-control", @style = "float: right; width: 50%;margin-bottom: 10px;MARGIN-TOP: 20PX;", @onchange = "showPALGraph(this.value)", value = '0' })
+</div>
 
 <div id="block_container">
     <div style="width:100% !important;float:left">
@@ -29,6 +32,16 @@
             <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
             <canvas id="chart"></canvas>
             <script>
+                var data1 = [];
+                var data2 = [];
+                var data3 = [];
+                var data4 = [];
+
+                var labels2 = [];
+                var labels3 = [];
+                var labels4 = [];
+                var labels5 = [];
+
                 function getData() {
                     $.ajax({
                         type: "POST",
@@ -38,7 +51,7 @@
                         dataType: "json",
                         success: function (response) {
                             debugger;
-                            DisplayChart(response);
+                            initializeChartSeries(response);
                         },
                         failure: function (response) {
                             alert(response.responseText);
@@ -50,33 +63,26 @@
                 }
                 getData();
 
-             // var labels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 5];
-
-                //var data = [9, 8, 04, 4, 0, 0, 0, 0, 0, 0, 0];
-                //var data2 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-                //var data3 = [9, 0, 6, 8, 9, 0, 0, 0, 7, 0, 0];
-                //var data4 = [9, 0, 0, 8, 0, 0, 0, 0, 7, 0, 9];
-
-                //var labels2 = ['*+', '+', '', '+', '', '', '', '', '', '', '', ''];
-                //var labels3 = ['', '', '', '', '', '', '', '', '', '', '', ''];
-                //var labels4 = ['*', '', '+', '+', '+', '', '', '', '*+', '', ''];
-                //var labels5 = ['+', '', '', '+', '+', '', '+', '+', '+', '', '+'];
-
-                //var yLable = ['NextGen AMS', 'NextGen SAP', 'DCX', 'Cloud', 'CyberSecurity', 'Digital Mfg', 'AI', 'Chatbots', 'Devops', 'Blockchain', 'End to End Offering']
-
-                function DisplayChart(chartData) {
-
-                    //  var labels = chartData.labels;
+                function initializeChartSeries(chartData) {
                     debugger;
-                    var data = chartData.a[0];
-                    var data2 = chartData.a[1];
-                    var data3 = chartData.a[2];
-                    var data4 = chartData.a[3];
 
-                    var labels2 = chartData.IsLeadOrTobe[0];
-                    var labels3 = chartData.IsLeadOrTobe[1];
-                    var labels4 = chartData.IsLeadOrTobe[2];
-                    var labels5 = chartData.IsLeadOrTobe[3];
+                    data1 = chartData.a[0];
+                    data2 = chartData.a[1];
+                    data3 = chartData.a[2];
+                    data4 = chartData.a[3];
+
+                    labels2 = chartData.IsLeadOrTobe[0];
+                    labels3 = chartData.IsLeadOrTobe[1];
+                    labels4 = chartData.IsLeadOrTobe[2];
+                    labels5 = chartData.IsLeadOrTobe[3];
+
+                    DisplayChart(data1, data2, data3, data4, labels2, labels3, labels4, labels5);
+
+                }
+
+                function DisplayChart(data1, data2, data3, data4, labels2, labels3, labels4, labels5) {
+
+                    debugger;
 
                     var yLable = ['NextGen AMS', 'NextGen SAP', 'DCX', 'Cloud', 'CyberSecurity', 'Digital Mfg', 'AI', 'Chatbots', 'Devops', 'Blockchain', 'End to End Offering'];
 
@@ -88,7 +94,7 @@
                             datasets: [{
                                 backgroundColor: '#3dcd58',
                                 borderColor: '#3dcd58',
-                                data: data,
+                                data: data1,
                                 lbl: labels2,
                                 label: 'Schneider',
                             },
@@ -112,13 +118,13 @@
                                 data: data4,
                                 lbl: labels5,
                                 label: 'McDonalds',
-                                }
+                            }
                             ]
                         },
                         options: {
                             legend: {
                                 display: true,
-                                position: 'bottom',
+                                position: 'top',
                                 labels: {
                                     fontColor: 'rgb(255, 99, 132)'
                                 }
@@ -127,7 +133,7 @@
                             scales: {
                                 yAxes: [{
                                     ticks: {
-                                        min:0,
+                                        min: 0,
                                         max: 10
                                     }
                                 }]
@@ -164,7 +170,76 @@
                         }
                     });
 
+                    var canvas = document.getElementById("chart");
+                    var ctx = canvas.getContext("2d");
+
+                    //----------For Redirecting Chart to details page------------------
+                    canvas.onclick = function (evt, legendItem) {
+                        var activePoint = chart.getElementAtEvent(evt);
+
+                        if (activePoint) {
+                            //var chartData = activePoint[0]['_chart'].config.data;
+                            //var idx = activePoint[0]['_index'];
+
+                            //var label = chartData.labels[idx];
+                            //var value = chartData.datasets[0].data[idx];
+
+                            var companyName = activePoint[0]._model.datasetLabel;
+                            if (companyName = "Schneider")
+                                window.location.href = "/PortfolioAgileLab?companyId=1";
+                            if (companyName = "Daimler")
+                                window.location.href = "/PortfolioAgileLab?companyId=2";
+                            if (companyName = "Disney")
+                                window.location.href = "/PortfolioAgileLab?companyId=3";
+                            if (companyName = "McDonalds")
+                                window.location.href = "/PortfolioAgileLab?companyId=4";
+                        }
+                    };
                 }
+
+                function showPALGraph(ele) {
+                    debugger;
+                    if (ele !== "") {
+
+                        if (ele == 1) {
+                            var dpbData1 = data1;
+                            var dpbData2 = [];
+                            var dpbData3 = [];
+                            var dpbData4 = [];
+                            DisplayChart(dpbData1, dpbData2, dpbData3, dpbData4)
+                        }
+
+                        if (ele == 2) {
+                            var dpbData1 = [];
+                            var dpbData2 = data2;
+                            var dpbData3 = [];
+                            var dpbData4 = [];
+                            DisplayChart(dpbData1, dpbData2, dpbData3, dpbData4)
+                        }
+
+                        if (ele == 3) {
+                            var dpbData1 = [];
+                            var dpbData2 = [];
+                            var dpbData3 = data3;
+                            var dpbData4 = [];
+                            DisplayChart(dpbData1, dpbData2, dpbData3, dpbData4)
+                        }
+                        if (ele == 4) {
+                            var dpbData1 = [];
+                            var dpbData2 = [];
+                            var dpbData3 = [];
+                            var dpbData4 = data4;
+                            DisplayChart(dpbData1, dpbData2, dpbData3, dpbData4)
+                        }
+                    } else {
+                        var dpbData1 = data1;
+                        var dpbData2 = data2;
+                        var dpbData3 = data3;
+                        var dpbData4 = data4;
+                        DisplayChart(dpbData1, dpbData2, dpbData3, dpbData4)
+                    }
+                }
+
             </script>
         </div>
     </div>
