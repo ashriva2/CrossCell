@@ -42,17 +42,14 @@
 </head>
 <body>
     @Styles.Render("~/Content/css")
-    <div style="margin-top:-30px">
+    <div style="margin-top:-30px;width:100%;float:left;">
         <div style="width:50%;float:left;">
             <img src="https://www.capgemini.com/wp-content/themes/capgemini-2018-02/assets/images/logo.svg" alt="Capgemini Worldwide" class="logo" style="float:left;margin-left: 40px;margin-top: 15px;">
             <img src="http://psa.sogeti.nl/i/logo_sogeti.gif" alt="Sogeti" class="logo" style="float:left;margin-left: 40px;margin-top: 15px;">
         </div>
         <div style="width:50%;float:left;"><h1>Cross Cell</h1></div>
     </div>
-    <hr style="
-    font-weight: bolder;
-    color: black;
-    height: 0px;">
+    <div style="background-color: black;margin-top: 38px;"><hr /></div>
 
     @using (Html.BeginForm())
     {
