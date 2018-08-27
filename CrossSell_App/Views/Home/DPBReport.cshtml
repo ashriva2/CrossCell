@@ -10,9 +10,9 @@
         display: inline;
     }
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="~/Scripts/Chart.js"></script>
+<script src="~/Scripts/chartjs-plugin-datalabels.js"></script>
+<script src="~/Scripts/jquery.min.js"></script>
 <div style="width: 50%;float: right;">
     @{ var ddlCompanyId = 0;}
     @Html.DropDownListFor(model => ddlCompanyId, (List<SelectListItem>)@ViewBag.fillCompanyddl, "-- Select Company --", new { @class = "form-control", @style = "float: right; width: 50%;margin-bottom: 10px;MARGIN-TOP: 20PX;", @onchange = "showDPBGraph(this.value)", value = '0' })
@@ -60,7 +60,7 @@
                     DisplayChart(data1, data2, data3, data4);
                 }
 
-                function DisplayChart(dpbData1, dpbData2, dpbData3, dpbData4) {                 
+                function DisplayChart(dpbData1, dpbData2, dpbData3, dpbData4) {
 
                     var chart = new Chart('chart1', {
                         type: 'radar',
@@ -94,7 +94,7 @@
                         options: {
                             legend: {
                                 display: true,
-                                position: 'bottom',
+                                position: 'top',
                                 labels: {
                                     fontColor: 'rgb(255, 99, 132)'
                                 }
@@ -151,7 +151,7 @@
                             var dpbData4 = data4;
                             DisplayChart(dpbData1, dpbData2, dpbData3, dpbData4)
                         }
-                    }else {
+                    } else {
                         var dpbData1 = data1;
                         var dpbData2 = data2;
                         var dpbData3 = data3;

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using CrossSell_App.DataAccess;
 
 namespace CrossSell_App.Controllers
@@ -19,10 +20,24 @@ namespace CrossSell_App.Controllers
 
 
         // GET: Portfolio_Agile_Lab
-        public ActionResult Index()
+        public ActionResult Index(int id)
         {
-            ViewBag.fillCompanyddl = FillCompanyDropDown();
-            var portfolio_Agile_Lab = db.Portfolio_Agile_Lab.Include(p => p.Company).Include(p => p.Portfolio);
+            var companyId = id;
+            ViewBag.fillCompanyddl = FillCompanyDropDown(companyId);
+            IQueryable < Portfolio_Agile_Lab > portfolio_Agile_Lab = null;
+            if (companyId == 0)
+            {
+                 portfolio_Agile_Lab = db.Portfolio_Agile_Lab.Include(p => p.Company).Include(p => p.Portfolio);
+            }
+            else
+            {
+                portfolio_Agile_Lab = db.Portfolio_Agile_Lab.Include(p => p.Company).Include(p => p.Portfolio).Where(x=>x.Company_Id==companyId);
+            }
+
+
+            if (TempData.ContainsKey("saveMessage"))
+                ViewBag.Message = TempData["saveMessage"].ToString();
+
             return View(portfolio_Agile_Lab.ToList());
         }
 
@@ -196,7 +211,7 @@ namespace CrossSell_App.Controllers
             //save data
 
 
-
+            TempData["saveMessage"] = "Saved successfully";
 
             //if (ModelState.IsValid)
             //{
@@ -206,7 +221,8 @@ namespace CrossSell_App.Controllers
             //}
             //ViewBag.Company_Id = new SelectList(db.Companies, "Company_Id", "Company_Name", portfolio_Agile_Lab.Company_Id);
             //ViewBag.Portfolio_Id = new SelectList(db.Portfolios, "Portfolio_Id", "Portfolio_Name", portfolio_Agile_Lab.Portfolio_Id);
-            return RedirectToAction("Index");
+            //  return RedirectToAction("Index/"+ CompanyId);
+            return RedirectToAction("Index", new {id = CompanyId });
         }
 
 
@@ -258,18 +274,27 @@ namespace CrossSell_App.Controllers
             }
             base.Dispose(disposing);
         }
-        private List<SelectListItem> FillCompanyDropDown()
+        private List<SelectListItem> FillCompanyDropDown(int companyId)
         {
 
             List<SelectListItem> listItems = new List<SelectListItem>();
-            var companyList = db.Companies.ToList();
+            List<Company> companyList = null;
+            if (companyId == 0)
+            {
+                 companyList = db.Companies.ToList();
+            }
+            else
+            {
+                companyList = db.Companies.Where(x => x.Company_Id == companyId).ToList();
+            }
 
             foreach (var item in companyList)
             {
                 listItems.Add(new SelectListItem
                 {
                     Text = item.Company_Name,
-                    Value = Convert.ToString(item.Company_Id)
+                    Value = Convert.ToString(item.Company_Id),
+                    Selected = companyId == item.Company_Id ? true : false
                 });
             }
 
