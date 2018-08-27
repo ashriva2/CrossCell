@@ -20,7 +20,7 @@ namespace CrossSell_App.Controllers
 
         public ActionResult PALReport()
         {
-           // ViewBag.fillCompanyddl = FillCompanyDropDown();
+            ViewBag.fillCompanyddl = FillCompanyDropDown();
             return View();
         }
 
@@ -171,7 +171,6 @@ namespace CrossSell_App.Controllers
                 {
                     Text = item.Company_Name,
                     Value = Convert.ToString(item.Company_Id),
-
                 });
 
 

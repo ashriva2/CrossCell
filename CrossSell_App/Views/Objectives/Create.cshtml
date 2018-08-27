@@ -64,7 +64,8 @@
                         @Html.EditorFor(modelitem => ques.Weight, new { htmlAttributes = new { id = "ques_Weight" + count, @class = "weight" ,@style="width:100%" } })
                     </td>
                     <td class="ques_answer">
-                        @Html.TextBoxFor(modelitem => ques.Answer, new { id = "ques_Answer" + count, @class = "answer" , @style = "width:100%" })
+                        @*@Html.TextBoxFor(modelitem => ques.Answer, new { id = "ques_Answer" + count, @class = "answer", @style = "width:100%" })*@
+                        @Html.EditorFor(modelitem => ques.Answer, new { htmlAttributes = new { id = "ques_Answer" + count, @class = "answer", @style = "width:100%" } })
                     </td>
                     <td>
                         <div id="ques_Score_@count" class="ques_score">
