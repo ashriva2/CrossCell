@@ -336,6 +336,7 @@
     <Content Include="Views\Search\PortfolioView.cshtml" />
     <Content Include="Views\Search\SearchBySectionView.cshtml" />
     <Content Include="Views\Search\SearchByCompanyView.cshtml" />
+    <Content Include="Views\Search\NoResultView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

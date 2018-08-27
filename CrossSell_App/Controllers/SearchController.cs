@@ -211,7 +211,7 @@ namespace CrossSell_App.Controllers
                 return View("SearchBySectionView", searchBySec);
             }
 
-            return View("PortfolioView");
+            return View("NoResultView");
         }
     }
 }
