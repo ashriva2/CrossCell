@@ -114,6 +114,23 @@
                             }
                         },
                     });
+
+
+                    var canvas = document.getElementById("chart1");
+                    var ctx = canvas.getContext("2d");
+
+                    //----------For Redirecting Chart to details page------------------
+                    canvas.onclick = function (evt, legendItem) {
+                        var activePoint = chart.getElementAtEvent(evt);
+                        if (activePoint) {
+                            debugger;
+                            var companyId = parseInt(activePoint[0]._datasetIndex)+1;
+                            
+                            window.location.href = "/Objectives/Create?id=" + companyId;
+                           
+                        }
+                    }
+
                 }
 
 

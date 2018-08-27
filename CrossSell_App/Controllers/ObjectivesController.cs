@@ -38,9 +38,9 @@ namespace CrossSell_App.Controllers
         }
 
         // GET: Objectives/Create
-        public ActionResult Create(int companyId)
+        public ActionResult Create(int id)
         {
-
+            int companyId = id;
             ViewBag.fillCompanyddl = FillCompanyDropDown(companyId);
 
 
