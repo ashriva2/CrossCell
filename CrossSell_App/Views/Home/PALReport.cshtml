@@ -24,11 +24,17 @@
             + : Growth Potential
         </div>
         <div class="wrapper" id="bloc1">
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
-            <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+         
+
+            <script src="~/Scripts/Chart.js"></script>
+            <script src="~/Scripts/chartjs-plugin-datalabels.js"></script>
+            <script src="~/Scripts/jquery.min.js"></script>
+
             <canvas id="chart"></canvas>
             <script>
+                
+
+
                 function getData() {
                     $.ajax({
                         type: "POST",
@@ -50,7 +56,7 @@
                 }
                 getData();
 
-             // var labels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 5];
+                // var labels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 5];
 
                 //var data = [9, 8, 04, 4, 0, 0, 0, 0, 0, 0, 0];
                 //var data2 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -112,7 +118,7 @@
                                 data: data4,
                                 lbl: labels5,
                                 label: 'McDonalds',
-                                }
+                            }
                             ]
                         },
                         options: {
@@ -127,7 +133,7 @@
                             scales: {
                                 yAxes: [{
                                     ticks: {
-                                        min:0,
+                                        min: 0,
                                         max: 10
                                     }
                                 }]
