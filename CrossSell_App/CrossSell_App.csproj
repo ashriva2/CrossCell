@@ -219,6 +219,7 @@
     <Compile Include="Models\Portfolio.cs" />
     <Compile Include="Models\PortfolioAgileLab.cs" />
     <Compile Include="Models\PortfolioType.cs" />
+    <Compile Include="Models\SearchByCompany.cs" />
     <Compile Include="Models\SearchBySection.cs" />
     <Compile Include="Models\SearchPortfolio.cs" />
     <Compile Include="Models\SectionModel.cs" />
@@ -277,6 +278,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\SearchScreen.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -333,6 +335,7 @@
     <Content Include="Views\Objectives\Index.cshtml" />
     <Content Include="Views\Search\PortfolioView.cshtml" />
     <Content Include="Views\Search\SearchBySectionView.cshtml" />
+    <Content Include="Views\Search\SearchByCompanyView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

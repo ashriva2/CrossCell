@@ -21,6 +21,7 @@ namespace CrossSell_App.Controllers
             bool isProfolio = false;
             bool isSection = false;
             bool isSectionByName = false;
+            bool isCompany = false;
             //Get the user from UserRole table
             //Get the useraccess from UserAccess table
             List<int> companyId = new List<int>();
@@ -37,16 +38,26 @@ namespace CrossSell_App.Controllers
             }
             ViewBag.CompanyList = cList;
             //Portfolio portfolio = db.Portfolios.Find(id);
-
             var portfolioList = db.Portfolios.ToList();
 
-            if ("portfolio".Contains(searchKey.ToLower()))
+            var selectedCompanyList = companyList.Where(x => x.Company_Name.ToLower().Contains(searchKey.ToLower())).ToList();
+           
+            if (selectedCompanyList.Count > 0)
+            {
+                isCompany = true;
+                ViewBag.PortFolioList = portfolioList;
+                companyList = selectedCompanyList;
+            }
+
+           
+
+            if ("portfolio".Contains(searchKey.ToLower()) && !isCompany)
             {
                 isProfolio = true;
                 ViewBag.PortFolioList = portfolioList;
 
             }
-             if (!isProfolio)
+            if (!isProfolio)
             {
                 var portFolioCheck = portfolioList.Where(x => x.Portfolio_Name.ToLower().Contains(searchKey.ToLower())).ToList();
                 if (portFolioCheck.Count > 0)
@@ -57,7 +68,7 @@ namespace CrossSell_App.Controllers
 
                 }
             }
-             if(!isProfolio)
+            if (!isProfolio)
             {
                 if (searchKey.ToLower().Contains("section"))
                 {
@@ -74,7 +85,7 @@ namespace CrossSell_App.Controllers
                         isSection = true;
                     }
                 }
-                else if(!isSection)
+                else if (!isSection)
                 {
                     var sectionCheck = db.Metadatas.Where(x => x.Metadata_Name.ToLower().Contains(searchKey.ToLower())).ToList();
                     if (sectionCheck.Count > 0)
@@ -89,9 +100,44 @@ namespace CrossSell_App.Controllers
                         isSectionByName = true;
                     }
                 }
-                
+
             }
 
+            if (isCompany)
+            {
+                
+                ViewBag.PortFolioList = portfolioList;
+                var portfolio_Agile_Lab_byComp = db.Portfolio_Agile_Lab.Include(p => p.Company).Include(p => p.Portfolio).ToList();
+                SearchByCompany searchByComp = new SearchByCompany();
+                List<SearchPortfolio> searchPortfolio = new List<SearchPortfolio>();
+                cList = new List<string>();
+                foreach (var c in companyList)
+                {
+                    cList.Add(c.Company_Name);
+                }
+                ViewBag.CompanyList = cList;
+                foreach (var compIdByComp in companyList)
+                {
+
+                    foreach (var portfByComp in portfolioList)
+                    {
+                        SearchPortfolio search = new SearchPortfolio();
+
+                        var tempCompQuery = portfolio_Agile_Lab_byComp.Where(x => x.Company_Id == compIdByComp.Company_Id && x.Portfolio_Id == portfByComp.Portfolio_Id).FirstOrDefault();
+
+                        search.PortfolioId = tempCompQuery != null ? tempCompQuery.Portfolio_Id : portfByComp.Portfolio_Id;
+                        search.PortfolioName = portfByComp.Portfolio_Name;
+                        search.CompanyName = compIdByComp.Company_Name;
+                        search.CurrentUsage = tempCompQuery.Current_Usage;
+                        searchPortfolio.Add(search);
+                   
+                    }
+                }
+                searchByComp.protfolio = searchPortfolio;
+                List<SearchBySection> searchBySection = new List<SearchBySection>();
+                searchByComp.section = searchBySection;
+                return View("SearchByCompanyView", searchByComp);
+            }
 
             if (isProfolio)
             {
@@ -122,10 +168,6 @@ namespace CrossSell_App.Controllers
                 return View("PortfolioView", searchPortfolio);
 
             }
-            if (isSectionByName)
-            {
-
-            }
             if (isSection || isSectionByName)
             {
                 List<SearchBySection> searchBySec = new List<SearchBySection>();
@@ -135,7 +177,7 @@ namespace CrossSell_App.Controllers
 
                 if (isSectionByName)
                 {
-                     sectionList = db.Metadatas.Where(x=>x.Metadata_Name.ToLower().Contains(searchKey)).ToList();
+                    sectionList = db.Metadatas.Where(x => x.Metadata_Name.ToLower().Contains(searchKey)).ToList();
 
                 }
                 foreach (var compId in companyList)

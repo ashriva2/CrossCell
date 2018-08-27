@@ -1,0 +1,49 @@
+﻿@model CrossSell_App.Models.SearchByCompany
+@{
+	ViewBag.Title = "SearchByCompanyView";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>SearchByCompanyView</h2>
+
+<h2>Search Result for : @ViewBag.SearchText</h2>
+
+<table>
+	<tbody>
+
+		<tr>
+			<th style="padding:2%"></th>
+			@foreach (var header in ViewBag.CompanyList)
+			{
+				<th style="background-color:#0070ad; color:white; text-align:center; padding:2% !important">
+					@header
+				</th>
+			}
+		</tr>
+		@{
+
+			foreach (var item in @ViewBag.portfolioList)
+			{
+				<tr style="border:solid 1px">
+					<td align="center" style="border:solid 1px">
+
+						@item.Portfolio_Name
+					</td>
+					@foreach (var header in ViewBag.CompanyList)
+					{
+						
+						foreach (var curUsage in Model.protfolio)
+						{
+							//var query = Model.Where(x => x.PortfolioName == @item.Portfolio_Name && x.CompanyName == @header).Select(x => x.CurrentUsage).ToList();
+							if (curUsage.CompanyName == header && curUsage.PortfolioName == @item.Portfolio_Name)
+							{
+								<td align="center" style="border:solid 1px">@curUsage.CurrentUsage</td>
+							}
+						}
+					}
+				</tr>
+			}
+		}
+
+	</tbody>
+</table>
