@@ -279,14 +279,10 @@ namespace CrossSell_App.Controllers
 
             List<SelectListItem> listItems = new List<SelectListItem>();
             List<Company> companyList = null;
-            if (companyId == 0)
-            {
-                 companyList = db.Companies.ToList();
-            }
-            else
-            {
-                companyList = db.Companies.Where(x => x.Company_Id == companyId).ToList();
-            }
+            
+            
+                companyList = db.Companies.ToList();
+            
 
             foreach (var item in companyList)
             {

@@ -3,7 +3,7 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
 @*<h2>Index</h2>*@
 <div>
     <div style="width: 50%;float: left;">
@@ -11,7 +11,7 @@
     </div>
     <div style="width: 50%;float: right;">
         @{ var ddlCompanyId = 0;}
-        @Html.DropDownListFor(model => ddlCompanyId, (List<SelectListItem>)@ViewBag.fillCompanyddl, "-- Select Company --", new { @class = "form-control", @style = "float: right; width: 50%;margin-bottom: 10px;MARGIN-TOP: 20PX;", @onchange = "showPortfolio(this.value)", value = '0' })
+        @Html.DropDownListFor(model => ddlCompanyId, (List<SelectListItem>)@ViewBag.fillCompanyddl, "-- Select Company --", new { @class = "form-control", @style = "float: right; width: 50%;margin-bottom: 10px;MARGIN-TOP: 20PX;", value = '0' })
     </div>
     <div>
         <table class="table" style="margin-top:10px">
@@ -71,7 +71,7 @@
         </table>
     </div>
 </div>
-<script>
+<script type="text/javascript">
     function showPortfolio(ele) {
         if (ele !== "") {
             $("." + ele).show();
@@ -87,4 +87,15 @@
             $(".1,.2,.3,.4").show();
         }
     }
+    @*$(document).ready(function () {
+       if (@ViewBag.Message!= null) {
+        debugger;
+        var msg=@ViewBag.Message;
+        alert(msg);
+    }
+    });*@
+    $('#ddlCompanyId').on('change', function (event) {
+        window.location.href = "/PortfolioAgileLab/Index?id=" + $(event.target)[0].value;
+        $("#ddlCompanyId").val($(event.target)[0].value);
+    });
 </script>
