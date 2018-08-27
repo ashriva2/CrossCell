@@ -164,6 +164,7 @@
     <Compile Include="Controllers\PortfolioTypeController.cs" />
     <Compile Include="Controllers\PortfolioAgileLabController.cs" />
     <Compile Include="Controllers\QuestionersController.cs" />
+    <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="DataAccess\Company.cs">
       <DependentUpon>EntityModel.tt</DependentUpon>
     </Compile>
@@ -218,6 +219,8 @@
     <Compile Include="Models\Portfolio.cs" />
     <Compile Include="Models\PortfolioAgileLab.cs" />
     <Compile Include="Models\PortfolioType.cs" />
+    <Compile Include="Models\SearchBySection.cs" />
+    <Compile Include="Models\SearchPortfolio.cs" />
     <Compile Include="Models\SectionModel.cs" />
     <Compile Include="Models\UserDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -319,6 +322,8 @@
     <Content Include="Views\Objectives\Details.cshtml" />
     <Content Include="Views\Objectives\Edit.cshtml" />
     <Content Include="Views\Objectives\Index.cshtml" />
+    <Content Include="Views\Search\PortfolioView.cshtml" />
+    <Content Include="Views\Search\SearchBySectionView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

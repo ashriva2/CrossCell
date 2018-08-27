@@ -1,0 +1,47 @@
+﻿@model IEnumerable<CrossSell_App.Models.SearchBySection>
+
+@{
+	ViewBag.Title = "SearchBySectionView";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Search Result for : @ViewBag.SearchText</h2>
+
+<table>
+	<tbody>
+
+		<tr>
+			<th style="padding:2%"></th>
+			@foreach (var header in ViewBag.CompanyList)
+			{
+				<th style="background-color:#0070ad; color:white; text-align:center; padding:2% !important">
+					@header
+				</th>
+			}
+		</tr>
+		@{
+
+			foreach (var item in @ViewBag.SectionName)
+			{
+				<tr style="border:solid 1px">
+					<td align="center" style="border:solid 1px">
+
+						@item
+					</td>
+					@foreach (var header in ViewBag.CompanyList)
+					{
+						foreach (var scoreMax in Model)
+						{
+							//var query = Model.Where(x => x.PortfolioName == @item.Portfolio_Name && x.CompanyName == @header).Select(x => x.CurrentUsage).ToList();
+							if (scoreMax.CompanyName == header && scoreMax.SectionName == @item)
+							{
+								<td align="center" style="border:solid 1px">@scoreMax.Score_MAx</td>
+							}
+						}
+					}
+				</tr>
+			}
+		}
+
+	</tbody>
+</table>

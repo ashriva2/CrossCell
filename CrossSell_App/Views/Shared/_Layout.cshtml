@@ -218,8 +218,8 @@
                     <li>
                         <div class="search-container" style="margin-left: 107px; margin-top: 17px">
                             <form action="/action_page.php">
-                                <input type="text" placeholder="Search.." name="search">
-                                <button type="submit"><i class="fa fa-search"></i></button>
+                                <input type="text" placeholder="Search.." name="search" id="search-text">
+                                <button type="button" id="btn-search"><i class="fa fa-search"></i></button>
                             </form>
                         </div>
                     </li>
@@ -264,6 +264,21 @@
             if (url != null && url != '') {
                 window.location.href = url;
             }
-        });
-    });
+		});
+		$('#btn-search').on('click', function () {
+			if ($('#search-text').val() != "" && $('#search-text').val() != null && $('#search-text').val() != undefined) {
+				debugger;
+				var NestId = $('#search-text').val();
+				var url = "/Search/SearchAlgorithm?searchKey=" + NestId;
+				window.location.href = url;
+			}
+			else {
+				alert("Please enter text to be shared");
+			}
+
+		})
+	});
+
+	
+
 </script>
