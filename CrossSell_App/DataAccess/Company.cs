@@ -12,6 +12,7 @@ namespace CrossSell_App.DataAccess
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+
     public partial class Company
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -25,11 +26,11 @@ namespace CrossSell_App.DataAccess
     
         public int Company_Id { get; set; }
         [Required(ErrorMessage = "Company Name is required")]
-
         public string Company_Name { get; set; }
         public Nullable<bool> IsActive { get; set; }
         public string Company_Admin { get; set; }
         public string Company_Contacts { get; set; }
+        public string CompanyColor { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CrossSell> CrossSells { get; set; }
