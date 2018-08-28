@@ -29,9 +29,12 @@
             + : Growth Potential
         </div>
         <div class="wrapper" id="bloc1">
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
-            <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+            @*<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>*@
+            <script src="~/Scripts/Chart.js"></script>
+            <script src="~/Scripts/chartjs-plugin-datalabels.js"></script>
+            @*<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>*@
+            <script src="~/Scripts/jquery.min.js"></script>
+            @*<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>*@
             <canvas id="chart"></canvas>
             <script>
                 function getData() {
@@ -53,9 +56,32 @@
                         }
                     });
                 }
+                UserCompaniesList();
                 getData();
 
+                var CompanyId = [];
+                var CompanyNames = [];
 
+
+                function UserCompaniesList() {
+                    $.ajax({
+                        type: "POST",
+                        url: "/Home/GetUserCompanies",
+                        //data: '{name: "' + $("#txtName").val() + '" }',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (response) {
+                            debugger;
+                            CompanyId = response;
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                }
 
                 //var yLable = ['NextGen AMS', 'NextGen SAP', 'DCX', 'Cloud', 'CyberSecurity', 'Digital Mfg', 'AI', 'Chatbots', 'Devops', 'Blockchain', 'End to End Offering']
 
@@ -73,15 +99,45 @@
                     //var labels5 = ['+', '', '', '+', '+', '', '+', '+', '+', '', '+'];
                     //  var labels = chartData.labels;
                     debugger;
-                    var data = chartData.a[0];
-                    var data2 = chartData.a[1];
-                    var data3 = chartData.a[2];
-                    var data4 = chartData.a[3];
+                    if ('@Session["companyId"]' != '') {
 
-                    var labels2 = chartData.IsLeadOrTobe[0];
-                    var labels3 = chartData.IsLeadOrTobe[1];
-                    var labels4 = chartData.IsLeadOrTobe[2];
-                    var labels5 = chartData.IsLeadOrTobe[3];
+
+                        //var myVal = parseInt('@Session["companyId"]');
+                        for (i = 0; i < CompanyId.length; i++) {
+
+
+                            if (CompanyId[i] == 1) {
+                                var data = chartData.a[0];
+                                var labels2 = chartData.IsLeadOrTobe[0];
+                            }
+                            if (CompanyId[i] == 2) {
+                                var data2 = chartData.a[1];
+                                var labels3 = chartData.IsLeadOrTobe[1];
+                            }
+
+                            if (CompanyId[i] == 3) {
+                                var data3 = chartData.a[2];
+                                var labels4 = chartData.IsLeadOrTobe[2];
+                            }
+
+                            if (CompanyId[i] == 4) {
+                                var data4 = chartData.a[3];
+                                var labels5 = chartData.IsLeadOrTobe[3];
+                            }
+                        }
+                    }
+                    else {
+
+                        var data = chartData.a[0];
+                        var data2 = chartData.a[1];
+                        var data3 = chartData.a[2];
+                        var data4 = chartData.a[3];
+
+                        var labels2 = chartData.IsLeadOrTobe[0];
+                        var labels3 = chartData.IsLeadOrTobe[1];
+                        var labels4 = chartData.IsLeadOrTobe[2];
+                        var labels5 = chartData.IsLeadOrTobe[3];
+                    }
 
                     var yLable = ['NextGen AMS', 'NextGen SAP', 'DCX', 'Cloud', 'CyberSecurity', 'Digital Mfg', 'AI', 'Chatbots', 'Devops', 'Blockchain', 'End to End Offering'];
 
@@ -208,10 +264,32 @@
 
                     debugger;
 
-                    var data1 = chartData[0];
-                    var data2 = chartData[1];
-                    var data3 = chartData[2];
-                    var data4 = chartData[3];
+                    if ('@Session["companyId"]' != '') {
+                       // var myVal = parseInt('@Session["companyId"]');
+
+                        for (i = 0; i < CompanyId.length; i++) {
+                            if (CompanyId[i] == 1)
+                                var data1 = chartData[0];
+                            if (CompanyId[i] == 2)
+                                var data2 = chartData[1];
+                            if (CompanyId[i] == 3)
+                                var data3 = chartData[0];
+                            if (CompanyId[i] == 4)
+                                var data4 = chartData[0];
+                        }
+                    
+                       
+                    }
+                    else {
+
+
+                        var data1 = chartData[0];
+                        var data2 = chartData[1];
+                        var data3 = chartData[2];
+                        var data4 = chartData[3];
+
+                    }
+
 
                     var chart = new Chart('chart1', {
                         type: 'radar',

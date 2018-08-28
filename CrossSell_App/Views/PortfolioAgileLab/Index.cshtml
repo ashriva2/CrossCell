@@ -1,7 +1,10 @@
 ﻿@model IEnumerable<CrossSell_App.DataAccess.Portfolio_Agile_Lab>
+
 @{
-    ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+                /**/
+
+                ViewBag.Title = "Index";
+                Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <script src="~/Scripts/jquery-3.3.1.min.js"></script>
 @*<h2>Index</h2>*@
@@ -95,6 +98,8 @@
     }
     });*@
     $('#ddlCompanyId').on('change', function (event) {
+        debugger;
+        if ($(event.target)[0].value!="")
         window.location.href = "/PortfolioAgileLab/Index?id=" + $(event.target)[0].value;
         $("#ddlCompanyId").val($(event.target)[0].value);
     });

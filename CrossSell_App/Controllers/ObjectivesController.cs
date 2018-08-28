@@ -41,16 +41,18 @@ namespace CrossSell_App.Controllers
         public ActionResult Create(int id)
         {
             int companyId = 0;
-            if (Session["companyId"] != null)
+            if(id==0)
             {
-                companyId = Convert.ToInt16(Session["companyId"]);
-                //do something interesting
-
+                companyId = 1;
             }
             else
             {
                 companyId = id;
             }
+            
+           
+           
+            
             ViewBag.fillCompanyddl = FillCompanyDropDown(companyId);
 
 
@@ -66,7 +68,27 @@ namespace CrossSell_App.Controllers
             var sectionList = db.Metadatas.ToList();
             //checking if the data exists for the particular company id in db
             //Company Id is hardcoded 
-            var companyData = db.Objectives.Where(x => x.Company_Id == companyId).OrderBy(x => x.Objective_Id).ToList();
+            List<Company> CompanyList = new List<Company>();
+            List<Int32> companyIds = new List<Int32>();
+            if (companyId == 0)
+            {
+                if (Session["companyId"] != null)
+                {
+                    companyIds = (List<Int32>)Session["companyId"];
+                }
+                else
+                {
+                    companyIds.Add(companyId);
+                }
+            }
+            else
+            {
+                companyIds.Add(companyId);
+            }
+           
+            var companyData = db.Objectives.Where(x => x.Company_Id == companyIds.FirstOrDefault()).OrderBy(x => x.Objective_Id).ToList();
+
+
 
             if (companyData.Count == 0)
             {
@@ -347,12 +369,15 @@ namespace CrossSell_App.Controllers
             List<SelectListItem> listItems = new List<SelectListItem>();
             //var companyList = db.Companies.ToList();
             List<Company> companyList = new List<Company>();
+            List<Int32> companyIds = new List<Int32>();
             if (Session["companyId"] != null)
             {
                 //do something interesting
-                int id = Convert.ToInt16(Session["companyId"]);
-                companyList = db.Companies.Where(x => x.Company_Id == id).ToList();
-            }
+                companyIds = (List<Int32>)Session["companyId"];
+                foreach (var item in companyIds)
+                    companyList.Add(db.Companies.Where(x => x.Company_Id == item).FirstOrDefault());
+            
+        }
             else
             {
 

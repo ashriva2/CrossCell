@@ -26,7 +26,31 @@
         <div>
             <canvas id="chart1"></canvas>
             <script>
+                UserCompaniesList();
                 getData();
+                var CompanyId = [];
+                var CompanyNames = [];
+
+
+                function UserCompaniesList() {
+                    $.ajax({
+                        type: "POST",
+                        url: "/Home/GetUserCompanies",
+                        //data: '{name: "' + $("#txtName").val() + '" }',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (response) {
+                            debugger;
+                            CompanyId = response;
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                }
                 var data1 = [];
                 var data2 = [];
                 var data3 = [];
@@ -53,10 +77,28 @@
                 function initializeChartSeries(chartData) {
                     debugger;
 
-                    data1 = chartData[0];
-                    data2 = chartData[1];
-                    data3 = chartData[2];
-                    data4 = chartData[3];
+                     if ('@Session["companyId"]' != '') {
+                        for (i = 0; i < CompanyId.length; i++) {
+                            if (CompanyId[i] == 1)
+                                 data1 = chartData[0];
+                            if (CompanyId[i] == 2)
+                                 data2 = chartData[1];
+                            if (CompanyId[i] == 3)
+                                 data3 = chartData[2];
+                            if (CompanyId[i] == 4)
+                                 data4 = chartData[3];
+                        }
+                    }
+                    else {
+
+
+                         data1 = chartData[0];
+                         data2 = chartData[1];
+                         data3 = chartData[2];
+                         data4 = chartData[3];
+
+                    }
+                    
                     DisplayChart(data1, data2, data3, data4);
                 }
 

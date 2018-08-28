@@ -23,36 +23,44 @@ namespace CrossSell_App.Controllers
         public ActionResult Index(int id)
         {
 
-            int companyId = 0;
-           // int idFromSession = 0;
-       
+            int companyId = id;
+            // int idFromSession = 0;
+            List<Company> CompanyList = new List<Company>();
+            List<Int32> companyIds = new List<Int32>();
             if (Session["companyId"] != null)
             {
-                companyId = Convert.ToInt16(Session["companyId"]);
+                companyIds = (List<Int32>)Session["companyId"];
                 //do something interesting
-
+                foreach (var item in companyIds)
+                    CompanyList.Add(db.Companies.Where(x => x.Company_Id == item).FirstOrDefault());
             }
             else
             {
-                companyId = id;
+                companyIds.Add(id);
             }
            
             ViewBag.fillCompanyddl = FillCompanyDropDown(companyId);
-            IQueryable < Portfolio_Agile_Lab > portfolio_Agile_Lab = null;
+            IQueryable<Portfolio_Agile_Lab> portfolio_Agile_LabData = null;
+            List<IQueryable> portfolio_Agile_Lab_ =new List<IQueryable>();
             if (companyId == 0)
             {
-                 portfolio_Agile_Lab = db.Portfolio_Agile_Lab.Include(p => p.Company).Include(p => p.Portfolio);
+                
+                    portfolio_Agile_LabData = db.Portfolio_Agile_Lab.Include(p => p.Company).Include(p => p.Portfolio).Where(x => companyIds.Contains(x.Company_Id));
+                    //portfolio_Agile_Lab_.Add(portfolio_Agile_LabData);
+                
+              
             }
             else
             {
-                portfolio_Agile_Lab = db.Portfolio_Agile_Lab.Include(p => p.Company).Include(p => p.Portfolio).Where(x=>x.Company_Id==companyId);
+                portfolio_Agile_LabData = db.Portfolio_Agile_Lab.Where(x => x.Company_Id == companyId).Include(p => p.Company).Include(p => p.Portfolio);
+           
             }
 
 
             if (TempData.ContainsKey("saveMessage"))
                 ViewBag.Message = TempData["saveMessage"].ToString();
 
-            return View(portfolio_Agile_Lab.ToList());
+            return View(portfolio_Agile_LabData.ToList());
         }
 
         // GET: Portfolio_Agile_Lab/Details/5
@@ -294,11 +302,15 @@ namespace CrossSell_App.Controllers
             List<SelectListItem> listItems = new List<SelectListItem>();
            
             List<Company> companyList = new List<Company>();
+            List<Int32> companyIds = new List<Int32>();
             if (Session["companyId"] != null)
             {
-                int id = Convert.ToInt16(Session["companyId"]);
+                //int id = Convert.ToInt16(Session["companyId"]);
+                companyIds = (List<Int32>)Session["companyId"];
                 //do something interesting
-                companyList = db.Companies.Where(x => x.Company_Id == id).ToList();
+                
+                foreach (var item in companyIds)
+                    companyList.Add(db.Companies.Where(x => x.Company_Id == item).FirstOrDefault());
             }
             else
             {

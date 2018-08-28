@@ -16,6 +16,7 @@ namespace CrossSell_App.Controllers
         // GET: Login
         public ActionResult Index()
         {
+            Session.Abandon();
             return View();
         }
         [HttpPost]
@@ -53,10 +54,17 @@ namespace CrossSell_App.Controllers
                         }
                         else
                         {
-                             var companyId = db.UserAccesses.Where(x => x.UserRoleId == IsUserexist.UserRoleId).Select(x => x.CompanyId).FirstOrDefault();
-                          
-                            Session["companyId"] = companyId;
-                            return Redirect("/Home/Index");
+                             var companyId = db.UserAccesses.Where(x => x.UserRoleId == IsUserexist.UserRoleId).Select(x => x.CompanyId).ToList();
+                            if (strDDLValue == "Admin")
+                                  {
+                                ViewBag.Message = "You are not authorized as Admin";
+                                return View(model);
+                            }
+                            else
+                            {
+                                Session["companyId"] = companyId;
+                                return Redirect("/Home/Index");
+                            }
                         }
                       
 
