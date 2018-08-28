@@ -6,43 +6,100 @@
 
 
 <h4>Search Result for : @ViewBag.SearchText</h4>
+<br /><br />
+<div>
+	@*portfolio view*@
+	<div class="col-sm-6">
+		<table style="width:50%">
+			<tbody>
 
-<table>
-	<tbody>
-
-		<tr>
-			<th style="padding:2%"></th>
-			@foreach (var header in ViewBag.CompanyList)
-			{
-				<th style="background-color:#0070ad; color:white; text-align:center; padding:2% !important">
-					@header
-				</th>
-			}
-		</tr>
-		@{
-
-			foreach (var item in @ViewBag.portfolioList)
-			{
-				<tr style="border:solid 1px">
-					<td align="center" style="border:solid 1px">
-
-						@item.Portfolio_Name
-					</td>
+				<tr>
+					<th style="padding:2%"></th>
 					@foreach (var header in ViewBag.CompanyList)
 					{
-						
-						foreach (var curUsage in Model.protfolio)
-						{
-							//var query = Model.Where(x => x.PortfolioName == @item.Portfolio_Name && x.CompanyName == @header).Select(x => x.CurrentUsage).ToList();
-							if (curUsage.CompanyName == header && curUsage.PortfolioName == @item.Portfolio_Name)
-							{
-								<td align="center" style="border:solid 1px">@curUsage.CurrentUsage</td>
-							}
-						}
+						<th style="background-color:#0070ad; color:white; text-align:center; padding:2% !important">
+							@header
+						</th>
 					}
 				</tr>
-			}
-		}
+				@{
 
-	</tbody>
-</table>
+					foreach (var item in @ViewBag.portfolioList)
+					{
+						<tr style="border:solid 1px">
+							<td align="center" style="border:solid 1px">
+
+								@item.Portfolio_Name
+							</td>
+							@foreach (var header in ViewBag.CompanyList)
+							{
+
+								foreach (var curUsage in Model.protfolio)
+								{
+									//var query = Model.Where(x => x.PortfolioName == @item.Portfolio_Name && x.CompanyName == @header).Select(x => x.CurrentUsage).ToList();
+									if (curUsage.CompanyName == header && curUsage.PortfolioName == @item.Portfolio_Name)
+									{
+										<td align="center" style="border:solid 1px">@curUsage.CurrentUsage</td>
+									}
+								}
+							}
+						</tr>
+					}
+				}
+
+			</tbody>
+		</table>
+	</div>
+	@*digital picture benchmark*@
+	<div class="col-sm-6">
+		<table style="width:57%">
+			<tbody>
+
+				<tr>
+					<th style="padding:2%"></th>
+					@foreach (var header in ViewBag.CompanyList)
+					{
+						<th style="background-color:#0070ad; color:white; text-align:center; padding:2% !important">
+							@header
+						</th>
+					}
+				</tr>
+				@{
+
+					foreach (var item in @ViewBag.SectionName)
+					{
+						<tr style="border:solid 1px">
+							<td align="center" style="border:solid 1px">
+
+								@item
+							</td>
+							@foreach (var header in ViewBag.CompanyList)
+							{
+								foreach (var scoreMax in Model.section)
+								{
+									//var query = Model.Where(x => x.PortfolioName == @item.Portfolio_Name && x.CompanyName == @header).Select(x => x.CurrentUsage).ToList();
+									if (scoreMax.CompanyName == header && scoreMax.SectionName == @item)
+									{
+										<td align="center" style="border:solid 1px">@scoreMax.Score_MAx</td>
+									}
+								}
+							}
+						</tr>
+					}
+
+				}
+
+				<tr><td colspan="1"><br /></td></tr>
+				<tr><td colspan="1"><br /></td></tr>
+				<tr><td colspan="1"><br /></td></tr>
+				<tr><td colspan="1"><br /></td></tr>
+				<tr><td colspan="1"><br /></td></tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<div>
+	<div class="col-sm-6" style="align-content:center"><h2>Portfolio Report</h2></div>
+	<div class="col-sm-6" style="align-content:center"><h2>Digital Picture BenchMark Report</h2></div>
+</div>

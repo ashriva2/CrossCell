@@ -148,103 +148,104 @@
 
 </head>
 <body>
-    #0070ad
+	#0070ad
 
-    <div class="navbar navbar-inverse navbar-fixed-top" style="background-color: white;height:70px;border-color: #0070ad;">
-        <div style="width:50%;float:left">
-            <a href='@Url.Action("Index", "Home")'>
-                <img src="~/Images/logo.svg" alt="Capgemini Worldwide" class="logo" style="float:left;margin-left: 40px;margin-top: 15px;">
-                <img src="~/Images/logo_sogeti.gif" alt="Sogeti" class="logo" style="float:left;margin-left: 40px;margin-top: 15px;">
-          
-            </a>
-        </div>
-        <div style="width:50%;float:left;"><h1>CrossSell</h1></div>
-        <div class="containern fixed-top" style="float:right;margin-right: -200px;margin-top: 15px;">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
+	<div class="navbar navbar-inverse navbar-fixed-top" style="background-color: white;height:70px;border-color: #0070ad;">
+		<div style="width:50%;float:left">
+			<a href='@Url.Action("Index", "Home")'>
+				<img src="~/Images/logo.svg" alt="Capgemini Worldwide" class="logo" style="float:left;margin-left: 40px;margin-top: 15px;">
+				<img src="~/Images/logo_sogeti.gif" alt="Sogeti" class="logo" style="float:left;margin-left: 40px;margin-top: 15px;">
 
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav" style="margin-right:202px">
+			</a>
+		</div>
+		<div style="width:50%;float:left;"><h1>CrossSell</h1></div>
 
-                    <li> <a href="/Home/Index" style="color:#0070ad">Portofolio Agile Lab</a></li>
+	</div>
+	<div class="containern" style="float:right;margin-right: -200px;margin-top: 15px;">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
 
-                    <li><a href="/Home/Index" style="color:#0070ad">Dashboard</a></li>
+		</div>
+		<div class="navbar-collapse collapse">
+			<ul class="nav navbar-nav" style="margin-right:202px">
 
-                    <li>
+				<li> <a href="/Home/Index" style="color:#0070ad">Portofolio Agile Lab</a></li>
 
+				<li><a href="/Home/Index" style="color:#0070ad">Dashboard</a></li>
 
-                        <div class="dropdown">
-                            <button class="dropbtn" style="color:#0070ad">PAL</button>
-                            <div class="dropdown-content">
-                                @Html.ActionLink("Portfolio Report", "PALReport", "Home")
-                                @Html.ActionLink("Portfolio Details", "Index", "PortfolioAgileLab", new { id = 0 }, null)
-
-                            </div>
-                        </div>
+				<li>
 
 
+					<div class="dropdown">
+						<button class="dropbtn" style="color:#0070ad">PAL</button>
+						<div class="dropdown-content">
+							@Html.ActionLink("Portfolio Report", "PALReport", "Home")
+							@Html.ActionLink("Portfolio Details", "Index", "PortfolioAgileLab", new { id = 0 }, null)
 
-                        <div class="dropdown">
-                            <button class="dropbtn" style="color:#0070ad">DPB</button>
-                            <div class="dropdown-content">
-                                @Html.ActionLink("Digital Picture BenchMark Report", "DPBReport", "Home")
-                                @Html.ActionLink("DPB Questionnaire", "Create", "Objectives", new { id = 1 }, null)
-
-                            </div>
-                        </div>
-                    </li>
-                    <li></li>
-                    <li>
-                        <div class="dropdown">
-                            <button class="dropbtn" style="color:#0070ad">Masters</button>
-                            <div class="dropdown-content">
-                                @Html.ActionLink("Portfolios", "Index", "Portfolios")
-                                @Html.ActionLink("Portfolio Type", "Index", "PortfolioType")
-                                @Html.ActionLink("Companies", "Index", "Companies")
-                                @Html.ActionLink("Questionnaire Type", "Index", "Questioners")
-                                @Html.ActionLink("Section", "Index", "Metadatas")
-
-
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <a href='https://talent.capgemini.com/groupsales/pages/accounts/account_management_strategic_initiative/ae_contacts/?param=1328269825' style="margin-top: 2px;color:#0070ad">
-                            AMSI Accounts and Contact
-                        </a>
-                    </li>
-                    <li>
-                        <div class="search-container" style="margin-left: 107px; margin-top: 17px">
-                            <form action="/action_page.php">
-                                <input type="text" placeholder="Search.." name="search" id="search-text">
-                                <button type="button" id="btn-search"><i class="fa fa-search"></i></button>
-                            </form>
-                        </div>
-                    </li>
-                    <li>
+						</div>
+					</div>
 
 
 
+					<div class="dropdown">
+						<button class="dropbtn" style="color:#0070ad">DPB</button>
+						<div class="dropdown-content">
+							@Html.ActionLink("Digital Picture BenchMark Report", "DPBReport", "Home")
+							@Html.ActionLink("DPB Questionnaire", "Create", "Objectives", new { id = 1 }, null)
 
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="body-content" style="padding-top:50PX !important">
-        @RenderBody()
-    </div>
-    <hr />
-    <footer style="top:10px">
-        @*<p style="text-align: center">&copy; @DateTime.Now.Year - Cross Sell App</p>*@
-    </footer>
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+						</div>
+					</div>
+				</li>
+				<li></li>
+				<li>
+					<div class="dropdown">
+						<button class="dropbtn" style="color:#0070ad">Masters</button>
+						<div class="dropdown-content">
+							@Html.ActionLink("Portfolios", "Index", "Portfolios")
+							@Html.ActionLink("Portfolio Type", "Index", "PortfolioType")
+							@Html.ActionLink("Companies", "Index", "Companies")
+							@Html.ActionLink("Questionnaire Type", "Index", "Questioners")
+							@Html.ActionLink("Section", "Index", "Metadatas")
+
+
+						</div>
+					</div>
+				</li>
+				<li>
+					<a href='https://talent.capgemini.com/groupsales/pages/accounts/account_management_strategic_initiative/ae_contacts/?param=1328269825' style="margin-top: 2px;color:#0070ad">
+						AMSI Accounts and Contact
+					</a>
+				</li>
+				<li>
+					<div class="search-container" style="margin-left: 107px; margin-top: 17px">
+						<form action="/action_page.php">
+							<input type="text" placeholder="Search.." name="search" id="search-text">
+							<button type="button" id="btn-search"><i class="fa fa-search"></i></button>
+						</form>
+					</div>
+				</li>
+				<li>
+
+
+
+
+			</ul>
+		</div>
+	</div>
+	<div class="body-content" style="padding-top:50PX !important">
+		@RenderBody()
+	</div>
+	<hr />
+	<footer style="top:10px">
+		@*<p style="text-align: center">&copy; @DateTime.Now.Year - Cross Sell App</p>*@
+	</footer>
+	@Scripts.Render("~/bundles/jquery")
+	@Scripts.Render("~/bundles/bootstrap")
+	@RenderSection("scripts", required: false)
 </body>
 </html>
 
