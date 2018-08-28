@@ -199,6 +199,9 @@
                         </div>
                     </li>
                     <li></li>
+                    @if ((Session["companyId"]) == null)
+                    {
+
                     <li>
                         <div class="dropdown">
                             <button class="dropbtn" style="color:#0070ad">Masters</button>
@@ -213,6 +216,7 @@
                             </div>
                         </div>
                     </li>
+                    }
                     <li>
                         <a href='https://talent.capgemini.com/groupsales/pages/accounts/account_management_strategic_initiative/ae_contacts/?param=1328269825' style="margin-top: 2px;color:#0070ad">
                             AMSI Accounts and Contact

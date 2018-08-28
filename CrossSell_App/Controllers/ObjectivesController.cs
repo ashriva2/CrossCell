@@ -40,7 +40,17 @@ namespace CrossSell_App.Controllers
         // GET: Objectives/Create
         public ActionResult Create(int id)
         {
-            int companyId = id;
+            int companyId = 0;
+            if (Session["companyId"] != null)
+            {
+                companyId = Convert.ToInt16(Session["companyId"]);
+                //do something interesting
+
+            }
+            else
+            {
+                companyId = id;
+            }
             ViewBag.fillCompanyddl = FillCompanyDropDown(companyId);
 
 
@@ -335,8 +345,19 @@ namespace CrossSell_App.Controllers
         {
 
             List<SelectListItem> listItems = new List<SelectListItem>();
-            var companyList = db.Companies.ToList();
+            //var companyList = db.Companies.ToList();
+            List<Company> companyList = new List<Company>();
+            if (Session["companyId"] != null)
+            {
+                //do something interesting
+                int id = Convert.ToInt16(Session["companyId"]);
+                companyList = db.Companies.Where(x => x.Company_Id == id).ToList();
+            }
+            else
+            {
 
+                companyList = db.Companies.ToList();
+            }
             foreach (var item in companyList)
             {
                 listItems.Add(new SelectListItem

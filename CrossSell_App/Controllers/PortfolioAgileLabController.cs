@@ -22,7 +22,21 @@ namespace CrossSell_App.Controllers
         // GET: Portfolio_Agile_Lab
         public ActionResult Index(int id)
         {
-            var companyId = id;
+
+            int companyId = 0;
+           // int idFromSession = 0;
+       
+            if (Session["companyId"] != null)
+            {
+                companyId = Convert.ToInt16(Session["companyId"]);
+                //do something interesting
+
+            }
+            else
+            {
+                companyId = id;
+            }
+           
             ViewBag.fillCompanyddl = FillCompanyDropDown(companyId);
             IQueryable < Portfolio_Agile_Lab > portfolio_Agile_Lab = null;
             if (companyId == 0)
@@ -278,10 +292,21 @@ namespace CrossSell_App.Controllers
         {
 
             List<SelectListItem> listItems = new List<SelectListItem>();
-            List<Company> companyList = null;
-            
-            
+           
+            List<Company> companyList = new List<Company>();
+            if (Session["companyId"] != null)
+            {
+                int id = Convert.ToInt16(Session["companyId"]);
+                //do something interesting
+                companyList = db.Companies.Where(x => x.Company_Id == id).ToList();
+            }
+            else
+            {
+
                 companyList = db.Companies.ToList();
+            }
+
+           // 
             
 
             foreach (var item in companyList)
