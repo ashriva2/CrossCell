@@ -42,18 +42,19 @@ namespace CrossSell_App.Controllers
             ViewBag.fillCompanyddl = FillCompanyDropDown(companyId);
             IQueryable<Portfolio_Agile_Lab> portfolio_Agile_LabData = null;
             List<IQueryable> portfolio_Agile_Lab_ =new List<IQueryable>();
-            if (companyId == 0)
+            if (companyId == 0 && Session["companyId"] == null)
             {
+                portfolio_Agile_LabData = db.Portfolio_Agile_Lab.Include(p => p.Company).Include(p => p.Portfolio);
                 
-                    portfolio_Agile_LabData = db.Portfolio_Agile_Lab.Include(p => p.Company).Include(p => p.Portfolio).Where(x => companyIds.Contains(x.Company_Id));
                     //portfolio_Agile_Lab_.Add(portfolio_Agile_LabData);
                 
               
             }
+           
             else
             {
-                portfolio_Agile_LabData = db.Portfolio_Agile_Lab.Where(x => x.Company_Id == companyId).Include(p => p.Company).Include(p => p.Portfolio);
-           
+                portfolio_Agile_LabData = db.Portfolio_Agile_Lab.Include(p => p.Company).Include(p => p.Portfolio).Where(x => companyIds.Contains(x.Company_Id));
+
             }
 
 
