@@ -201,20 +201,24 @@
 					</div>
 				</li>
 				<li></li>
-				<li>
-					<div class="dropdown">
-						<button class="dropbtn" style="color:#0070ad">Masters</button>
-						<div class="dropdown-content">
-							@Html.ActionLink("Portfolios", "Index", "Portfolios")
-							@Html.ActionLink("Portfolio Type", "Index", "PortfolioType")
-							@Html.ActionLink("Companies", "Index", "Companies")
-							@Html.ActionLink("Questionnaire Type", "Index", "Questioners")
-							@Html.ActionLink("Section", "Index", "Metadatas")
+				@if ((Session["companyId"]) == null)
+				{
+
+					<li>
+						<div class="dropdown">
+							<button class="dropbtn" style="color:#0070ad">Masters</button>
+							<div class="dropdown-content">
+								@Html.ActionLink("Portfolios", "Index", "Portfolios")
+								@Html.ActionLink("Portfolio Type", "Index", "PortfolioType")
+								@Html.ActionLink("Companies", "Index", "Companies")
+								@Html.ActionLink("Questionnaire Type", "Index", "Questioners")
+								@Html.ActionLink("Section", "Index", "Metadatas")
 
 
+							</div>
 						</div>
-					</div>
-				</li>
+					</li>
+				}
 				<li>
 					<a href='https://talent.capgemini.com/groupsales/pages/accounts/account_management_strategic_initiative/ae_contacts/?param=1328269825' style="margin-top: 2px;color:#0070ad">
 						AMSI Accounts and Contact

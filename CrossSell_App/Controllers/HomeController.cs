@@ -61,7 +61,20 @@ namespace CrossSell_App.Controllers
 
 
             var PortfoliosList = db.Portfolios.ToList();
-            var CompanyList = db.Companies.ToList();
+            //logic for company wise
+            List<Company> CompanyList = new List<Company>();
+       
+                if (Session["companyId"] != null)
+                {
+                int id = Convert.ToInt16(Session["companyId"]);
+                //do something interesting
+                CompanyList = db.Companies.Where(x=>x.Company_Id== id).ToList();
+            }
+            else
+            {
+                CompanyList = db.Companies.ToList();
+            }
+            
             int countOfUsage = 0;
             int countOfLeadsToBe = 0;
             //filter all the list of Current Usage
@@ -131,13 +144,27 @@ namespace CrossSell_App.Controllers
         public JsonResult GetDPBReportData()
         {
             var objectivesList = db.Objectives.ToList();
-            var companyList = db.Companies.ToList();
+            List<Company> CompanyList = new List<Company>();
+
+            if (Session["companyId"] != null)
+            {
+                int id = Convert.ToInt16(Session["companyId"]);
+                //do something interesting
+
+                CompanyList = db.Companies.Where(x => x.Company_Id == id).ToList();
+            }
+            else
+            {
+                CompanyList = db.Companies.ToList();
+            }
+            //CompanyList = db.Companies.ToList();
+            //var companyList = db.Companies.ToList();
             var metaDataList = db.Metadatas.Where(x=>x.Metadata_Id!=7).OrderBy(x=>x.Metadata_Id).ToList();
             int count = 0;
             List<double?>[] dataseries = new List<double?>[100];
             
 
-            foreach (var cmp in companyList) {
+            foreach (var cmp in CompanyList) {
                 var companyObjectives = objectivesList.Where(t => t.Company_Id == cmp.Company_Id).ToList();
 
                 List<double?> customerSeries  = new List<double?>();
@@ -163,9 +190,22 @@ namespace CrossSell_App.Controllers
         {
 
             List<SelectListItem> listItems = new List<SelectListItem>();
-            var companyList = db.Companies.ToList();
 
-            foreach (var item in companyList)
+           // var companyList = db.Companies.ToList();
+            List<Company> CompanyList = new List<Company>();
+            if (Session["companyId"] != null)
+            {
+                int id = Convert.ToInt16(Session["companyId"]);
+                //do something interesting
+                CompanyList = db.Companies.Where(x => x.Company_Id == id).ToList();
+            }
+            else
+            {
+
+                CompanyList = db.Companies.ToList();
+            }
+           
+            foreach (var item in CompanyList)
             {
                 listItems.Add(new SelectListItem
                 {

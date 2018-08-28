@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
+<h3 style="text-align:center;">Portfolio Agile Report</h3>
 <style type="text/css">
     #block_container, #chart1 {
         display: inline;
@@ -15,14 +15,14 @@
 <script src="~/Scripts/jquery.min.js"></script>
 <div style="width: 50%;float: right;">
     @{ var ddlCompanyId = 0;}
-    @Html.DropDownListFor(model => ddlCompanyId, (List<SelectListItem>)@ViewBag.fillCompanyddl, "-- Select Company --", new { @class = "form-control", @style = "float: right; width: 50%;margin-bottom: 10px;MARGIN-TOP: 20PX;", @onchange = "showDPBGraph(this.value)", value = '0' })
+    @Html.DropDownListFor(model => ddlCompanyId, (List<SelectListItem>)@ViewBag.fillCompanyddl, "-- Select Company --", new { @class = "form-control", @style = "float: right; width: 30%;margin-bottom: 2px;MARGIN-TOP: -46PX;height: 31px;", @onchange = "showDPBGraph(this.value)", value = '0' })
 </div>
 <div id="block_container">
 
     <div style="width:100% !important;float:left">
-        <div class="lead" style="margin-left:50px;text-align: center;">
+        @*<div class="lead" style="margin-left:50px;text-align: center;">
             Digital Picture Benchmark (DPB)
-        </div>
+        </div>*@
         <div>
             <canvas id="chart1"></canvas>
             <script>

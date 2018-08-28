@@ -28,8 +28,11 @@ namespace CrossSell_App.Controllers
                 string strDDLValue = Request.Form["Role"].ToString();
                 string userName = Convert.ToString(Request.Form["UserName"]);
                 string password = Convert.ToString(Request.Form["Password"]);
+                
 
+                var IsUserexist = db.UserRoles.Where(x => x.EmailId == userName).FirstOrDefault();
 
+                
                 FormsAuthentication.SetAuthCookie(userName, false);
                 if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
                     && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
@@ -38,9 +41,25 @@ namespace CrossSell_App.Controllers
                 }
                 else
                 {
-                    if (strDDLValue == "Admin" && (userName == "admin" || userName == "Admin") && password=="admin")
+                    //if (strDDLValue == "Admin" && (userName == "admin" || userName == "Admin") && password == "admin")
+                    //{
+                    //    return Redirect("/Home/Index");
+                    //}
+                    if (IsUserexist != null)
                     {
-                        return Redirect("/Home/Index");
+                        if (IsUserexist.IsAdmin)
+                        {
+                            return Redirect("/Home/Index");
+                        }
+                        else
+                        {
+                             var companyId = db.UserAccesses.Where(x => x.UserRoleId == IsUserexist.UserRoleId).Select(x => x.CompanyId).FirstOrDefault();
+                          
+                            Session["companyId"] = companyId;
+                            return Redirect("/Home/Index");
+                        }
+                      
+
                     }
 
                     else

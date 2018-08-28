@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Portfolio Agile Report</h2>
+<h3 style="text-align:center;">Portfolio Agile Report</h3>
 
 <style type="text/css">
     #block_container, #chart1 {
@@ -13,14 +13,14 @@
 </style>
 <div style="width: 50%;float: right;">
     @{ var ddlCompanyId = 0;}
-    @Html.DropDownListFor(model => ddlCompanyId, (List<SelectListItem>)@ViewBag.fillCompanyddl, "-- Select Company --", new { @class = "form-control", @style = "float: right; width: 50%;margin-bottom: 10px;MARGIN-TOP: 20PX;", @onchange = "showPALGraph(this.value)", value = '0' })
+    @Html.DropDownListFor(model => ddlCompanyId, (List<SelectListItem>)@ViewBag.fillCompanyddl, "-- Select Company --", new { @class = "form-control", @style = "float: right; width: 30%;margin-bottom: 2px;MARGIN-TOP: -46PX;height: 30PX", @onchange = "showPALGraph(this.value)", value = '0' })
 </div>
 
 <div id="block_container">
     <div style="width:100% !important;float:left">
-        <div class="lead" style="text-align: center;">
-            Portofolio Agile Lab (PAL)
-        </div>
+        @*<div class="lead" style="text-align: center;">
+          
+        </div>*@
         <div style="font-size: x-small;margin-bottom:20px;text-align:right;">
             Legends:
             * : Leader
@@ -30,7 +30,7 @@
             <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
             <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-            <canvas id="chart"></canvas>
+            <canvas id="chart" style="height:500px !important"></canvas>
             <script>
                 var data1 = [];
                 var data2 = [];
