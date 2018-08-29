@@ -8,11 +8,15 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using CrossSell_App.DataAccess;
+using CrossSell_App.Models;
+using CrossSell_App.UtilityClasses;
 
 namespace CrossSell_App.Controllers
 {
     public class PortfolioAgileLabController : Controller
     {
+        static UserCompaniesInfo userComapniesData;
+        private Utility utilObj = new Utility();
         private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
 
 
@@ -27,12 +31,11 @@ namespace CrossSell_App.Controllers
             // int idFromSession = 0;
             List<Company> CompanyList = new List<Company>();
             List<Int32> companyIds = new List<Int32>();
-            if (Session["companyId"] != null)
+            userComapniesData = utilObj.getUsercompanyInfo();
+            if (userComapniesData.companyId != null && companyId==0)
             {
-                companyIds = (List<Int32>)Session["companyId"];
-                //do something interesting
-                foreach (var item in companyIds)
-                    CompanyList.Add(db.Companies.Where(x => x.Company_Id == item).FirstOrDefault());
+                companyIds = userComapniesData.companyId;
+               
             }
             else
             {
@@ -42,13 +45,12 @@ namespace CrossSell_App.Controllers
             ViewBag.fillCompanyddl = FillCompanyDropDown(companyId);
             IQueryable<Portfolio_Agile_Lab> portfolio_Agile_LabData = null;
             List<IQueryable> portfolio_Agile_Lab_ =new List<IQueryable>();
-            if (companyId == 0 && Session["companyId"] == null)
+            if (companyId == 0 && companyIds.Count==1)
             {
                 portfolio_Agile_LabData = db.Portfolio_Agile_Lab.Include(p => p.Company).Include(p => p.Portfolio);
                 
                     //portfolio_Agile_Lab_.Add(portfolio_Agile_LabData);
-                
-              
+                             
             }
            
             else
@@ -299,28 +301,17 @@ namespace CrossSell_App.Controllers
         }
         private List<SelectListItem> FillCompanyDropDown(int companyId)
         {
-
-            List<SelectListItem> listItems = new List<SelectListItem>();
-           
+            List<SelectListItem> listItems = new List<SelectListItem>();           
             List<Company> companyList = new List<Company>();
             List<Int32> companyIds = new List<Int32>();
-            if (Session["companyId"] != null)
+            if (userComapniesData.companyId == null)
             {
-                //int id = Convert.ToInt16(Session["companyId"]);
-                companyIds = (List<Int32>)Session["companyId"];
-                //do something interesting
-                
-                foreach (var item in companyIds)
-                    companyList.Add(db.Companies.Where(x => x.Company_Id == item).FirstOrDefault());
+                companyList = db.Companies.ToList();
             }
             else
             {
-
-                companyList = db.Companies.ToList();
+                companyList = userComapniesData.comPanies;
             }
-
-           // 
-            
 
             foreach (var item in companyList)
             {

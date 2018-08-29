@@ -8,12 +8,15 @@ using System.Web;
 using System.Web.Mvc;
 using CrossSell_App.DataAccess;
 using CrossSell_App.Models;
+using CrossSell_App.UtilityClasses;
 
 namespace CrossSell_App.Controllers
 {
     public class ObjectivesController : Controller
     {
+        private Utility utilObj = new Utility();
         private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
+       static UserCompaniesInfo userComapniesData;
 
         // GET: Objectives
         public ActionResult Index()
@@ -40,6 +43,7 @@ namespace CrossSell_App.Controllers
         // GET: Objectives/Create
         public ActionResult Create(int id)
         {
+            userComapniesData = utilObj.getUsercompanyInfo();
             int companyId = 0;
             if(id==0)
             {
@@ -49,12 +53,8 @@ namespace CrossSell_App.Controllers
             {
                 companyId = id;
             }
-            
-           
-           
-            
-            ViewBag.fillCompanyddl = FillCompanyDropDown(companyId);
 
+            ViewBag.fillCompanyddl = FillCompanyDropDown(companyId);
 
             ViewBag.Company_Id = new SelectList(db.Companies, "Company_Id", "Company_Name");
             ViewBag.Questioner_Id = new SelectList(db.Questioners, "Questioner_Id", "Questioner1");
@@ -70,21 +70,18 @@ namespace CrossSell_App.Controllers
             //Company Id is hardcoded 
             List<Company> CompanyList = new List<Company>();
             List<Int32> companyIds = new List<Int32>();
-            if (companyId == 0)
-            {
-                if (Session["companyId"] != null)
+    
+            
+                if(userComapniesData.companyId != null)
                 {
-                    companyIds = (List<Int32>)Session["companyId"];
-                }
-                else
-                {
-                    companyIds.Add(companyId);
-                }
+                companyIds = userComapniesData.companyId;
             }
-            else
-            {
+                else
+             {
+                
                 companyIds.Add(companyId);
             }
+        
            
             var companyData = db.Objectives.Where(x => x.Company_Id == companyIds.FirstOrDefault()).OrderBy(x => x.Objective_Id).ToList();
 
@@ -370,18 +367,15 @@ namespace CrossSell_App.Controllers
             //var companyList = db.Companies.ToList();
             List<Company> companyList = new List<Company>();
             List<Int32> companyIds = new List<Int32>();
-            if (Session["companyId"] != null)
-            {
-                //do something interesting
-                companyIds = (List<Int32>)Session["companyId"];
-                foreach (var item in companyIds)
-                    companyList.Add(db.Companies.Where(x => x.Company_Id == item).FirstOrDefault());
             
-        }
-            else
+            if (userComapniesData.companyId == null)
             {
 
                 companyList = db.Companies.ToList();
+            }
+            else
+            {
+                companyList = userComapniesData.comPanies;
             }
             foreach (var item in companyList)
             {
