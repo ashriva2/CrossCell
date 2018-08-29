@@ -1,0 +1,194 @@
+﻿@model CrossSell_App.Models.PalDetailMapping
+@{
+    ViewBag.Title = "PalDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-md-12 top-30">
+    <div class="col-md-12 palheaderdiv"><h4>PAL (Portofolio Agile Lab)</h4></div>
+
+    <table class="col-md-7 paltbl top-10">
+        <thead>
+            <!--table header-->
+            <tr>
+                <th class="remove-border"></th>
+                <th class="paltblheader">
+                    Protfolio/Accounts
+                </th>
+                @foreach (var header in Model.companyList)
+                {
+                    <th class="paltblheader">
+                        @header.Company_Name
+                    </th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            <!--Table Body-->
+            @{
+                foreach (var item in Model.portfolioTypeList)
+                {
+                    var portfolios = Model.portfolioList.Where(t => t.Portfolio_Type_Id == item.Portfolio_Type_Id);
+                    var portfolioTypeId = 0;
+                    foreach (var portfolio in portfolios)
+                    {
+                        var portfolioAgileLab = Model.portfolioAgileLab.Where(t => t.Portfolio_Id == portfolio.Portfolio_Id).ToList();
+                        <tr>
+                            @if (item.Portfolio_Type_Id != portfolioTypeId)
+                            {
+                                <td rowspan="@portfolios.Count()" class="td-padding">
+                                    @item.Portfolio_Type_Name
+                                </td>
+
+                                portfolioTypeId = item.Portfolio_Type_Id;
+                            }
+                            <td class="td-padding">
+                                @portfolio.Portfolio_Name
+                            </td>
+                            @foreach (var company in Model.companyList)
+                            {
+                                var pal = portfolioAgileLab.Where(t => t.Company_Id == company.Company_Id).FirstOrDefault();
+                                string isFutureScope = pal.Future_Scope ? "+" : "";
+                                string IsMarketLead = pal.IsMarketLead ? "*" : "";
+                                var dispalyValue =  IsMarketLead + isFutureScope;
+                                var curUsage = pal.Current_Usage;
+                                <td class="text-center">
+                                    <span class="">@curUsage</span><span class="marketleadicon">@IsMarketLead</span><span class="futurescopeicon">@isFutureScope</span>
+                                </td>
+                            }
+                        </tr>
+                    }
+                }
+            }
+
+            @*<tr>
+                    <td rowspan="2">
+                        Established
+                    </td>
+                    <td class="remove-border">
+                        NextGen AMS
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="remove-border">
+                        NextGen SAP
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td rowspan="2">
+                        Fast Growing
+                    </td>
+                    <td>
+                        DCX
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        Cloud
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td rowspan="3">
+                        Emerging Technology
+                    </td>
+                    <td>
+                        CyberSecurity
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        Digital Mfg
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        AI
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td rowspan="3">
+                        Others
+                    </td>
+                    <td>
+                        Chatbots
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        Devops
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        Blockchain
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        End to End Offering
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>*@
+        </tbody>
+        <tfoot>
+            <tr>
+                <td class="remove-border"></td>
+                <td class="remove-border"></td>
+                @foreach (var company in Model.companyList)
+                {
+                <td class="remove-border editlink text-center">
+                    @Html.ActionLink("Edit", "Edit", new { id = company.Company_Id })
+                </td>
+                }
+            </tr>
+        </tfoot>
+    </table>
+</div>
+<div class="col-md-12 top-30">
+    <div class="margin-top-30 ">    <span style="color:blue;font-weight:bolder">+</span>  “To Be” – Future scope exists in the account</div>
+    <div>     <span style="color:green;font-weight:bolder">*</span>   “Lead”  – Most mature account in the tech, to help other accounts</div>
+</div>

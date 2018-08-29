@@ -216,6 +216,7 @@
     </Compile>
     <Compile Include="Models\ChartMappingData.cs" />
     <Compile Include="Models\ObjectiveModel.cs" />
+    <Compile Include="Models\PalDetailMapping.cs" />
     <Compile Include="Models\Portfolio.cs" />
     <Compile Include="Models\PortfolioAgileLab.cs" />
     <Compile Include="Models\PortfolioType.cs" />
@@ -341,6 +342,7 @@
     <Content Include="Views\Search\SearchBySectionView.cshtml" />
     <Content Include="Views\Search\SearchByCompanyView.cshtml" />
     <Content Include="Views\Search\NoResultView.cshtml" />
+    <Content Include="Views\PortfolioAgileLab\PalDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
