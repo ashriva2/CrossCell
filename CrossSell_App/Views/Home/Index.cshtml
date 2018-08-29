@@ -37,7 +37,11 @@
             @*<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>*@
             <canvas id="chart"></canvas>
             <script>
+
+                
                 function getData() {
+                 
+                   
                     $.ajax({
                         type: "POST",
                         url: "/Home/GetData",
@@ -46,7 +50,9 @@
                         dataType: "json",
                         success: function (response) {
                             debugger;
+                           
                             DisplayChart(response);
+                            
                         },
                         failure: function (response) {
                             alert(response.responseText);
@@ -106,23 +112,40 @@
                         for (i = 0; i < CompanyId.length; i++) {
 
 
-                            if (CompanyId[i] == 1) {
+                            if (CompanyId[i] == 1 && CompanyId.length == 1) {
                                 var data = chartData.a[0];
                                 var labels2 = chartData.IsLeadOrTobe[0];
                             }
-                            if (CompanyId[i] == 2) {
+                            else if (CompanyId[i] == 1) {
+                                var data = chartData.a[0];
+                                var labels2 = chartData.IsLeadOrTobe[0];
+                            }
+                            
+                            if (CompanyId[i] == 2 && CompanyId.length == 2) {
                                 var data2 = chartData.a[1];
                                 var labels3 = chartData.IsLeadOrTobe[1];
                             }
+                            else if (CompanyId[i]==2) {
+                                var data2 = chartData.a[0];
+                                var labels3 = chartData.IsLeadOrTobe[0];
+                            }
 
-                            if (CompanyId[i] == 3) {
+                            if (CompanyId[i] == 3 && CompanyId.length == 3) {
                                 var data3 = chartData.a[2];
                                 var labels4 = chartData.IsLeadOrTobe[2];
                             }
+                            else if (CompanyId[i] == 3) {
+                                var data3 = chartData.a[0];
+                                var labels4 = chartData.IsLeadOrTobe[0];
+                            }
 
-                            if (CompanyId[i] == 4) {
+                            if (CompanyId[i] == 4 && CompanyId.length == 4) {
                                 var data4 = chartData.a[3];
                                 var labels5 = chartData.IsLeadOrTobe[3];
+                            }
+                            else if (CompanyId[i] == 4) {
+                                var data4 = chartData.a[0];
+                                var labels5 = chartData.IsLeadOrTobe[0];
                             }
                         }
                     }
@@ -268,13 +291,22 @@
                        // var myVal = parseInt('@Session["companyId"]');
 
                         for (i = 0; i < CompanyId.length; i++) {
-                            if (CompanyId[i] == 1)
+                            if (CompanyId[i] == 1 && CompanyId.length==1)
                                 var data1 = chartData[0];
-                            if (CompanyId[i] == 2)
+                            else if (CompanyId[i] == 1)
+                                var data1 = chartData[0]; 
+                            if (CompanyId[i] == 2 && CompanyId.length == 2)
                                 var data2 = chartData[1];
-                            if (CompanyId[i] == 3)
+                            else if (CompanyId[i] == 2)
+                                var data2 = chartData[0];
+                            if (CompanyId[i] == 3 && CompanyId.length == 3)
+                                var data3 = chartData[2];
+                            else if (CompanyId[i] == 3)
                                 var data3 = chartData[0];
-                            if (CompanyId[i] == 4)
+
+                            if (CompanyId[i] == 4 && CompanyId.length == 4)
+                                var data4 = chartData[3];
+                            else if (CompanyId[i] == 4)
                                 var data4 = chartData[0];
                         }
                     

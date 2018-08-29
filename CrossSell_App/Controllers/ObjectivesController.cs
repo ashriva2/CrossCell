@@ -159,7 +159,7 @@ namespace CrossSell_App.Controllers
                         var getQuesForMeta = db.Questioners.Where(x => x.Metadata_Id == item.Metadata_Id).ToList();
                         foreach (var ques in getQuesForMeta)
                         {
-                            var dataExist = db.Objectives.Where(x => x.Metadata_Id == ques.Metadata_Id && x.Questioner_Id == ques.Questioner_Id && x.Company_Id == companyId).FirstOrDefault();
+                            var dataExist = db.Objectives.Where(x => x.Metadata_Id == ques.Metadata_Id && x.Questioner_Id == ques.Questioner_Id && x.Company_Id == companyIds.FirstOrDefault()).FirstOrDefault();
                             if (dataExist != null)
                             {
                                 ObjectivesModel DataInput = new ObjectivesModel();
