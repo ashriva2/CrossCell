@@ -84,18 +84,24 @@ namespace CrossSell_App.Controllers
                 var companyList = homeRepo.GetCompanies().Where(c => result.Contains(c.Company_Id)).Select(x => new { x.Company_Name, x.Company_Id }).ToList();
                 ViewBag.CompanyList = companyList;
                 List<SelectListItem> listItems = new List<SelectListItem>();
-                foreach (var item in companyList)
-                {
-                    listItems.Add(new SelectListItem
+                //if (CompList.Contains("["))
+                //{
+                    foreach (var item in companyList)
                     {
-                        Text = item.Company_Name,
-                        Value = Convert.ToString(item.Company_Id),
-                    });
+                        listItems.Add(new SelectListItem
+                        {
+                            Text = item.Company_Name,
+                            Value = Convert.ToString(item.Company_Id),
+                        });
 
 
-                }
-               
-                ViewBag.fillCompanyddl = listItems;
+                    }
+                    ViewBag.fillCompanyddl = listItems;
+                //}
+                //else
+                //{
+                //    ViewBag.fillCompanyddl = FillCompanyDropDown();
+                //}
             }
             else
             {
@@ -260,7 +266,7 @@ namespace CrossSell_App.Controllers
                         customerSeries = new List<double?>();
                         foreach (var meta in metaDataList)
                         {
-                            var obj = selectedComp.Where(x => x.Metadata_Id == meta.Metadata_Id && x.Company_Id==co).Select(t => t.Score_Max).Sum();
+                            var obj = selectedComp.Where(x => x.Metadata_Id == meta.Metadata_Id && x.Company_Id == co).Select(t => t.Score_Max).Sum();
                             obj = Math.Round((Double)obj, 2);
                             customerSeries.Add(obj);
                         }
