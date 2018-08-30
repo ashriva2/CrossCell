@@ -249,6 +249,7 @@
 	</footer>
 	@Scripts.Render("~/bundles/jquery")
 	@Scripts.Render("~/bundles/bootstrap")
+
 	@RenderSection("scripts", required: false)
 </body>
 </html>
@@ -287,7 +288,7 @@
 		})
 		function onSearchClick() {
 			if ($('#search-text').val() != "" && $('#search-text').val() != null && $('#search-text').val() != undefined) {
-				debugger;
+			
 				var NestId = $('#search-text').val();
 				var url = "/Search/SearchAlgorithm?searchKey=" + NestId;
 				window.location.href = url;
@@ -297,7 +298,7 @@
 			}
 		}
 		$('#search-text').keypress(function (e) {
-			debugger;
+		
 			var key = e.which;
 			if (key == 13)  // the enter key code
 			{
@@ -307,7 +308,7 @@
 		});
 
 		$('#btn-search').keypress(function (e) {
-			debugger;
+		
 			var key = e.which;
 			if (key == 13)  // the enter key code
 			{

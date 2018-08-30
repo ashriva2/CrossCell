@@ -45,3 +45,15 @@
 
 	</tbody>
 </table>
+
+<script type="text/javascript">
+
+
+	var array = @Html.Raw(Json.Encode(@ViewBag.CompanyIdList));
+	debugger
+        for(var i = 0; i < array.length; i++) {
+            alert(array[i]);
+        }
+
+
+</script>

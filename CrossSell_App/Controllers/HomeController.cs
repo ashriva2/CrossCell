@@ -18,10 +18,37 @@ namespace CrossSell_App.Controllers
             return View();
         }
 
-        public ActionResult PALReport()
+        public ActionResult PALReport(string CompList)
         {
-            ViewBag.fillCompanyddl = FillCompanyDropDown();
-            return View();
+            if (CompList != null)
+            {
+                List<int> result = System.Web.Helpers.Json.Decode<List<int>>(CompList);
+
+
+                var coList = FillCompanyDropDown();
+                //var companyList = db.Companies.Where(c => result.Contains(c.Company_Id)).Select(x => x.Company_Id).ToList();
+
+                var companyList = db.Companies.Where(c => result.Contains(c.Company_Id)).Select(x => new { x.Company_Name, x.Company_Id }).ToList();
+                ViewBag.CompanyList = companyList;
+                List<SelectListItem> listItems = new List<SelectListItem>();
+                foreach (var item in companyList)
+                {
+                    listItems.Add(new SelectListItem
+                    {
+                        Text = item.Company_Name,
+                        Value = Convert.ToString(item.Company_Id),
+                    });
+
+
+                }
+                ViewBag.fillCompanyddl = listItems;
+            }
+            else
+            {
+                ViewBag.fillCompanyddl = FillCompanyDropDown();
+            }
+
+            return View("PALReport");
         }
 
         public ActionResult DPBReport()
@@ -38,7 +65,7 @@ namespace CrossSell_App.Controllers
 
 
 
-        public JsonResult GetData()
+        public JsonResult GetData(List<int> compList)
         {
             //var jsonData = "{'labels': [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 50]," +
             //             "'data': [90, 80, 60, 80, 90, 0, 0, 0, 0, 0, 0]" +
@@ -57,24 +84,32 @@ namespace CrossSell_App.Controllers
             List<string>[] IsLeadOrTobe = new List<string>[100];
 
             var DataFromPAL = db.Portfolio_Agile_Lab.ToList().OrderBy(x => x.Portfolio_Id);
+            if (compList != null && compList.Count>0)
+            {
+                DataFromPAL = DataFromPAL.Where(x => compList.Contains(x.Company_Id)).ToList().OrderBy(x => x.Portfolio_Id);
+            }
             //need to check the number of company present
 
 
             var PortfoliosList = db.Portfolios.ToList();
             //logic for company wise
             List<Company> CompanyList = new List<Company>();
-       
-                if (Session["companyId"] != null)
-                {
-                int id = Convert.ToInt16(Session["companyId"]);
-                //do something interesting
-                CompanyList = db.Companies.Where(x=>x.Company_Id== id).ToList();
+            if (compList != null) {
+                CompanyList = db.Companies.Where(x => compList.Contains(x.Company_Id)).ToList();
             }
             else
             {
-                CompanyList = db.Companies.ToList();
+                if (Session["companyId"] != null)
+                {
+                    int id = Convert.ToInt16(Session["companyId"]);
+                    //do something interesting
+                    CompanyList = db.Companies.Where(x => x.Company_Id == id).ToList();
+                }
+                else
+                {
+                    CompanyList = db.Companies.ToList();
+                }
             }
-            
             int countOfUsage = 0;
             int countOfLeadsToBe = 0;
             //filter all the list of Current Usage
@@ -159,18 +194,19 @@ namespace CrossSell_App.Controllers
             }
             //CompanyList = db.Companies.ToList();
             //var companyList = db.Companies.ToList();
-            var metaDataList = db.Metadatas.Where(x=>x.Metadata_Id!=7).OrderBy(x=>x.Metadata_Id).ToList();
+            var metaDataList = db.Metadatas.Where(x => x.Metadata_Id != 7).OrderBy(x => x.Metadata_Id).ToList();
             int count = 0;
             List<double?>[] dataseries = new List<double?>[100];
-            
 
-            foreach (var cmp in CompanyList) {
+
+            foreach (var cmp in CompanyList)
+            {
                 var companyObjectives = objectivesList.Where(t => t.Company_Id == cmp.Company_Id).ToList();
 
-                List<double?> customerSeries  = new List<double?>();
-                foreach(var mtdata in metaDataList)
+                List<double?> customerSeries = new List<double?>();
+                foreach (var mtdata in metaDataList)
                 {
-                    var metadata = companyObjectives.Where(x => x.Metadata_Id == mtdata.Metadata_Id).Select(t=>t.Score_Max).Sum();
+                    var metadata = companyObjectives.Where(x => x.Metadata_Id == mtdata.Metadata_Id).Select(t => t.Score_Max).Sum();
                     metadata = Math.Round((Double)metadata, 2);
                     customerSeries.Add(metadata);
 
@@ -191,7 +227,7 @@ namespace CrossSell_App.Controllers
 
             List<SelectListItem> listItems = new List<SelectListItem>();
 
-           // var companyList = db.Companies.ToList();
+            // var companyList = db.Companies.ToList();
             List<Company> CompanyList = new List<Company>();
             if (Session["companyId"] != null)
             {
@@ -204,7 +240,7 @@ namespace CrossSell_App.Controllers
 
                 CompanyList = db.Companies.ToList();
             }
-           
+
             foreach (var item in CompanyList)
             {
                 listItems.Add(new SelectListItem
