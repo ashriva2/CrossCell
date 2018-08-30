@@ -40,6 +40,43 @@ namespace CrossSell_App.Controllers
             return View();
         }
 
+
+        public ActionResult PALReport(string CompList)
+        {
+            if (CompList != null)
+            {
+                List<int> result = System.Web.Helpers.Json.Decode<List<int>>(CompList);
+
+
+                var coList = FillCompanyDropDown();
+                //var companyList = db.Companies.Where(c => result.Contains(c.Company_Id)).Select(x => x.Company_Id).ToList();
+
+                var companyList = db.Companies.Where(c => result.Contains(c.Company_Id)).Select(x => new { x.Company_Name, x.Company_Id }).ToList();
+                ViewBag.CompanyList = companyList;
+                List<SelectListItem> listItems = new List<SelectListItem>();
+                foreach (var item in companyList)
+                {
+                    listItems.Add(new SelectListItem
+                    {
+                        Text = item.Company_Name,
+                        Value = Convert.ToString(item.Company_Id),
+                    });
+
+
+                }
+                ViewBag.fillCompanyddl = listItems;
+            }
+            else
+            {
+                ViewBag.fillCompanyddl = FillCompanyDropDown();
+            }
+
+            return View("PALReport");
+        }
+
+      
+
+
         public ActionResult CustomerHome()
         {
             return View();
@@ -48,7 +85,7 @@ namespace CrossSell_App.Controllers
 
 
 
-        public JsonResult GetData()
+        public JsonResult GetData(List<int> compList)
         {
             
             List<int>[] a = new List<int>[100];
@@ -58,26 +95,35 @@ namespace CrossSell_App.Controllers
             var DataFromPAL = homeRepo.GetPALData();
             
             //need to check the number of company present
-
+            if (compList != null && compList.Count > 0)
+	            {
+	                DataFromPAL = DataFromPAL.Where(x => compList.Contains(x.Company_Id)).ToList();
+	            }
 
             var PortfoliosList = homeRepo.GetPortfolios();
             //logic for company wise
 
             List<Company> CompanyList = new List<Company>();
             List<Int32> companyIds = new List<Int32>();
-           // userComapniesData = utilObj.getUsercompanyInfo();
-           
-            if (userComapniesData.companyId!=null && userComapniesData.companyId.Count>0)
+            // userComapniesData = utilObj.getUsercompanyInfo();
+            if (compList != null)
             {
-                //int id = Convert.ToInt16(Session["companyId"]);
-                CompanyList = userComapniesData.comPanies;
-                companyIds = userComapniesData.companyId;
-              ViewBag.companyIds = userComapniesData.companyId;
-              
+
             }
             else
             {
-                CompanyList = homeRepo.GetCompanies();
+                if (userComapniesData.companyId != null && userComapniesData.companyId.Count > 0)
+                {
+                    //int id = Convert.ToInt16(Session["companyId"]);
+                    CompanyList = userComapniesData.comPanies;
+                    companyIds = userComapniesData.companyId;
+                    ViewBag.companyIds = userComapniesData.companyId;
+
+                }
+                else
+                {
+                    CompanyList = homeRepo.GetCompanies();
+                }
             }
 
             int countOfUsage = 0;
