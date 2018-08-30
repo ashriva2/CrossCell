@@ -54,14 +54,27 @@
                 var data1 = [];
                 var data2 = [];
                 var data3 = [];
-                var data4 = [];
-                function getData() {
+				var data4 = [];
+
+
+				function getData() {
+
+					debugger;
+					var array = @Html.Raw(Json.Encode(@ViewBag.fillCompanyddl));
+					var compList = [];
+					for (var i = 0; i < array.length; i++) {
+						
+						compList.push(array[i].Value);
+					}
+
                     $.ajax({
                         type: "POST",
                         url: "/Home/GetDPBReportData",
                         //data: '{name: "' + $("#txtName").val() + '" }',
                         contentType: "application/json; charset=utf-8",
-                        dataType: "json",
+						data: JSON.stringify({
+							compList: compList
+						}),
                         success: function (response) {
                             debugger;
                             initializeChartSeries(response);
@@ -108,39 +121,55 @@
 
                     }
                     
-                    DisplayChart(data1, data2, data3, data4);
+					DisplayChart(data1, data2, data3, data4, chartData);
                 }
 
-                function DisplayChart(dpbData1, dpbData2, dpbData3, dpbData4) {
+				function DisplayChart(dpbData1, dpbData2, dpbData3, dpbData4, chartData) {
+					debugger;
+					var array = @Html.Raw(Json.Encode(@ViewBag.fillCompanyddl));
+					var compData = [];
+
+					for (var i = 0; i < array.length; i++) {
+						var data = {
+							
+							borderColor: chartData.companyColor[i],
+							data: chartData.dataseries[i],
+							fill: false,
+							label: array[i].Text,
+						}
+						compData.push(data);
+					}
+
+					//[{
+					//	label: 'Schneider',
+					//	data: dpbData1,//[53, 69, 35, 43, 50, 75],
+					//	borderColor: '#3dcd58',
+					//	fill: false,
+					//},
+					//	{
+					//		label: 'Daimler',
+					//		data: dpbData2,//[33, 53, 27, 43, 20, 35],
+					//		borderColor: '#7b7c81',
+					//		fill: false,
+					//	},
+					//	{
+					//		label: 'Disney',
+					//		data: dpbData3,//[61, 78, 48, 71, 67, 72],
+					//		borderColor: '#0795e6',
+					//		fill: false,
+					//	},
+					//	{
+					//		label: 'McDonalds',
+					//		data: dpbData4,//[55, 35, 0, 0, 0, 0],
+					//		borderColor: '#ffc111',
+					//		fill: false,
+					//	}]
 
                     var chart = new Chart('chart1', {
                         type: 'radar',
                         data: {
                             labels: ['Customer', 'Employee', 'Partner', 'CIO', 'CDO', 'CEO'],
-                            datasets: [{
-                                label: 'Schneider',
-                                data: dpbData1,//[53, 69, 35, 43, 50, 75],
-                                borderColor: '#3dcd58',
-                                fill: false,
-                            },
-                            {
-                                label: 'Daimler',
-                                data: dpbData2,//[33, 53, 27, 43, 20, 35],
-                                borderColor: '#7b7c81',
-                                fill: false,
-                            },
-                            {
-                                label: 'Disney',
-                                data: dpbData3,//[61, 78, 48, 71, 67, 72],
-                                borderColor: '#0795e6',
-                                fill: false,
-                            },
-                            {
-                                label: 'McDonalds',
-                                data: dpbData4,//[55, 35, 0, 0, 0, 0],
-                                borderColor: '#ffc111',
-                                fill: false,
-                            }]
+                            datasets: compData
                         },
                         options: {
                             legend: {

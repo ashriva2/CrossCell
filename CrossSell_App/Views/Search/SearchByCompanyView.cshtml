@@ -12,9 +12,12 @@
 	<div class="col-sm-6" style="align-content:center">
 
 		<h2>@Html.ActionLink("Portfolio Report", "PALReport", "Home", new { CompList = Json.Encode(@ViewBag.CompanyIdList) }, null)</h2>
-		@*<h2 onclick=" redirect()">Portfolio Report</h2>*@
+
 	</div>
-	<div class="col-sm-6" style="align-content:center"><h2>Digital Picture BenchMark Report</h2></div><br />
+	<div class="col-sm-6" style="align-content:center">
+		
+		<h2>@Html.ActionLink("Digital Picture BenchMark Report", "DPBReport", "Home", new { CompList = Json.Encode(@ViewBag.CompanyIdList) }, null)</h2>
+	</div><br />
 	<br />
 </div>
 <br />

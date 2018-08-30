@@ -45,14 +45,21 @@
                 var labels4 = [];
                 var labels5 = [];
 
-				function getData() {
+				function getData(selectedComp) {
 					debugger;
-					var array = @Html.Raw(Json.Encode(@ViewBag.fillCompanyddl));
 					var compList = [];
-					for (var i = 0; i < array.length; i++) {
+					if (selectedComp == "" || selectedComp == null) {
+						var array = @Html.Raw(Json.Encode(@ViewBag.fillCompanyddl));
 						
-						compList.push(array[i].Value);
+						for (var i = 0; i < array.length; i++) {
+
+							compList.push(array[i].Value);
+						}
 					}
+					if (selectedComp != "" && selectedComp != null) {
+						compList.push(selectedComp);
+					}
+
 					debugger;
 					$.ajax({
 						type: "POST",
@@ -81,7 +88,7 @@
                 var CompanyId = [];
                 var CompanyNames = [];
 
-
+				var chartDataList;
                 function UserCompaniesList() {
                     $.ajax({
                         type: "POST",
@@ -103,7 +110,8 @@
                 }
 
                 function initializeChartSeries(chartData) {
-                    debugger;
+					debugger;
+					chartDataList = chartData;
                     var records = [];
                     if ('@Session["companyId"]' != '') {
 
@@ -302,76 +310,80 @@
                 }
 
                 function showPALGraph(ele) {
-                    debugger;
-                    if (ele !== "") {
+					debugger;
+					test = JSON.stringify({ 'CompList': ele });
+					//window.location.href = '/Home/PALReport?CompList="' + ele + '"';
+					window.location.href = '/Home/PALReport?CompList=' + ele ;
+					//getData(ele);
+                    //if (ele !== "") {
 
-                        if (ele == 1) {
-                            var paldata1 = data1;
-                            var paldata2 = [];
-                            var paldata3 = [];
-                            var paldata4 = [];
+                    //    if (ele == 1) {
+                    //        var paldata1 = data1;
+                    //        var paldata2 = [];
+                    //        var paldata3 = [];
+                    //        var paldata4 = [];
 
-                            var pallabels2 = labels2;
-                            var pallabels3 = [];
-                            var pallabels4 = [];
-                            var pallabels5 = [];
+                    //        var pallabels2 = labels2;
+                    //        var pallabels3 = [];
+                    //        var pallabels4 = [];
+                    //        var pallabels5 = [];
 
-                            DisplayChart(paldata1, paldata2, paldata3, paldata4, pallabels2, pallabels3, pallabels4, pallabels5);
-                        }
+                    //        DisplayChart(paldata1, paldata2, paldata3, paldata4, pallabels2, pallabels3, pallabels4, pallabels5);
+                    //    }
 
-                        if (ele == 2) {
-                            var paldata1 = [];
-                            var paldata2 = data2;
-                            var paldata3 = [];
-                            var paldata4 = [];
+                    //    if (ele == 2) {
+                    //        var paldata1 = [];
+                    //        var paldata2 = data2;
+                    //        var paldata3 = [];
+                    //        var paldata4 = [];
 
-                            var pallabels2 = [];
-                            var pallabels3 = labels3;
-                            var pallabels4 = [];
-                            var pallabels5 = [];
+                    //        var pallabels2 = [];
+                    //        var pallabels3 = labels3;
+                    //        var pallabels4 = [];
+                    //        var pallabels5 = [];
 
-                            DisplayChart(paldata1, paldata2, paldata3, paldata4, pallabels2, pallabels3, pallabels4, pallabels5);
-                        }
+                    //        DisplayChart(paldata1, paldata2, paldata3, paldata4, pallabels2, pallabels3, pallabels4, pallabels5);
+                    //    }
 
-                        if (ele == 3) {
-                            var paldata1 = [];
-                            var paldata2 = [];
-                            var paldata3 = data3;
-                            var paldata4 = [];
+                    //    if (ele == 3) {
+                    //        var paldata1 = [];
+                    //        var paldata2 = [];
+                    //        var paldata3 = data3;
+                    //        var paldata4 = [];
 
-                            var pallabels2 = [];
-                            var pallabels3 = [];
-                            var pallabels4 = labels4;
-                            var pallabels5 = [];
+                    //        var pallabels2 = [];
+                    //        var pallabels3 = [];
+                    //        var pallabels4 = labels4;
+                    //        var pallabels5 = [];
 
-                            DisplayChart(paldata1, paldata2, paldata3, paldata4, pallabels2, pallabels3, pallabels4, pallabels5);
-                        }
-                        if (ele == 4) {
-                            var paldata1 = [];
-                            var paldata2 = [];
-                            var paldata3 = [];
-                            var paldata4 = data4;
+                    //        DisplayChart(paldata1, paldata2, paldata3, paldata4, pallabels2, pallabels3, pallabels4, pallabels5);
+                    //    }
+                    //    if (ele == 4) {
+                    //        var paldata1 = [];
+                    //        var paldata2 = [];
+                    //        var paldata3 = [];
+                    //        var paldata4 = data4;
 
-                            var pallabels2 = [];
-                            var pallabels3 = [];
-                            var pallabels4 = [];
-                            var pallabels5 = labels5;
-                            DisplayChart(paldata1, paldata2, paldata3, paldata4, pallabels2, pallabels3, pallabels4, pallabels5);
-                        }
-                    } else {
+                    //        var pallabels2 = [];
+                    //        var pallabels3 = [];
+                    //        var pallabels4 = [];
+                    //        var pallabels5 = labels5;
+                    //        DisplayChart(paldata1, paldata2, paldata3, paldata4, pallabels2, pallabels3, pallabels4, pallabels5);
+                    //    }
+                    //} else {
 
-                        var paldata1 = data1;
-                        var paldata2 = data2;
-                        var paldata3 = data3;
-                        var paldata4 = data4;
+                    //    var paldata1 = data1;
+                    //    var paldata2 = data2;
+                    //    var paldata3 = data3;
+                    //    var paldata4 = data4;
 
-                        var pallabels2 = labels2;
-                        var pallabels3 = labels3;
-                        var pallabels4 = labels4;
-                        var pallabels5 = labels5;
+                    //    var pallabels2 = labels2;
+                    //    var pallabels3 = labels3;
+                    //    var pallabels4 = labels4;
+                    //    var pallabels5 = labels5;
 
-                        DisplayChart(paldata1, paldata2, paldata3, paldata4, pallabels2, pallabels3, pallabels4, pallabels5);
-                    }
+                    //    DisplayChart(paldata1, paldata2, paldata3, paldata4, pallabels2, pallabels3, pallabels4, pallabels5);
+                    //}
                 }
 
             </script>
