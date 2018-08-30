@@ -9,5 +9,6 @@ namespace CrossSell_App.Models
     {
         public List<SearchPortfolio> protfolio;
         public List<SearchBySection> section;
+        public List<int> CompanyList;
     }
 }

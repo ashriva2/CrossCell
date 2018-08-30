@@ -45,11 +45,22 @@
                 var labels4 = [];
                 var labels5 = [];
 
-                function getData() {
-                    $.ajax({
-                        type: "POST",
-                        url: "/Home/GetData",
-                        //data: '{name: "' + $("#txtName").val() + '" }',
+				function getData() {
+					debugger;
+					var array = @Html.Raw(Json.Encode(@ViewBag.fillCompanyddl));
+					var compList = [];
+					for (var i = 0; i < array.length; i++) {
+						
+						compList.push(array[i].Value);
+					}
+					debugger;
+					$.ajax({
+						type: "POST",
+						url: "/Home/GetData",
+						//data: '{name: "' + $("#txtName").val() + '" }',
+						data: JSON.stringify({
+							compList: compList
+						}),
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
                         success: function (response) {
@@ -155,50 +166,64 @@
                         labels5 = chartData.IsLeadOrTobe[3];
                     }
 
-                    DisplayChart(data1, data2, data3, data4, labels2, labels3, labels4, labels5);
+					DisplayChart(data1, data2, data3, data4, labels2, labels3, labels4, labels5, chartData);
 
                 }
 
-                function DisplayChart(data1, data2, data3, data4, labels2, labels3, labels4, labels5) {
+				function DisplayChart(data1, data2, data3, data4, labels2, labels3, labels4, labels5, chartData) {
 
-                    debugger;
+					debugger;
 
+						var array = @Html.Raw(Json.Encode(@ViewBag.fillCompanyddl));
+					var compData = [];
+					
+					//[{
+					//	backgroundColor: '#3dcd58',
+					//	borderColor: '#3dcd58',
+					//	data: data1,
+					//	lbl: labels2,
+					//	label: 'Schneider',
+					//},
+					//	{
+					//		backgroundColor: '#7b7c81',
+					//		borderColor: '#7b7c81',
+					//		data: data2,
+					//		lbl: labels3,
+					//		label: 'Daimler',
+					//	},
+					//	{
+					//		backgroundColor: '#0795e6',
+					//		borderColor: '#0795e6',
+					//		data: data3,
+					//		lbl: labels4,
+					//		label: 'Disney',
+					//	},
+					//	{
+					//		backgroundColor: '	#ffc111',
+					//		borderColor: '	#ffc111',
+					//		data: data4,
+					//		lbl: labels5,
+					//		label: 'McDonalds',
+					//	}
+					//]
+					for (var i = 0; i < array.length; i++) {
+						var data = {
+							backgroundColor: '#3dcd58',
+							borderColor: '#3dcd58',
+							data: chartData.a[i],
+							lbl: chartData.IsLeadOrTobe[i],
+							label: array[i].Text,
+						}
+						compData.push(data);
+					}
                     var yLable = ['NextGen AMS', 'NextGen SAP', 'DCX', 'Cloud', 'CyberSecurity', 'Digital Mfg', 'AI', 'Chatbots', 'Devops', 'Blockchain', 'End to End Offering'];
 
                     var chart = new Chart('chart', {
                         type: 'bar',
                         data: {
                             labels: yLable,
-                            labels2: labels2,
-                            datasets: [{
-                                backgroundColor: '#3dcd58',
-                                borderColor: '#3dcd58',
-                                data: data1,
-                                lbl: labels2,
-                                label: 'Schneider',
-                            },
-                            {
-                                backgroundColor: '#7b7c81',
-                                borderColor: '#7b7c81',
-                                data: data2,
-                                lbl: labels3,
-                                label: 'Daimler',
-                            },
-                            {
-                                backgroundColor: '#0795e6',
-                                borderColor: '#0795e6',
-                                data: data3,
-                                lbl: labels4,
-                                label: 'Disney',
-                            },
-                            {
-                                backgroundColor: '	#ffc111',
-                                borderColor: '	#ffc111',
-                                data: data4,
-                                lbl: labels5,
-                                label: 'McDonalds',
-                            }
-                            ]
+							labels2: labels2,
+							datasets: compData
                         },
                         options: {
                             legend: {

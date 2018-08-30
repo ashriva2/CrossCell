@@ -32,11 +32,14 @@ namespace CrossSell_App.Controllers
             companyId.Sort();
             var companyList = db.Companies.Where(c => companyId.Contains(c.Company_Id)).Select(x => new { x.Company_Name, x.Company_Id }).OrderBy(x => x.Company_Id).ToList();
             List<string> cList = new List<string>();
+            List<int> compIdList = new List<int>();
             foreach (var c in companyList)
             {
                 cList.Add(c.Company_Name);
+                compIdList.Add(c.Company_Id);
             }
             ViewBag.CompanyList = cList;
+            ViewBag.CompanyIdList = compIdList;
             //Portfolio portfolio = db.Portfolios.Find(id);
             var portfolioList = db.Portfolios.ToList();
 
@@ -121,12 +124,14 @@ namespace CrossSell_App.Controllers
                 List<SearchBySection> searchCompBySection = new List<SearchBySection>();
 
                 cList = new List<string>();
+                compIdList = new List<int>();
                 foreach (var c in companyList)
                 {
                     cList.Add(c.Company_Name);
+                    compIdList.Add(c.Company_Id);
                 }
                 ViewBag.CompanyList = cList;
-
+                ViewBag.CompanyIdList = compIdList;
                 var sectionCheck = db.Metadatas.ToList();
                 if (sectionCheck.Count > 0)
                 {

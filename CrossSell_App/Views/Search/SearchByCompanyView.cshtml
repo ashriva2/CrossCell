@@ -8,11 +8,15 @@
 <h4>Search Result for : @ViewBag.SearchText</h4>
 <br /><br />
 
-	  <div>
-	  	<div class="col-sm-6" style="align-content:center"><h2>Portfolio Report</h2></div>
-	  	<div class="col-sm-6" style="align-content:center"><h2>Digital Picture BenchMark Report</h2></div><br />
-	  	<br />
-	  </div>
+<div>
+	<div class="col-sm-6" style="align-content:center">
+
+		@Html.ActionLink("Portfolio Report", "PALReport", "Home",  new { CompList = Json.Encode(@ViewBag.CompanyIdList) }, null)
+		@*<h2 onclick=" redirect()">Portfolio Report</h2>*@
+	</div>
+	<div class="col-sm-6" style="align-content:center"><h2>Digital Picture BenchMark Report</h2></div><br />
+	<br />
+</div>
 <br />
 <div>
 	<br />
@@ -107,3 +111,35 @@
 	</div>
 </div>
 
+
+<input type="hidden" id="CompanyIdList" value="@ViewBag.CompanyIdList" />
+<script type="text/javascript">
+
+	function redirect() {
+		debugger;
+		var array = @Html.Raw(Json.Encode(@ViewBag.CompanyIdList));
+		var listOfComp = [];
+		debugger
+		for (var i = 0; i < array.length; i++) {
+			listOfComp.push(array[i]);
+		}
+		things = JSON.stringify({ 'CompList': listOfComp });
+
+		window.location.href = '/Home/PALReport' + things;
+
+		//$.ajax({
+		//	contentType: 'application/json; charset=utf-8',
+		//	dataType: 'json',
+		//	type: 'POST',
+		//	url: '/Home/PALReport',
+		//	data: things,
+		//	success: function () {
+		//		alert("su");
+		//	},
+		//	failure: function (response) {
+
+		//	}
+		//});
+	}
+
+</script>
