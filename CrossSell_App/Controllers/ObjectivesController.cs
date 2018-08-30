@@ -8,12 +8,15 @@ using System.Web;
 using System.Web.Mvc;
 using CrossSell_App.DataAccess;
 using CrossSell_App.Models;
+using CrossSell_App.UtilityClasses;
 
 namespace CrossSell_App.Controllers
 {
     public class ObjectivesController : Controller
     {
+        private Utility utilObj = new Utility();
         private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
+       static UserCompaniesInfo userComapniesData;
 
         // GET: Objectives
         public ActionResult Index()
@@ -40,19 +43,18 @@ namespace CrossSell_App.Controllers
         // GET: Objectives/Create
         public ActionResult Create(int id)
         {
+            userComapniesData = utilObj.getUsercompanyInfo();
             int companyId = 0;
-            if (Session["companyId"] != null)
+            if(id==0)
             {
-                companyId = Convert.ToInt16(Session["companyId"]);
-                //do something interesting
-
+                companyId = 1;
             }
             else
             {
                 companyId = id;
             }
-            ViewBag.fillCompanyddl = FillCompanyDropDown(companyId);
 
+            ViewBag.fillCompanyddl = FillCompanyDropDown(companyId);
 
             ViewBag.Company_Id = new SelectList(db.Companies, "Company_Id", "Company_Name");
             ViewBag.Questioner_Id = new SelectList(db.Questioners, "Questioner_Id", "Questioner1");
@@ -66,7 +68,24 @@ namespace CrossSell_App.Controllers
             var sectionList = db.Metadatas.ToList();
             //checking if the data exists for the particular company id in db
             //Company Id is hardcoded 
-            var companyData = db.Objectives.Where(x => x.Company_Id == companyId).OrderBy(x => x.Objective_Id).ToList();
+            List<Company> CompanyList = new List<Company>();
+            List<Int32> companyIds = new List<Int32>();
+    
+            
+                if(userComapniesData.companyId != null)
+                {
+                companyIds = userComapniesData.companyId;
+            }
+                else
+             {
+                
+                companyIds.Add(companyId);
+            }
+        
+           
+            var companyData = db.Objectives.Where(x => x.Company_Id == companyIds.FirstOrDefault()).OrderBy(x => x.Objective_Id).ToList();
+
+
 
             if (companyData.Count == 0)
             {
@@ -140,7 +159,7 @@ namespace CrossSell_App.Controllers
                         var getQuesForMeta = db.Questioners.Where(x => x.Metadata_Id == item.Metadata_Id).ToList();
                         foreach (var ques in getQuesForMeta)
                         {
-                            var dataExist = db.Objectives.Where(x => x.Metadata_Id == ques.Metadata_Id && x.Questioner_Id == ques.Questioner_Id && x.Company_Id == companyId).FirstOrDefault();
+                            var dataExist = db.Objectives.Where(x => x.Metadata_Id == ques.Metadata_Id && x.Questioner_Id == ques.Questioner_Id && x.Company_Id == companyIds.FirstOrDefault()).FirstOrDefault();
                             if (dataExist != null)
                             {
                                 ObjectivesModel DataInput = new ObjectivesModel();
@@ -347,16 +366,16 @@ namespace CrossSell_App.Controllers
             List<SelectListItem> listItems = new List<SelectListItem>();
             //var companyList = db.Companies.ToList();
             List<Company> companyList = new List<Company>();
-            if (Session["companyId"] != null)
-            {
-                //do something interesting
-                int id = Convert.ToInt16(Session["companyId"]);
-                companyList = db.Companies.Where(x => x.Company_Id == id).ToList();
-            }
-            else
+            List<Int32> companyIds = new List<Int32>();
+            
+            if (userComapniesData.companyId == null)
             {
 
                 companyList = db.Companies.ToList();
+            }
+            else
+            {
+                companyList = userComapniesData.comPanies;
             }
             foreach (var item in companyList)
             {

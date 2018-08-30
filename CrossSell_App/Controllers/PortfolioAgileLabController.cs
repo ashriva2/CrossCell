@@ -8,11 +8,15 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using CrossSell_App.DataAccess;
+using CrossSell_App.Models;
+using CrossSell_App.UtilityClasses;
 
 namespace CrossSell_App.Controllers
 {
     public class PortfolioAgileLabController : Controller
     {
+        static UserCompaniesInfo userComapniesData;
+        private Utility utilObj = new Utility();
         private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
 
 
@@ -23,37 +27,80 @@ namespace CrossSell_App.Controllers
         public ActionResult Index(int id)
         {
 
-            int companyId = 0;
-           // int idFromSession = 0;
-       
-            if (Session["companyId"] != null)
+            int companyId = id;
+            // int idFromSession = 0;
+            List<Company> CompanyList = new List<Company>();
+            List<Int32> companyIds = new List<Int32>();
+            userComapniesData = utilObj.getUsercompanyInfo();
+            if (userComapniesData.companyId != null && companyId == 0)
             {
-                companyId = Convert.ToInt16(Session["companyId"]);
-                //do something interesting
+                companyIds = userComapniesData.companyId;
 
             }
             else
             {
-                companyId = id;
+                companyIds.Add(id);
             }
-           
+
             ViewBag.fillCompanyddl = FillCompanyDropDown(companyId);
-            IQueryable < Portfolio_Agile_Lab > portfolio_Agile_Lab = null;
-            if (companyId == 0)
+            IQueryable<Portfolio_Agile_Lab> portfolio_Agile_LabData = null;
+            List<IQueryable> portfolio_Agile_Lab_ = new List<IQueryable>();
+            if (companyId == 0 && companyIds.Count == 1 && companyIds[0] == 0)
             {
-                 portfolio_Agile_Lab = db.Portfolio_Agile_Lab.Include(p => p.Company).Include(p => p.Portfolio);
+                portfolio_Agile_LabData = db.Portfolio_Agile_Lab.Include(p => p.Company).Include(p => p.Portfolio);
+
+                //portfolio_Agile_Lab_.Add(portfolio_Agile_LabData);
+
             }
+
             else
             {
-                portfolio_Agile_Lab = db.Portfolio_Agile_Lab.Include(p => p.Company).Include(p => p.Portfolio).Where(x=>x.Company_Id==companyId);
+                portfolio_Agile_LabData = db.Portfolio_Agile_Lab.Include(p => p.Company).Include(p => p.Portfolio).Where(x => companyIds.Contains(x.Company_Id));
+
             }
 
 
             if (TempData.ContainsKey("saveMessage"))
                 ViewBag.Message = TempData["saveMessage"].ToString();
 
-            return View(portfolio_Agile_Lab.ToList());
+            return View(portfolio_Agile_LabData.ToList());
         }
+
+        public ActionResult PalDetails(int? id)
+        {
+            // IQueryable<Portfolio_Agile_Lab> portfolio_Agile_Lab = null;
+
+            PalDetailMapping objDetails = new PalDetailMapping();
+            objDetails.portfolioTypeList = db.Portfolio_Type.ToList();
+            objDetails.portfolioList = db.Portfolios.ToList();
+
+            //ViewBag.protfolioList = db.Portfolios.ToList();
+
+            //ViewBag.protfolioType = (from pt in db.Portfolio_Type
+            //                         join p in db.Portfolios on pt.Portfolio_Type_Id equals p.Portfolio_Type_Id
+            //                         select new
+            //                         {
+            //                             PortfolioTypeId = pt.Portfolio_Type_Id,
+            //                             PortfolioTypeName = pt.Portfolio_Type_Name,
+            //                             PortfolioId = p.Portfolio_Id,
+            //                             PortfolioName = p.Portfolio_Name,
+            //                         }).OrderBy(pt => pt.PortfolioTypeId).ToList();
+
+            var companyList = db.Companies.Select(x => new { x.Company_Name, x.Company_Id }).OrderBy(x => x.Company_Id).ToList();
+            List<string> cList = new List<string>();
+            foreach (var c in companyList)
+            {
+                cList.Add(c.Company_Name);
+            }
+            ViewBag.companyList = cList;
+
+            objDetails.companyList = db.Companies.OrderBy(t => t.Company_Id).ToList();
+            objDetails.portfolioAgileLab = db.Portfolio_Agile_Lab.Include(p => p.Company).Include(p => p.Portfolio).ToList();
+
+            return View(objDetails);
+        }
+
+
 
         // GET: Portfolio_Agile_Lab/Details/5
         public ActionResult Details(int? id)
@@ -236,7 +283,7 @@ namespace CrossSell_App.Controllers
             //ViewBag.Company_Id = new SelectList(db.Companies, "Company_Id", "Company_Name", portfolio_Agile_Lab.Company_Id);
             //ViewBag.Portfolio_Id = new SelectList(db.Portfolios, "Portfolio_Id", "Portfolio_Name", portfolio_Agile_Lab.Portfolio_Id);
             //  return RedirectToAction("Index/"+ CompanyId);
-            return RedirectToAction("Index", new {id = CompanyId });
+            return RedirectToAction("Index", new { id = CompanyId });
         }
 
 
@@ -290,24 +337,17 @@ namespace CrossSell_App.Controllers
         }
         private List<SelectListItem> FillCompanyDropDown(int companyId)
         {
-
             List<SelectListItem> listItems = new List<SelectListItem>();
-           
             List<Company> companyList = new List<Company>();
-            if (Session["companyId"] != null)
+            List<Int32> companyIds = new List<Int32>();
+            if (userComapniesData.companyId == null)
             {
-                int id = Convert.ToInt16(Session["companyId"]);
-                //do something interesting
-                companyList = db.Companies.Where(x => x.Company_Id == id).ToList();
+                companyList = db.Companies.ToList();
             }
             else
             {
-
-                companyList = db.Companies.ToList();
+                companyList = userComapniesData.comPanies;
             }
-
-           // 
-            
 
             foreach (var item in companyList)
             {

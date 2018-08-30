@@ -22,3 +22,80 @@ select,
 textarea {
     max-width: 280px;
 }
+
+
+.top-10 {
+    top: 10px;
+}
+
+.top-20 {
+    top: 20px;
+}
+
+.top-30 {
+    top: 30px;
+}
+
+.top-40 {
+    top: 40px;
+}
+
+.top-50 {
+    top: 50px;
+}
+
+.margin-top-30 {
+    margin-top: 30px;
+}
+
+.font-bold {
+    font-weight: bold;
+}
+
+.paltbl td {
+    border: 1px solid black;
+}
+
+.paltbl th {
+    border: 1px solid black;
+}
+
+.palheaderdiv {
+    text-align: center;
+}
+
+.remove-border {
+    border: none !important;
+}
+
+.float-right {
+    float: right;
+}
+
+.paltblheader {
+    background-color: #0070ad;
+    color: white;
+    text-align: center;
+    padding: 5px 0;
+}
+
+.editlink {
+    font-size: 12px;
+    font-family: -webkit-body
+}
+
+.text-center {
+    text-align: center;
+}
+
+.td-padding {
+    padding: 2px 5px;
+}
+
+.marketleadicon {
+    color: darkgreen;
+}
+
+.futurescopeicon {
+    color: darkblue;
+}

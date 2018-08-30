@@ -11,11 +11,9 @@ namespace CrossSell_App.DataAccess
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class Objective
     {
-        
         public int Objective_Id { get; set; }
         public string Comments { get; set; }
         public Nullable<int> Weight { get; set; }
@@ -28,16 +26,11 @@ namespace CrossSell_App.DataAccess
         public Nullable<bool> IsActive { get; set; }
         public int Questioner_Id { get; set; }
         public int Company_Id { get; set; }
-
+    
         public virtual Company Company { get; set; }
         public virtual Questioner Questioner { get; set; }
         public virtual Metadata Metadata { get; set; }
         public virtual Objective Objectives1 { get; set; }
         public virtual Objective Objective1 { get; set; }
-
-
-
-
-
     }
 }

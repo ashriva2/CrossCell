@@ -47,11 +47,16 @@ namespace CrossSell_App.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Company_Id,Company_Name,IsActive,Company_Contacts,Company_Admin")] Company company)
+        public ActionResult Create([Bind(Include = "Company_Id,Company_Name,IsActive,Company_Contacts,Company_Admin,CompanyColor")] Company company)
         {
             if (ModelState.IsValid)
             {
-
+                var Color_exist = db.Companies.Where(x => x.CompanyColor == company.CompanyColor).FirstOrDefault();
+                if(Color_exist!= null && Color_exist.Company_Id != company.Company_Id)
+                {
+                    ModelState.AddModelError(string.Empty, "There is something wrong with Foo.");
+                    return View(company);
+                }
                 //logic to enter the users 
                 if (company.Company_Admin != "")
                 {
@@ -59,6 +64,16 @@ namespace CrossSell_App.Controllers
                     users.EmailId = company.Company_Admin;
                     users.IsAdmin = true;
                     SaveAdminAndContacts(users);
+
+                    UserAccess Role = new UserAccess()
+                    {
+
+                        CompanyId = company.Company_Id,
+                        UserRoleId = db.UserRoles.Where(x => x.EmailId == company.Company_Contacts).Select(x => x.UserRoleId).FirstOrDefault()
+
+
+                    };
+                    UpdateUserAccess(Role);
                 }
 
                 if (company.Company_Contacts != "")
@@ -67,7 +82,21 @@ namespace CrossSell_App.Controllers
                     users.EmailId = company.Company_Admin;
                     users.IsAdmin = false;
                     SaveAdminAndContacts(users);
+
+                    UserAccess Role = new UserAccess()
+                    {
+
+                        CompanyId = company.Company_Id,
+                        UserRoleId = db.UserRoles.Where(x => x.EmailId == company.Company_Contacts).Select(x => x.UserRoleId).FirstOrDefault()
+
+
+                    };
+
+                    UpdateUserAccess(Role);
+
+
                 }
+               
 
 
                 db.Companies.Add(company);
@@ -78,6 +107,19 @@ namespace CrossSell_App.Controllers
             return View(company);
         }
 
+        public void UpdateUserAccess(UserAccess role)
+        {
+            UserAccess dataUpdate = db.UserAccesses.Where(x => x.UserRoleId == role.UserRoleId).FirstOrDefault();
+            dataUpdate.CompanyId = role.CompanyId;
+            dataUpdate.UserRoleId = role.UserRoleId;
+
+            db.SaveChanges();
+        }
+        public void saveContactsToUserRole(UserAccess role)
+        {
+            db.UserAccesses.Add(role);
+            db.SaveChanges();
+        }
 
         public void SaveAdminAndContacts(UserRole users)
         {
@@ -94,7 +136,22 @@ namespace CrossSell_App.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Company company = db.Companies.Find(id);
-            if (company == null)
+
+            List<UserAccess> userAccess=db.UserAccesses.Where(x => x.CompanyId == id).ToList();
+            List<int> userRoleId = new List<int>();
+            foreach(var item in userAccess)
+            {
+                userRoleId.Add(item.UserRoleId);
+            }
+
+            var userRolesIsAdmin=db.UserRoles.Where(c=> userRoleId.Contains(c.UserRoleId)).Select(x=>new { x.EmailId,x.IsAdmin}).ToList();
+            //string contactEmailId= 
+           
+
+            company.Company_Admin = userRolesIsAdmin.Where(x => x.IsAdmin==true).Select(x=>x.EmailId).FirstOrDefault();
+            company.Company_Contacts = userRolesIsAdmin.Where(x => x.IsAdmin == false).Select(x => x.EmailId).FirstOrDefault();
+
+                        if (company == null)
             {
                 return HttpNotFound();
             }
@@ -106,11 +163,16 @@ namespace CrossSell_App.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Company_Id,Company_Name,IsActive,Company_Contacts,Company_Admin")] Company company)
+        public ActionResult Edit([Bind(Include = "Company_Id,Company_Name,IsActive,Company_Contacts,Company_Admin,CompanyColor")] Company company)
         {
             if (ModelState.IsValid)
             {
-
+                var Color_exist = db.Companies.Where(x => x.CompanyColor == company.CompanyColor).FirstOrDefault();
+                if (Color_exist != null && Color_exist.Company_Id!=company.Company_Id)
+                {
+                    ModelState.AddModelError(string.Empty, "There is something wrong with Foo.");
+                    return View(company);
+                }
 
                 if (company.Company_Admin != "")
                 {
@@ -118,6 +180,16 @@ namespace CrossSell_App.Controllers
                     users.EmailId = company.Company_Admin;
                     users.IsAdmin = true;
                     SaveAdminAndContacts(users);
+
+                    UserAccess Role = new UserAccess()
+                    {
+
+                        CompanyId = company.Company_Id,
+                        UserRoleId = db.UserRoles.Where(x => x.EmailId == company.Company_Contacts).Select(x => x.UserRoleId).FirstOrDefault()
+
+
+                    };
+                    saveContactsToUserRole(Role);
                 }
 
                 if (company.Company_Contacts != "")
@@ -126,10 +198,24 @@ namespace CrossSell_App.Controllers
                     users.EmailId = company.Company_Admin;
                     users.IsAdmin = false;
                     SaveAdminAndContacts(users);
+
+
+                    UserAccess Role = new UserAccess()
+                    {
+
+                        CompanyId = company.Company_Id,
+                        UserRoleId = db.UserRoles.Where(x => x.EmailId == company.Company_Contacts).Select(x => x.UserRoleId).FirstOrDefault()
+
+
+                    };
                 }
+                Company dataToupdate = db.Companies.Where(x => x.Company_Id == company.Company_Id).FirstOrDefault();
 
-
-                db.Entry(company).State = EntityState.Modified;
+                dataToupdate.CompanyColor = company.CompanyColor;
+                dataToupdate.Company_Name = company.Company_Name;
+                dataToupdate.Company_Admin = company.Company_Admin;
+                dataToupdate.Company_Contacts = company.Company_Contacts;
+                //db.Entry(company).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

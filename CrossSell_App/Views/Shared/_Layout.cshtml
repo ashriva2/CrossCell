@@ -182,11 +182,11 @@
 
 					<div class="dropdown">
 						<button class="dropbtn" style="color:#0070ad">PAL</button>
-						<div class="dropdown-content">
-							@Html.ActionLink("Portfolio Report", "PALReport", "Home")
-							@Html.ActionLink("Portfolio Details", "Index", "PortfolioAgileLab", new { id = 0 }, null)
-
-						</div>
+                        <div class="dropdown-content">
+                            @Html.ActionLink("Portfolio Report", "PALReport", "Home")
+                            @*@Html.ActionLink("Portfolio Details", "Index", "PortfolioAgileLab", new { id = 0 }, null)*@
+                            @Html.ActionLink("Portfolio Details", "PalDetails", "PortfolioAgileLab", new { id = 0 }, null)
+                        </div>
 					</div>
 
 
@@ -195,7 +195,7 @@
 						<button class="dropbtn" style="color:#0070ad">DPB</button>
 						<div class="dropdown-content">
 							@Html.ActionLink("Digital Picture BenchMark Report", "DPBReport", "Home")
-							@Html.ActionLink("DPB Questionnaire", "Create", "Objectives", new { id = 1 }, null)
+							@Html.ActionLink("DPB Questionnaire", "Create", "Objectives", new { id = 0 }, null)
 
 						</div>
 					</div>

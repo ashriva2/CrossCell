@@ -23,8 +23,8 @@ namespace CrossSell_App.DataAccess
         }
     
         public int Portfolio_Id { get; set; }
+        [Required(ErrorMessage = "Portfolio  Name is required")]
         public string Portfolio_Name { get; set; }
-        [Required(ErrorMessage = "Portfolio Name is required")]
         public int Portfolio_Type_Id { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

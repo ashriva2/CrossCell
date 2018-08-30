@@ -14,6 +14,7 @@
           <Property Name="IsActive" Type="bit" />
           <Property Name="Company_Admin" Type="nvarchar(max)" />
           <Property Name="Company_Contacts" Type="nvarchar(max)" />
+          <Property Name="CompanyColor" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="CrossSell">
           <Key>
@@ -308,6 +309,7 @@
           <NavigationProperty Name="UserAccesses" Relationship="PAL_DigitalPicModel.FK_UserAccess_CompanyId" FromRole="Company" ToRole="UserAccess" />
           <Property Name="Company_Admin" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Company_Contacts" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyColor" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="CrossSell">
           <Key>
@@ -630,6 +632,7 @@
           <EntitySetMapping Name="Companies">
             <EntityTypeMapping TypeName="PAL_DigitalPicModel.Company">
               <MappingFragment StoreEntitySet="Company">
+                <ScalarProperty Name="CompanyColor" ColumnName="CompanyColor" />
                 <ScalarProperty Name="Company_Contacts" ColumnName="Company_Contacts" />
                 <ScalarProperty Name="Company_Admin" ColumnName="Company_Admin" />
                 <ScalarProperty Name="Company_Id" ColumnName="Company_Id" />
