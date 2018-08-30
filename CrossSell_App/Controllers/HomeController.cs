@@ -28,12 +28,7 @@ namespace CrossSell_App.Controllers
             return View();
         }
 
-        public ActionResult PALReport()
-        {
-            ViewBag.fillCompanyddl = FillCompanyDropDown();
-            return View();
-        }
-
+     
         public ActionResult DPBReport()
         {
             ViewBag.fillCompanyddl = FillCompanyDropDown();
@@ -105,10 +100,12 @@ namespace CrossSell_App.Controllers
 
             List<Company> CompanyList = new List<Company>();
             List<Int32> companyIds = new List<Int32>();
+            List<string> companyColor = new List<string>();
             // userComapniesData = utilObj.getUsercompanyInfo();
             if (compList != null)
             {
-
+                CompanyList = db.Companies.Where(x => compList.Contains(x.Company_Id)).ToList();
+                companyColor = CompanyList.Select(x => x.CompanyColor).ToList();
             }
             else
             {
@@ -180,7 +177,7 @@ namespace CrossSell_App.Controllers
                 countOfLeadsToBe++;
             }
 
-            object FinalChartDataSeries = new { a = a, IsLeadOrTobe = IsLeadOrTobe };
+            object FinalChartDataSeries = new { a = a, IsLeadOrTobe = IsLeadOrTobe, companyColor= companyColor };
 
            
 
