@@ -204,7 +204,7 @@
     <Compile Include="DataAccess\Questioner.cs">
       <DependentUpon>EntityModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataAccess\Repository.cs" />
+    <Compile Include="DataAccess\DAL.cs" />
     <Compile Include="DataAccess\UserAccess.cs">
       <DependentUpon>EntityModel.tt</DependentUpon>
     </Compile>
@@ -215,10 +215,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ChartMappingData.cs" />
+    <Compile Include="Models\CompanyModel.cs" />
+    <Compile Include="Models\MetadataModel.cs" />
     <Compile Include="Models\ObjectiveModel.cs" />
     <Compile Include="Models\PalDetailMapping.cs" />
     <Compile Include="Models\Portfolio.cs" />
     <Compile Include="Models\PortfolioAgileLab.cs" />
+    <Compile Include="Models\PortfolioModel.cs" />
     <Compile Include="Models\PortfolioType.cs" />
     <Compile Include="Models\SearchByCompany.cs" />
     <Compile Include="Models\SearchBySection.cs" />
@@ -227,6 +230,13 @@
     <Compile Include="Models\UserCompaniesInfo.cs" />
     <Compile Include="Models\UserDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\HomeRepository.cs" />
+    <Compile Include="Repositories\LoginRepository.cs" />
+    <Compile Include="Repositories\MetadataRepository.cs" />
+    <Compile Include="Repositories\ObjectivesRepository.cs" />
+    <Compile Include="Repositories\PortfolioAgileLabRepository.cs" />
+    <Compile Include="Repositories\PortfolioController.cs" />
+    <Compile Include="Repositories\SearchRepository.cs" />
     <Compile Include="UtilityClasses\Utility.cs" />
   </ItemGroup>
   <ItemGroup>

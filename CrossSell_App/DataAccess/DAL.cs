@@ -5,7 +5,7 @@ using System.Web;
 
 namespace CrossSell_App.DataAccess
 {
-    public class Repository
+    public class DAL
     {
         private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
         public bool CheckIfPortfolio_CompanyExist(int Portfolio_Id, int Company_Id)

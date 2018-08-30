@@ -1,5 +1,6 @@
 ﻿using CrossSell_App.DataAccess;
 using CrossSell_App.Models;
+using CrossSell_App.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,8 @@ namespace CrossSell_App.Controllers
 {
     public class LoginController : Controller
     {
-
-        private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
+        LoginRepository loginRepo = new LoginRepository();
+        //private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
         // GET: Login
         public ActionResult Index()
         {
@@ -29,11 +30,11 @@ namespace CrossSell_App.Controllers
                 string strDDLValue = Request.Form["Role"].ToString();
                 string userName = Convert.ToString(Request.Form["UserName"]);
                 string password = Convert.ToString(Request.Form["Password"]);
-                
 
-                var IsUserexist = db.UserRoles.Where(x => x.EmailId == userName).FirstOrDefault();
 
-                
+                //var IsUserexist = db.UserRoles.Where(x => x.EmailId == userName).FirstOrDefault();
+                var IsUserexist = loginRepo.GetUser(userName);
+
                 FormsAuthentication.SetAuthCookie(userName, false);
                 if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
                     && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
@@ -54,7 +55,9 @@ namespace CrossSell_App.Controllers
                         }
                         else
                         {
-                             var companyId = db.UserAccesses.Where(x => x.UserRoleId == IsUserexist.UserRoleId).Select(x => x.CompanyId).ToList();
+                            //var companyId = db.UserAccesses.Where(x => x.UserRoleId == IsUserexist.UserRoleId).Select(x => x.CompanyId).ToList();
+                            var companyId = loginRepo.GetUsersCompany(IsUserexist.UserRoleId).Select(x=>x.CompanyId).ToList();
+
                             if (strDDLValue == "Admin")
                                   {
                                 ViewBag.Message = "You are not authorized as Admin";

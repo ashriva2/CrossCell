@@ -9,11 +9,14 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Caching;
+using CrossSell_App.Repository;
+using CrossSell_App.Repositories;
 
 namespace CrossSell_App.Controllers
 {
     public class HomeController : Controller
     {
+        private HomeRepository homeRepo = new HomeRepository();
         private Utility utilObj = new Utility();
         private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
         static UserCompaniesInfo userComapniesData;
@@ -47,27 +50,17 @@ namespace CrossSell_App.Controllers
 
         public JsonResult GetData()
         {
-            //var jsonData = "{'labels': [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 50]," +
-            //             "'data': [90, 80, 60, 80, 90, 0, 0, 0, 0, 0, 0]" +
-            //             "'data2':[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]" +
-            //             "'data3':[90, 0, 60, 80, 90, 0, 0, 0, 70, 0, 0]" +
-            //             "'data4':[90, 0, 0, 80, 0, 0, 0, 0, 70, 0, 90]" +
-            //             "'labels2':['*+', '+', '', '+', '', '', '', '', '', '', '', '']" +
-            //             "'labels3':['', '', '', '', '', '', '', '', '', '', '', '']" +
-            //             "'labels4':['*', '', '+', '+', '+', '', '', '', '*+', '', '']" +
-            //             "'labels5':['+', '', '', '+', '+', '', '+', '+', '+', '', '+']" +
-            //             "'yLable': ['NextGen AMS', 'NextGen SAP', 'DCX', 'Cloud', 'CyberSecurity', 'Digital Mfg', 'AI', 'Chatbots', 'Devops', 'Blockchain', 'End to End Offering']}";
-
-            //Array of List 
-
+            
             List<int>[] a = new List<int>[100];
             List<string>[] IsLeadOrTobe = new List<string>[100];
 
-            var DataFromPAL = db.Portfolio_Agile_Lab.ToList().OrderBy(x => x.Portfolio_Id);
+            //var DataFromPAL = db.Portfolio_Agile_Lab.ToList().OrderBy(x => x.Portfolio_Id);
+            var DataFromPAL = homeRepo.GetPALData();
+            
             //need to check the number of company present
 
 
-            var PortfoliosList = db.Portfolios.ToList();
+            var PortfoliosList = homeRepo.GetPortfolios();
             //logic for company wise
 
             List<Company> CompanyList = new List<Company>();
@@ -84,7 +77,7 @@ namespace CrossSell_App.Controllers
             }
             else
             {
-                CompanyList = db.Companies.ToList();
+                CompanyList = homeRepo.GetCompanies();
             }
 
             int countOfUsage = 0;
@@ -152,7 +145,7 @@ namespace CrossSell_App.Controllers
 
         public JsonResult GetDPBReportData()
         {
-            var objectivesList = db.Objectives.ToList();
+            var objectivesList = homeRepo.GetAllObjectives();
             List<Company> CompanyList = new List<Company>();
             List<Int32> companyIds = new List<Int32>();
            
@@ -163,11 +156,12 @@ namespace CrossSell_App.Controllers
             }
             else
             {
-              CompanyList = db.Companies.ToList();
+              CompanyList =homeRepo.GetCompanies();
             }
             //CompanyList = db.Companies.ToList();
             //var companyList = db.Companies.ToList();
-            var metaDataList = db.Metadatas.Where(x => x.Metadata_Id != 7).OrderBy(x => x.Metadata_Id).ToList();
+            // var metaDataList = db.Metadatas.Where(x => x.Metadata_Id != 7).OrderBy(x => x.Metadata_Id).ToList();
+            var metaDataList =homeRepo.GetMetadatas();
             int count = 0;
             List<double?>[] dataseries = new List<double?>[100];
 
@@ -208,7 +202,7 @@ namespace CrossSell_App.Controllers
             if(userComapniesData.companyId == null)
             {
 
-                CompanyList = db.Companies.ToList();
+                CompanyList = homeRepo.GetCompanies();
             }
             else
             {

@@ -3,7 +3,7 @@
     ViewBag.Title = "PalDetails";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
 <div class="col-md-12 top-30">
     <div class="col-md-12 palheaderdiv"><h4>PAL (Portofolio Agile Lab)</h4></div>
 
@@ -50,7 +50,7 @@
                                 var pal = portfolioAgileLab.Where(t => t.Company_Id == company.Company_Id).FirstOrDefault();
                                 string isFutureScope = pal.Future_Scope ? "+" : "";
                                 string IsMarketLead = pal.IsMarketLead ? "*" : "";
-                                var dispalyValue =  IsMarketLead + isFutureScope;
+                                var dispalyValue = IsMarketLead + isFutureScope;
                                 var curUsage = pal.Current_Usage;
                                 <td class="text-center">
                                     <span class="">@curUsage</span><span class="marketleadicon">@IsMarketLead</span><span class="futurescopeicon">@isFutureScope</span>
@@ -180,9 +180,9 @@
                 <td class="remove-border"></td>
                 @foreach (var company in Model.companyList)
                 {
-                <td class="remove-border editlink text-center">
-                    @Html.ActionLink("Edit", "Edit", new { id = company.Company_Id })
-                </td>
+                    <td class="remove-border editlink text-center">
+                        @Html.ActionLink("Edit", "Edit", new { id = company.Company_Id })
+                    </td>
                 }
             </tr>
         </tfoot>
@@ -192,3 +192,17 @@
     <div class="margin-top-30 ">    <span style="color:blue;font-weight:bolder">+</span>  “To Be” – Future scope exists in the account</div>
     <div>     <span style="color:green;font-weight:bolder">*</span>   “Lead”  – Most mature account in the tech, to help other accounts</div>
 </div>
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ('@ViewBag.Message' != '') {
+            debugger;
+            var msg = '@ViewBag.Message';
+            alert(msg);
+        }
+    })
+</script> 
+
+
+
+

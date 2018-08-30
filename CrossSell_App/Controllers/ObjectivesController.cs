@@ -198,10 +198,6 @@ namespace CrossSell_App.Controllers
 
             }
 
-
-
-
-
             return View(DataList);
         }
 

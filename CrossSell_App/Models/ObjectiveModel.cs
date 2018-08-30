@@ -28,7 +28,7 @@ namespace CrossSell_App.Models
 
 
 
-        public List<Company> Company { get; set; }
+        public List<CompanyModel> Company { get; set; }
         public List<Questioner> Questioner { get; set; }
         public List<SectionModel> Metadata { get; set; }
 

@@ -9,16 +9,18 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using CrossSell_App.DataAccess;
 using CrossSell_App.Models;
+using CrossSell_App.Repository;
 using CrossSell_App.UtilityClasses;
 
 namespace CrossSell_App.Controllers
 {
     public class PortfolioAgileLabController : Controller
     {
+
         static UserCompaniesInfo userComapniesData;
         private Utility utilObj = new Utility();
-        private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
-
+       private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
+        private PortfolioAgileLabRepository pfRepo = new PortfolioAgileLabRepository();
 
         static int CompanyId = 0;
 
@@ -47,7 +49,7 @@ namespace CrossSell_App.Controllers
             List<IQueryable> portfolio_Agile_Lab_ = new List<IQueryable>();
             if (companyId == 0 && companyIds.Count == 1 && companyIds[0] == 0)
             {
-                portfolio_Agile_LabData = db.Portfolio_Agile_Lab.Include(p => p.Company).Include(p => p.Portfolio);
+                portfolio_Agile_LabData = pfRepo.GetAllPAL();
 
                 //portfolio_Agile_Lab_.Add(portfolio_Agile_LabData);
 
@@ -55,7 +57,7 @@ namespace CrossSell_App.Controllers
 
             else
             {
-                portfolio_Agile_LabData = db.Portfolio_Agile_Lab.Include(p => p.Company).Include(p => p.Portfolio).Where(x => companyIds.Contains(x.Company_Id));
+                portfolio_Agile_LabData = pfRepo.GetAllPAL().Where(x => companyIds.Contains(x.Company_Id));
 
             }
 
@@ -66,36 +68,49 @@ namespace CrossSell_App.Controllers
             return View(portfolio_Agile_LabData.ToList());
         }
 
-        public ActionResult PalDetails(int? id)
+        public ActionResult PalDetails(int id)
         {
             // IQueryable<Portfolio_Agile_Lab> portfolio_Agile_Lab = null;
-
+            int companyId = id;
             PalDetailMapping objDetails = new PalDetailMapping();
-            objDetails.portfolioTypeList = db.Portfolio_Type.ToList();
-            objDetails.portfolioList = db.Portfolios.ToList();
+            objDetails.portfolioTypeList = pfRepo.GetAllPortfolioType();
+            objDetails.portfolioList = pfRepo.GetAllPortfolio();
+            
 
-            //ViewBag.protfolioList = db.Portfolios.ToList();
 
-            //ViewBag.protfolioType = (from pt in db.Portfolio_Type
-            //                         join p in db.Portfolios on pt.Portfolio_Type_Id equals p.Portfolio_Type_Id
-            //                         select new
-            //                         {
-            //                             PortfolioTypeId = pt.Portfolio_Type_Id,
-            //                             PortfolioTypeName = pt.Portfolio_Type_Name,
-            //                             PortfolioId = p.Portfolio_Id,
-            //                             PortfolioName = p.Portfolio_Name,
-            //                         }).OrderBy(pt => pt.PortfolioTypeId).ToList();
-
-            var companyList = db.Companies.Select(x => new { x.Company_Name, x.Company_Id }).OrderBy(x => x.Company_Id).ToList();
-            List<string> cList = new List<string>();
-            foreach (var c in companyList)
+            List<Company> CompanyList = new List<Company>();
+            List<Int32> companyIds = new List<Int32>();
+            userComapniesData = utilObj.getUsercompanyInfo();
+            if (userComapniesData.companyId != null && companyId == 0)
             {
-                cList.Add(c.Company_Name);
-            }
-            ViewBag.companyList = cList;
+                companyIds = userComapniesData.companyId;
 
-            objDetails.companyList = db.Companies.OrderBy(t => t.Company_Id).ToList();
-            objDetails.portfolioAgileLab = db.Portfolio_Agile_Lab.Include(p => p.Company).Include(p => p.Portfolio).ToList();
+            }
+            else
+            {
+                companyIds.Add(id);
+            }
+            if (companyId == 0 && companyIds.Count == 1 && companyIds[0] == 0)
+            {
+                // portfolio_Agile_LabData = db.Portfolio_Agile_Lab.Include(p => p.Company).Include(p => p.Portfolio);
+                objDetails.companyList = pfRepo.GetAllCompanies();
+                objDetails.portfolioAgileLab = pfRepo.GetAllPAL().ToList();
+                //portfolio_Agile_Lab_.Add(portfolio_Agile_LabData);
+
+            }
+
+            else
+            {
+                //portfolio_Agile_LabData = db.Portfolio_Agile_Lab.Include(p => p.Company).Include(p => p.Portfolio).Where(x => companyIds.Contains(x.Company_Id));
+                objDetails.companyList = userComapniesData.comPanies;
+                objDetails.portfolioAgileLab = pfRepo.GetAllPAL().Where(x => companyIds.Contains(x.Company_Id)).ToList();
+            }
+
+
+            // objDetails.portfolioAgileLab = db.Portfolio_Agile_Lab.Include(p => p.Company).Include(p => p.Portfolio).ToList();
+            if (TempData.ContainsKey("saveMessage"))
+
+           ViewBag.Message = TempData["saveMessage"].ToString();
 
             return View(objDetails);
         }
@@ -109,7 +124,7 @@ namespace CrossSell_App.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Portfolio_Agile_Lab portfolio_Agile_Lab = db.Portfolio_Agile_Lab.Find(id);
+            Portfolio_Agile_Lab portfolio_Agile_Lab = pfRepo.getPalbyId(id);
             if (portfolio_Agile_Lab == null)
             {
                 return HttpNotFound();
@@ -120,8 +135,8 @@ namespace CrossSell_App.Controllers
         // GET: Portfolio_Agile_Lab/Create
         public ActionResult Create()
         {
-            ViewBag.Company_Id = new SelectList(db.Companies, "Company_Id", "Company_Name");
-            ViewBag.Portfolio_Id = new SelectList(db.Portfolios, "Portfolio_Id", "Portfolio_Name");
+            ViewBag.Company_Id = new SelectList(pfRepo.GetAllCompanies(), "Company_Id", "Company_Name");
+            ViewBag.Portfolio_Id = new SelectList(pfRepo.GetAllPortfolio(), "Portfolio_Id", "Portfolio_Name");
             return View();
         }
 
@@ -135,7 +150,7 @@ namespace CrossSell_App.Controllers
 
             if (ModelState.IsValid)
             {
-                Repository rep = new Repository();
+                DAL rep = new DAL();
                 if (!rep.CheckIfPortfolio_CompanyExist(portfolio_Agile_Lab.Portfolio_Id, portfolio_Agile_Lab.Company_Id))
                 {
                     db.Portfolio_Agile_Lab.Add(portfolio_Agile_Lab);
@@ -145,17 +160,18 @@ namespace CrossSell_App.Controllers
                 {
                     //db.Entry(portfolio_Agile_Lab).State = EntityState.Modified;
                     Portfolio_Agile_Lab UpdateData = new Portfolio_Agile_Lab();
-                    UpdateData = db.Portfolio_Agile_Lab.Where(x => x.Portfolio_Id == portfolio_Agile_Lab.Portfolio_Id && x.Company_Id == portfolio_Agile_Lab.Company_Id).FirstOrDefault();
+                    UpdateData = pfRepo.GetAllPAL().Where(x => x.Portfolio_Id == portfolio_Agile_Lab.Portfolio_Id && x.Company_Id == portfolio_Agile_Lab.Company_Id).FirstOrDefault();
                     UpdateData.Current_Usage = portfolio_Agile_Lab.Current_Usage;
                     UpdateData.IsMarketLead = portfolio_Agile_Lab.IsMarketLead;
                     UpdateData.Future_Scope = portfolio_Agile_Lab.Future_Scope;
-                    db.SaveChanges();
+                    //db.SaveChanges();
+                    //pfRepo.Update_Portfolio_Agile_LabData(UpdateData.Portfolio_Id, UpdateData.Current_Usage, UpdateData.Future_Scope, UpdateData.IsMarketLead, UpdateData.Company_Id);
                 }
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Company_Id = new SelectList(db.Companies, "Company_Id", "Company_Name", portfolio_Agile_Lab.Company_Id);
-            ViewBag.Portfolio_Id = new SelectList(db.Portfolios, "Portfolio_Id", "Portfolio_Name", portfolio_Agile_Lab.Portfolio_Id);
+            ViewBag.Company_Id = new SelectList(pfRepo.GetAllCompanies(), "Company_Id", "Company_Name", portfolio_Agile_Lab.Company_Id);
+            ViewBag.Portfolio_Id = new SelectList(pfRepo.GetAllPortfolio(), "Portfolio_Id", "Portfolio_Name", portfolio_Agile_Lab.Portfolio_Id);
             return View(portfolio_Agile_Lab);
         }
 
@@ -179,7 +195,7 @@ namespace CrossSell_App.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            List<Portfolio_Agile_Lab> portfolio_Agile_Lab = db.Portfolio_Agile_Lab.Where(x => x.Company_Id == id).ToList();
+            List<Portfolio_Agile_Lab> portfolio_Agile_Lab = pfRepo.GetPALByCompanyId(id);
             if (portfolio_Agile_Lab == null)
             {
                 return HttpNotFound();
@@ -204,7 +220,7 @@ namespace CrossSell_App.Controllers
             bool NextGen_AMSFuture_Scope = Convert.ToBoolean(Request.Form["NextGen AMSFuture_Scope"].Split(',')[0]);
 
             bool NextGen_AMSIsMarketLead = Convert.ToBoolean(Request.Form["NextGen AMSIsMarketLead"].Split(',')[0]);
-            Update_Portfolio_Agile_LabData(1, NextGen_AMSCurrent_Usage, NextGen_AMSFuture_Scope, NextGen_AMSIsMarketLead);
+           pfRepo.Update_Portfolio_Agile_LabData(1, NextGen_AMSCurrent_Usage, NextGen_AMSFuture_Scope, NextGen_AMSIsMarketLead, CompanyId);
 
 
 
@@ -212,62 +228,62 @@ namespace CrossSell_App.Controllers
             bool NextGen_SAPFuture_Scope = Convert.ToBoolean(Request.Form["NextGen SAPFuture_Scope"].Split(',')[0]);
             bool NextGen_SAPIsMarketLead = Convert.ToBoolean(Request.Form["NextGen SAPIsMarketLead"].Split(',')[0]);
 
-            Update_Portfolio_Agile_LabData(2, NextGen_SAPCurrent_Usage, NextGen_SAPFuture_Scope, NextGen_SAPIsMarketLead);
+           pfRepo.Update_Portfolio_Agile_LabData(2, NextGen_SAPCurrent_Usage, NextGen_SAPFuture_Scope, NextGen_SAPIsMarketLead, CompanyId);
 
 
             string DCXCurrent_Usage = Convert.ToString(Request.Form["DCXCurrent_Usage"]);
             bool DCXFuture_Scope = Convert.ToBoolean(Convert.ToString(Request.Form["DCXFuture_Scope"]).Split(',')[0]);
             bool DCXIsMarketLead = Convert.ToBoolean(Convert.ToString(Request.Form["DCXIsMarketLead"]).Split(',')[0]);
 
-            Update_Portfolio_Agile_LabData(3, DCXCurrent_Usage, DCXFuture_Scope, DCXIsMarketLead);
+            pfRepo.Update_Portfolio_Agile_LabData(3, DCXCurrent_Usage, DCXFuture_Scope, DCXIsMarketLead, CompanyId);
 
             string CloudCurrent_Usage = Convert.ToString(Request.Form["CloudCurrent_Usage"]);
             bool CloudFuture_Scope = Convert.ToBoolean(Convert.ToString(Request.Form["CloudFuture_Scope"]).Split(',')[0]);
             bool CloudIsMarketLead = Convert.ToBoolean(Convert.ToString(Request.Form["CloudIsMarketLead"]).Split(',')[0]);
 
-            Update_Portfolio_Agile_LabData(4, CloudCurrent_Usage, CloudFuture_Scope, CloudIsMarketLead);
+            pfRepo.Update_Portfolio_Agile_LabData(4, CloudCurrent_Usage, CloudFuture_Scope, CloudIsMarketLead, CompanyId);
 
             string CyberSecurityCurrent_Usage = Convert.ToString(Request.Form["CyberSecurityCurrent_Usage"]);
             bool CyberSecurityFuture_Scope = Convert.ToBoolean(Convert.ToString(Request.Form["CyberSecurityFuture_Scope"]).Split(',')[0]);
             bool CyberSecurityIsMarketLead = Convert.ToBoolean(Convert.ToString(Request.Form["CyberSecurityIsMarketLead"]).Split(',')[0]);
 
-            Update_Portfolio_Agile_LabData(5, CyberSecurityCurrent_Usage, CyberSecurityFuture_Scope, CyberSecurityIsMarketLead);
+            pfRepo.Update_Portfolio_Agile_LabData(5, CyberSecurityCurrent_Usage, CyberSecurityFuture_Scope, CyberSecurityIsMarketLead, CompanyId);
 
             string DigitalMfgCurrent_Usage = Convert.ToString(Request.Form["Digital MfgCurrent_Usage"]);
             bool DigitalMfgFuture_Scope = Convert.ToBoolean(Convert.ToString(Request.Form["Digital MfgFuture_Scope"]).Split(',')[0]);
             bool DigitalMfgIsMarketLead = Convert.ToBoolean(Convert.ToString(Request.Form["Digital MfgIsMarketLead"]).Split(',')[0]);
 
-            Update_Portfolio_Agile_LabData(6, DigitalMfgCurrent_Usage, DigitalMfgFuture_Scope, DigitalMfgIsMarketLead);
+            pfRepo.Update_Portfolio_Agile_LabData(6, DigitalMfgCurrent_Usage, DigitalMfgFuture_Scope, DigitalMfgIsMarketLead, CompanyId);
 
             string AICurrent_Usage = Convert.ToString(Request.Form["AICurrent_Usage"]);
             bool AIFuture_Scope = Convert.ToBoolean(Convert.ToString(Request.Form["AIFuture_Scope"]).Split(',')[0]);
             bool AIIsMarketLead = Convert.ToBoolean(Convert.ToString(Request.Form["AIIsMarketLead"]).Split(',')[0]);
 
-            Update_Portfolio_Agile_LabData(7, AICurrent_Usage, AIFuture_Scope, AIIsMarketLead);
+            pfRepo.Update_Portfolio_Agile_LabData(7, AICurrent_Usage, AIFuture_Scope, AIIsMarketLead, CompanyId);
 
             string ChatbotsCurrent_Usage = Convert.ToString(Request.Form["ChatbotsCurrent_Usage"]);
             bool ChatbotsFuture_Scope = Convert.ToBoolean(Convert.ToString(Request.Form["ChatbotsFuture_Scope"]).Split(',')[0]);
             bool ChatbotsMarketLead = Convert.ToBoolean(Convert.ToString(Request.Form["ChatbotsIsMarketLead"]).Split(',')[0]);
 
-            Update_Portfolio_Agile_LabData(8, ChatbotsCurrent_Usage, ChatbotsFuture_Scope, ChatbotsMarketLead);
+            pfRepo.Update_Portfolio_Agile_LabData(8, ChatbotsCurrent_Usage, ChatbotsFuture_Scope, ChatbotsMarketLead, CompanyId);
 
             string DevOpsCurrent_Usage = Convert.ToString(Request.Form["DevOpsCurrent_Usage"]);
             bool DevOpsFuture_Scope = Convert.ToBoolean(Convert.ToString(Request.Form["DevOpsFuture_Scope"]).Split(',')[0]);
             bool DevOpsIsMarketLead = Convert.ToBoolean(Convert.ToString(Request.Form["DevOpsIsMarketLead"]).Split(',')[0]);
 
-            Update_Portfolio_Agile_LabData(9, DevOpsCurrent_Usage, DevOpsFuture_Scope, DevOpsIsMarketLead);
+            pfRepo.Update_Portfolio_Agile_LabData(9, DevOpsCurrent_Usage, DevOpsFuture_Scope, DevOpsIsMarketLead, CompanyId);
 
             string BlockchainCurrent_Usage = Convert.ToString(Request.Form["BlockchainCurrent_Usage"]);
             bool BlockchainFuture_Scope = Convert.ToBoolean(Convert.ToString(Request.Form["BlockchainFuture_Scope"]).Split(',')[0]);
             bool BlockchainIsMarketLead = Convert.ToBoolean(Convert.ToString(Request.Form["BlockchainIsMarketLead"]).Split(',')[0]);
 
-            Update_Portfolio_Agile_LabData(10, BlockchainCurrent_Usage, BlockchainFuture_Scope, BlockchainIsMarketLead);
+            pfRepo.Update_Portfolio_Agile_LabData(10, BlockchainCurrent_Usage, BlockchainFuture_Scope, BlockchainIsMarketLead, CompanyId);
 
             string End2EndOfferingCurrent_Usage = Convert.ToString(Request.Form["End To End Offering Current_Usage"]);
             bool End2EndOfferingFuture_Scope = Convert.ToBoolean(Convert.ToString(Request.Form["End To End Offering Future_Scope"]).Split(',')[0]);
             bool End2EndOfferingIsMarketLead = Convert.ToBoolean(Convert.ToString(Request.Form["End To End Offering IsMarketLead"]).Split(',')[0]);
 
-            Update_Portfolio_Agile_LabData(11, End2EndOfferingCurrent_Usage, End2EndOfferingFuture_Scope, End2EndOfferingIsMarketLead);
+            pfRepo.Update_Portfolio_Agile_LabData(11, End2EndOfferingCurrent_Usage, End2EndOfferingFuture_Scope, End2EndOfferingIsMarketLead, CompanyId);
 
             //save data
 
@@ -283,23 +299,23 @@ namespace CrossSell_App.Controllers
             //ViewBag.Company_Id = new SelectList(db.Companies, "Company_Id", "Company_Name", portfolio_Agile_Lab.Company_Id);
             //ViewBag.Portfolio_Id = new SelectList(db.Portfolios, "Portfolio_Id", "Portfolio_Name", portfolio_Agile_Lab.Portfolio_Id);
             //  return RedirectToAction("Index/"+ CompanyId);
-            return RedirectToAction("Index", new { id = CompanyId });
+            return RedirectToAction("PalDetails", new { id = 0 });
         }
 
 
         //Save the models data
 
-        public void Update_Portfolio_Agile_LabData(int PortfolioId, string Curr_Usg, bool FutrFcsd, bool IsMrktLd)
-        {
-            Portfolio_Agile_Lab portfolio_Agile_Lab = db.Portfolio_Agile_Lab.Where(x => x.Company_Id == CompanyId && x.Portfolio_Id == PortfolioId).FirstOrDefault();
+        //public void Update_Portfolio_Agile_LabData(int PortfolioId, string Curr_Usg, bool FutrFcsd, bool IsMrktLd)
+        //{
+        //    Portfolio_Agile_Lab portfolio_Agile_Lab = db.Portfolio_Agile_Lab.Where(x => x.Company_Id == CompanyId && x.Portfolio_Id == PortfolioId).FirstOrDefault();
 
-            portfolio_Agile_Lab.Current_Usage = Convert.ToInt16(Curr_Usg);
-            portfolio_Agile_Lab.Future_Scope = FutrFcsd;
-            portfolio_Agile_Lab.IsMarketLead = IsMrktLd;
+        //    portfolio_Agile_Lab.Current_Usage = Convert.ToInt16(Curr_Usg);
+        //    portfolio_Agile_Lab.Future_Scope = FutrFcsd;
+        //    portfolio_Agile_Lab.IsMarketLead = IsMrktLd;
 
 
-            db.SaveChanges();
-        }
+        //    db.SaveChanges();
+        //}
 
         // GET: Portfolio_Agile_Lab/Delete/5
         public ActionResult Delete(int? id)
@@ -308,7 +324,7 @@ namespace CrossSell_App.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Portfolio_Agile_Lab portfolio_Agile_Lab = db.Portfolio_Agile_Lab.Find(id);
+            Portfolio_Agile_Lab portfolio_Agile_Lab = pfRepo.getPalbyId(id);
             if (portfolio_Agile_Lab == null)
             {
                 return HttpNotFound();
@@ -321,9 +337,7 @@ namespace CrossSell_App.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Portfolio_Agile_Lab portfolio_Agile_Lab = db.Portfolio_Agile_Lab.Find(id);
-            db.Portfolio_Agile_Lab.Remove(portfolio_Agile_Lab);
-            db.SaveChanges();
+            pfRepo.DeletePAL(id);
             return RedirectToAction("Index");
         }
 
@@ -342,7 +356,7 @@ namespace CrossSell_App.Controllers
             List<Int32> companyIds = new List<Int32>();
             if (userComapniesData.companyId == null)
             {
-                companyList = db.Companies.ToList();
+                companyList = pfRepo.GetAllCompanies();
             }
             else
             {
