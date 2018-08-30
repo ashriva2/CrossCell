@@ -11,7 +11,7 @@
 <div>
 	<div class="col-sm-6" style="align-content:center">
 
-		@Html.ActionLink("Portfolio Report", "PALReport", "Home",  new { CompList = Json.Encode(@ViewBag.CompanyIdList) }, null)
+		<h2>@Html.ActionLink("Portfolio Report", "PALReport", "Home", new { CompList = Json.Encode(@ViewBag.CompanyIdList) }, null)</h2>
 		@*<h2 onclick=" redirect()">Portfolio Report</h2>*@
 	</div>
 	<div class="col-sm-6" style="align-content:center"><h2>Digital Picture BenchMark Report</h2></div><br />
@@ -22,7 +22,7 @@
 	<br />
 	@*portfolio view*@
 	<div class="col-sm-6">
-		<table style="width:50%">
+		<table style="width:70%">
 			<tbody>
 
 				<tr>

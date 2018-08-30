@@ -18,7 +18,7 @@ namespace CrossSell_App.Controllers
     {
         private HomeRepository homeRepo = new HomeRepository();
         private Utility utilObj = new Utility();
-        private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
+
         static UserCompaniesInfo userComapniesData;
 
 
@@ -46,7 +46,7 @@ namespace CrossSell_App.Controllers
                 var coList = FillCompanyDropDown();
                 //var companyList = db.Companies.Where(c => result.Contains(c.Company_Id)).Select(x => x.Company_Id).ToList();
 
-                var companyList = db.Companies.Where(c => result.Contains(c.Company_Id)).Select(x => new { x.Company_Name, x.Company_Id }).ToList();
+                var companyList = homeRepo.GetCompanies().Where(c => result.Contains(c.Company_Id)).Select(x => new { x.Company_Name, x.Company_Id }).ToList();
                 ViewBag.CompanyList = companyList;
                 List<SelectListItem> listItems = new List<SelectListItem>();
                 foreach (var item in companyList)
@@ -104,8 +104,8 @@ namespace CrossSell_App.Controllers
             // userComapniesData = utilObj.getUsercompanyInfo();
             if (compList != null)
             {
-                CompanyList = db.Companies.Where(x => compList.Contains(x.Company_Id)).ToList();
-                companyColor = CompanyList.Select(x => x.CompanyColor).ToList();
+                CompanyList = homeRepo.GetCompanies().Where(x => compList.Contains(x.Company_Id)).ToList();
+        
             }
             else
             {
@@ -121,8 +121,9 @@ namespace CrossSell_App.Controllers
                 {
                     CompanyList = homeRepo.GetCompanies();
                 }
+          
             }
-
+            companyColor = CompanyList.Select(x => x.CompanyColor).ToList();
             int countOfUsage = 0;
             int countOfLeadsToBe = 0;
             //filter all the list of Current Usage
@@ -130,13 +131,15 @@ namespace CrossSell_App.Controllers
             {
 
                 List<int> CurrentUsagePerCompany = new List<int>();
-                foreach (var data in DataFromPAL)
-                {
-                    if (item.Company_Id == data.Company_Id)
-                        CurrentUsagePerCompany.Add(data.Current_Usage);
+                var dalfromPal = DataFromPAL.Where(x => x.Company_Id == item.Company_Id).Select(x=>x.Current_Usage).ToList();
+               
+                //foreach (var data in DataFromPAL)
+                //{
+                //    if (item.Company_Id == data.Company_Id)
+                //        CurrentUsagePerCompany.Add(data.Current_Usage);
 
-                }
-                a[countOfUsage] = CurrentUsagePerCompany;
+                //}
+                a[countOfUsage] = dalfromPal;// CurrentUsagePerCompany;
                 countOfUsage++;
             }
 

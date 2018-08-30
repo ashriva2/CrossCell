@@ -8,12 +8,16 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using CrossSell_App.Models;
+using CrossSell_App.Repositories;
+using CrossSell_App.UtilityClasses;
 
 namespace CrossSell_App.Controllers
 {
     public class SearchController : Controller
     {
         private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
+        private HomeRepository homeRepo = new HomeRepository();
+        private Utility utilObj = new Utility();
         // GET: Search
         public ActionResult SearchAlgorithm(string searchKey)
         {
@@ -25,12 +29,24 @@ namespace CrossSell_App.Controllers
             //Get the user from UserRole table
             //Get the useraccess from UserAccess table
             List<int> companyId = new List<int>();
-            companyId.Add(1);
-            companyId.Add(2);
-            companyId.Add(3);
+           
+            var userComapniesData = utilObj.getUsercompanyInfo();
+            
+            if (userComapniesData.companyId == null)
+            {
+                companyId = homeRepo.GetCompanies().Select(x => x.Company_Id).ToList();
+            }
+            else
+            {
+                companyId = userComapniesData.companyId;
+            }
+            //companyId.Add(1);
+            //companyId.Add(2);
+            //companyId.Add(3);
 
             companyId.Sort();
             var companyList = db.Companies.Where(c => companyId.Contains(c.Company_Id)).Select(x => new { x.Company_Name, x.Company_Id }).OrderBy(x => x.Company_Id).ToList();
+           
             List<string> cList = new List<string>();
             List<int> compIdList = new List<int>();
             foreach (var c in companyList)
