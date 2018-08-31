@@ -49,7 +49,7 @@
 					debugger;
 					var compList = [];
 					if (selectedComp == "" || selectedComp == null) {
-						var array = @Html.Raw(Json.Encode(@ViewBag.fillCompanyddl));
+						var array = @Html.Raw(Json.Encode(@ViewBag.CompList));
 						
 						for (var i = 0; i < array.length; i++) {
 
@@ -182,7 +182,7 @@
 
 					debugger;
 
-						var array = @Html.Raw(Json.Encode(@ViewBag.fillCompanyddl));
+						var array = @Html.Raw(Json.Encode(@ViewBag.CompList));
 					var compData = [];
 					
 					//[{

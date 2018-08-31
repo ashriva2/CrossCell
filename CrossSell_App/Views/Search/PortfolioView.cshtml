@@ -6,7 +6,11 @@
 }
 
 <h4>Search Result for : @ViewBag.SearchText</h4>
+<div class="col-sm-6" style="align-content:center">
 
+	<h3>@Html.ActionLink("Portfolio Report", "PALReport", "Home", new { CompList = Json.Encode(@ViewBag.CompanyIdList) }, null)</h3>
+
+</div>
 <table style="width:57%">
 	<tbody>
 

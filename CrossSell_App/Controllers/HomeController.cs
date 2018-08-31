@@ -33,9 +33,17 @@ namespace CrossSell_App.Controllers
         {
             if (CompList != null)
             {
-                List<int> result = System.Web.Helpers.Json.Decode<List<int>>(CompList);
+          
+                List<int> result = new List<int>();
+                if (CompList.Contains("["))
+                {
+                    result = System.Web.Helpers.Json.Decode<List<int>>(CompList);
+                }
 
-
+                else
+                {
+                    result = CompList.Split(',').Select(Int32.Parse).ToList();
+                }
                 var coList = FillCompanyDropDown();
                 //var companyList = db.Companies.Where(c => result.Contains(c.Company_Id)).Select(x => x.Company_Id).ToList();
 
@@ -53,10 +61,17 @@ namespace CrossSell_App.Controllers
 
                 }
                 ViewBag.fillCompanyddl = listItems;
+                ViewBag.CompList = listItems;
+                //}
+                if (!CompList.Contains("["))
+                {
+                    ViewBag.fillCompanyddl = FillCompanyDropDown();
+                }
             }
             else
             {
                 ViewBag.fillCompanyddl = FillCompanyDropDown();
+                ViewBag.CompList = FillCompanyDropDown();
             }
 
             return View("DPBReport");
@@ -97,15 +112,17 @@ namespace CrossSell_App.Controllers
 
                     }
                     ViewBag.fillCompanyddl = listItems;
+                    ViewBag.CompList = listItems;
                 //}
-                //else
-                //{
-                //    ViewBag.fillCompanyddl = FillCompanyDropDown();
-                //}
+                if (!CompList.Contains("["))
+                {
+                    ViewBag.fillCompanyddl = FillCompanyDropDown();
+                }
             }
             else
             {
                 ViewBag.fillCompanyddl = FillCompanyDropDown();
+                ViewBag.CompList= FillCompanyDropDown();
             }
 
             return View("PALReport");

@@ -60,7 +60,7 @@
 				function getData() {
 
 					debugger;
-					var array = @Html.Raw(Json.Encode(@ViewBag.fillCompanyddl));
+					var array = @Html.Raw(Json.Encode(@ViewBag.CompList));
 					var compList = [];
 					for (var i = 0; i < array.length; i++) {
 						
@@ -126,7 +126,7 @@
 
 				function DisplayChart(dpbData1, dpbData2, dpbData3, dpbData4, chartData) {
 					debugger;
-					var array = @Html.Raw(Json.Encode(@ViewBag.fillCompanyddl));
+					var array = @Html.Raw(Json.Encode(@ViewBag.CompList));
 					var compData = [];
 
 					for (var i = 0; i < array.length; i++) {
@@ -215,46 +215,47 @@
 
 
                 function showDPBGraph(ele) {
-                    debugger;
-                    if (ele !== "") {
+					debugger;
+					window.location.href = '/Home/DPBReport?CompList=' + ele;
+                    //if (ele !== "") {
 
-                        if (ele == 1) {
-                            var dpbData1 = data1;
-                            var dpbData2 = [];
-                            var dpbData3 = [];
-                            var dpbData4 = [];
-                            DisplayChart(dpbData1, dpbData2, dpbData3, dpbData4)
-                        }
+                    //    if (ele == 1) {
+                    //        var dpbData1 = data1;
+                    //        var dpbData2 = [];
+                    //        var dpbData3 = [];
+                    //        var dpbData4 = [];
+                    //        DisplayChart(dpbData1, dpbData2, dpbData3, dpbData4)
+                    //    }
 
-                        if (ele == 2) {
-                            var dpbData1 = [];
-                            var dpbData2 = data2;
-                            var dpbData3 = [];
-                            var dpbData4 = [];
-                            DisplayChart(dpbData1, dpbData2, dpbData3, dpbData4)
-                        }
+                    //    if (ele == 2) {
+                    //        var dpbData1 = [];
+                    //        var dpbData2 = data2;
+                    //        var dpbData3 = [];
+                    //        var dpbData4 = [];
+                    //        DisplayChart(dpbData1, dpbData2, dpbData3, dpbData4)
+                    //    }
 
-                        if (ele == 3) {
-                            var dpbData1 = [];
-                            var dpbData2 = [];
-                            var dpbData3 = data3;
-                            var dpbData4 = [];
-                            DisplayChart(dpbData1, dpbData2, dpbData3, dpbData4)
-                        }
-                        if (ele == 4) {
-                            var dpbData1 = [];
-                            var dpbData2 = [];
-                            var dpbData3 = [];
-                            var dpbData4 = data4;
-                            DisplayChart(dpbData1, dpbData2, dpbData3, dpbData4)
-                        }
-                    } else {
-                        var dpbData1 = data1;
-                        var dpbData2 = data2;
-                        var dpbData3 = data3;
-                        var dpbData4 = data4;
-                        DisplayChart(dpbData1, dpbData2, dpbData3, dpbData4)
-                    }
+                    //    if (ele == 3) {
+                    //        var dpbData1 = [];
+                    //        var dpbData2 = [];
+                    //        var dpbData3 = data3;
+                    //        var dpbData4 = [];
+                    //        DisplayChart(dpbData1, dpbData2, dpbData3, dpbData4)
+                    //    }
+                    //    if (ele == 4) {
+                    //        var dpbData1 = [];
+                    //        var dpbData2 = [];
+                    //        var dpbData3 = [];
+                    //        var dpbData4 = data4;
+                    //        DisplayChart(dpbData1, dpbData2, dpbData3, dpbData4)
+                    //    }
+                    //} else {
+                    //    var dpbData1 = data1;
+                    //    var dpbData2 = data2;
+                    //    var dpbData3 = data3;
+                    //    var dpbData4 = data4;
+                    //    DisplayChart(dpbData1, dpbData2, dpbData3, dpbData4)
+                    //}
                 }
 
             </script>
