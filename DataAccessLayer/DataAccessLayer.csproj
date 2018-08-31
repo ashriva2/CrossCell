@@ -90,6 +90,7 @@
     <Compile Include="Questioner.cs">
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
+    <Compile Include="Repositories\CompaniesRepository.cs" />
     <Compile Include="Repositories\HomeRepository.cs" />
     <Compile Include="Repositories\LoginRepository.cs" />
     <Compile Include="Repositories\MetadataRepository.cs" />

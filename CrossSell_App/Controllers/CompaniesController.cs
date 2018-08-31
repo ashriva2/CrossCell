@@ -8,18 +8,20 @@ using System.Web;
 using System.Web.Mvc;
 //using CrossSell_App.DataAccess;
 using DataAccessLayer;
+using DataAccessLayer.Repositories;
 
 namespace CrossSell_App.Controllers
 {
     public class CompaniesController : Controller
     {
-        private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
+        //private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
+        private CompaniesRepository cmpRepo = new CompaniesRepository();
 
       
         // GET: Companies
         public ActionResult Index()
         {
-            return View(db.Companies.ToList());
+            return View(cmpRepo.getAllCompanies());
         }
 
         // GET: Companies/Details/5
@@ -29,7 +31,7 @@ namespace CrossSell_App.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Company company = db.Companies.Find(id);
+            Company company = cmpRepo.getAllCompanybyId(id);
             if (company == null)
             {
                 return HttpNotFound();
@@ -52,56 +54,18 @@ namespace CrossSell_App.Controllers
         {
             if (ModelState.IsValid)
             {
-                var Color_exist = db.Companies.Where(x => x.CompanyColor == company.CompanyColor).FirstOrDefault();
+                var Color_exist = cmpRepo.getAllCompanies().Where(x => x.CompanyColor == company.CompanyColor).FirstOrDefault();
                 if(Color_exist!= null && Color_exist.Company_Id != company.Company_Id)
                 {
                     ModelState.AddModelError(string.Empty, "There is something wrong with Foo.");
                     return View(company);
                 }
                 //logic to enter the users 
-                if (company.Company_Admin != "")
-                {
-                    UserRole users = new UserRole();
-                    users.EmailId = company.Company_Admin;
-                    users.IsAdmin = true;
-                    SaveAdminAndContacts(users);
-
-                    UserAccess Role = new UserAccess()
-                    {
-
-                        CompanyId = company.Company_Id,
-                        UserRoleId = db.UserRoles.Where(x => x.EmailId == company.Company_Contacts).Select(x => x.UserRoleId).FirstOrDefault()
+                cmpRepo.saveCompany(company);
+             
 
 
-                    };
-                    UpdateUserAccess(Role);
-                }
-
-                if (company.Company_Contacts != "")
-                {
-                    UserRole users = new UserRole();
-                    users.EmailId = company.Company_Admin;
-                    users.IsAdmin = false;
-                    SaveAdminAndContacts(users);
-
-                    UserAccess Role = new UserAccess()
-                    {
-
-                        CompanyId = company.Company_Id,
-                        UserRoleId = db.UserRoles.Where(x => x.EmailId == company.Company_Contacts).Select(x => x.UserRoleId).FirstOrDefault()
-
-
-                    };
-
-                    UpdateUserAccess(Role);
-
-
-                }
-               
-
-
-                db.Companies.Add(company);
-                db.SaveChanges();
+              
                 return RedirectToAction("Index");
             }
 
@@ -110,22 +74,16 @@ namespace CrossSell_App.Controllers
 
         public void UpdateUserAccess(UserAccess role)
         {
-            UserAccess dataUpdate = db.UserAccesses.Where(x => x.UserRoleId == role.UserRoleId).FirstOrDefault();
-            dataUpdate.CompanyId = role.CompanyId;
-            dataUpdate.UserRoleId = role.UserRoleId;
-
-            db.SaveChanges();
+            cmpRepo.updateUserAccess(role);
         }
-        public void saveContactsToUserRole(UserAccess role)
+        public void saveContactsOrAdminToUserAccess(UserAccess role)
         {
-            db.UserAccesses.Add(role);
-            db.SaveChanges();
+            cmpRepo.saveUserAccess(role);
         }
 
         public void SaveAdminAndContacts(UserRole users)
         {
-            db.UserRoles.Add(users);
-            db.SaveChanges();
+            cmpRepo.saveUserrole(users);
         }
 
 
@@ -136,16 +94,16 @@ namespace CrossSell_App.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Company company = db.Companies.Find(id);
+            Company company = cmpRepo.getAllCompanybyId(id);
 
-            List<UserAccess> userAccess=db.UserAccesses.Where(x => x.CompanyId == id).ToList();
+            List<UserAccess> userAccess= cmpRepo.getAllUserAccess().Where(x => x.CompanyId == id).ToList();
             List<int> userRoleId = new List<int>();
             foreach(var item in userAccess)
             {
                 userRoleId.Add(item.UserRoleId);
             }
 
-            var userRolesIsAdmin=db.UserRoles.Where(c=> userRoleId.Contains(c.UserRoleId)).Select(x=>new { x.EmailId,x.IsAdmin}).ToList();
+            var userRolesIsAdmin=cmpRepo.getAllUserrole().Where(c=> userRoleId.Contains(c.UserRoleId)).Select(x=>new { x.EmailId,x.IsAdmin}).ToList();
             //string contactEmailId= 
            
 
@@ -168,7 +126,7 @@ namespace CrossSell_App.Controllers
         {
             if (ModelState.IsValid)
             {
-                var Color_exist = db.Companies.Where(x => x.CompanyColor == company.CompanyColor).FirstOrDefault();
+                var Color_exist = cmpRepo.getAllCompanies().Where(x => x.CompanyColor == company.CompanyColor).FirstOrDefault();
                 if (Color_exist != null && Color_exist.Company_Id!=company.Company_Id)
                 {
                     ModelState.AddModelError(string.Empty, "There is something wrong with Foo.");
@@ -186,11 +144,11 @@ namespace CrossSell_App.Controllers
                     {
 
                         CompanyId = company.Company_Id,
-                        UserRoleId = db.UserRoles.Where(x => x.EmailId == company.Company_Contacts).Select(x => x.UserRoleId).FirstOrDefault()
+                        UserRoleId = cmpRepo.getAllUserrole().Where(x => x.EmailId == company.Company_Contacts).Select(x => x.UserRoleId).FirstOrDefault()
 
 
                     };
-                    saveContactsToUserRole(Role);
+                    UpdateUserAccess(Role);
                 }
 
                 if (company.Company_Contacts != "")
@@ -205,19 +163,13 @@ namespace CrossSell_App.Controllers
                     {
 
                         CompanyId = company.Company_Id,
-                        UserRoleId = db.UserRoles.Where(x => x.EmailId == company.Company_Contacts).Select(x => x.UserRoleId).FirstOrDefault()
+                        UserRoleId = cmpRepo.getAllUserrole().Where(x => x.EmailId == company.Company_Contacts).Select(x => x.UserRoleId).FirstOrDefault()
 
 
                     };
+                    UpdateUserAccess(Role);
                 }
-                Company dataToupdate = db.Companies.Where(x => x.Company_Id == company.Company_Id).FirstOrDefault();
-
-                dataToupdate.CompanyColor = company.CompanyColor;
-                dataToupdate.Company_Name = company.Company_Name;
-                dataToupdate.Company_Admin = company.Company_Admin;
-                dataToupdate.Company_Contacts = company.Company_Contacts;
-                //db.Entry(company).State = EntityState.Modified;
-                db.SaveChanges();
+                cmpRepo.updateCompany(company);
                 return RedirectToAction("Index");
             }
             return View(company);
@@ -230,7 +182,7 @@ namespace CrossSell_App.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Company company = db.Companies.Find(id);
+            Company company =cmpRepo.getAllCompanybyId(id);
             if (company == null)
             {
                 return HttpNotFound();
@@ -243,19 +195,10 @@ namespace CrossSell_App.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Company company = db.Companies.Find(id);
-            db.Companies.Remove(company);
-            db.SaveChanges();
+            cmpRepo.deleteCompany(id);
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+
     }
 }

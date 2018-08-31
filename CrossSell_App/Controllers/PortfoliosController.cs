@@ -88,6 +88,7 @@ namespace CrossSell_App.Controllers
         {
             if (ModelState.IsValid)
             {
+                pfRepo.updatePortfolio(portfolio);
                 
                 return RedirectToAction("Index");
             }
