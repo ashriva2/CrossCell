@@ -1,0 +1,747 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="PAL_DigitalPicModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="Company_Id" />
+          </Key>
+          <Property Name="Company_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Company_Name" Type="nvarchar(max)" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="Company_Admin" Type="nvarchar(max)" />
+          <Property Name="Company_Contacts" Type="nvarchar(max)" />
+          <Property Name="CompanyColor" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="CrossSell">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Protfolio_Id" Type="int" Nullable="false" />
+          <Property Name="Company_Id" Type="int" Nullable="false" />
+          <Property Name="Implemented" Type="int" Nullable="false" />
+          <Property Name="SME" Type="bit" Nullable="false" />
+          <Property Name="Details_Of_Implementation" Type="nvarchar(max)" />
+          <Property Name="Future_Scope" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Metadata">
+          <Key>
+            <PropertyRef Name="Metadata_Id" />
+          </Key>
+          <Property Name="Metadata_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Metadata_Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="IsActive" Type="bit" />
+        </EntityType>
+        <EntityType Name="Objectives">
+          <Key>
+            <PropertyRef Name="Objective_Id" />
+          </Key>
+          <Property Name="Objective_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Comments" Type="nvarchar(max)" />
+          <Property Name="Weight" Type="int" />
+          <Property Name="Score_Max" Type="float" />
+          <Property Name="Max" Type="int" />
+          <Property Name="Answer" Type="int" />
+          <Property Name="Score" Type="int" />
+          <Property Name="Level" Type="nvarchar(max)" />
+          <Property Name="Metadata_Id" Type="int" Nullable="false" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="Questioner_Id" Type="int" Nullable="false" />
+          <Property Name="Company_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Portfolio">
+          <Key>
+            <PropertyRef Name="Portfolio_Id" />
+          </Key>
+          <Property Name="Portfolio_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Portfolio_Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Portfolio_Type_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Portfolio_Agile_Lab">
+          <Key>
+            <PropertyRef Name="Pal_Id" />
+          </Key>
+          <Property Name="Pal_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Company_Id" Type="int" Nullable="false" />
+          <Property Name="Portfolio_Id" Type="int" Nullable="false" />
+          <Property Name="Current_Usage" Type="int" Nullable="false" />
+          <Property Name="Future_Scope" Type="bit" Nullable="false" />
+          <Property Name="IsMarketLead" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Portfolio_Type">
+          <Key>
+            <PropertyRef Name="Portfolio_Type_Id" />
+          </Key>
+          <Property Name="Portfolio_Type_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Portfolio_Type_Name" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Questioner">
+          <Key>
+            <PropertyRef Name="Questioner_Id" />
+          </Key>
+          <Property Name="Questioner_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Metadata_Id" Type="int" Nullable="false" />
+          <Property Name="Questioner" Type="nvarchar(max)" />
+          <Property Name="IsActive" Type="bit" />
+        </EntityType>
+        <EntityType Name="UserAccess">
+          <Key>
+            <PropertyRef Name="UserAccessId" />
+          </Key>
+          <Property Name="UserAccessId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserRoleId" Type="int" Nullable="false" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserRole">
+          <Key>
+            <PropertyRef Name="UserRoleId" />
+          </Key>
+          <Property Name="UserRoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmailId" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsAdmin" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Portfolio__Portf__1367E606">
+          <End Role="Portfolio_Type" Type="Self.Portfolio_Type" Multiplicity="1" />
+          <End Role="Portfolio" Type="Self.Portfolio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Portfolio_Type">
+              <PropertyRef Name="Portfolio_Type_Id" />
+            </Principal>
+            <Dependent Role="Portfolio">
+              <PropertyRef Name="Portfolio_Type_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CrossSell_Company_Id">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="CrossSell" Type="Self.CrossSell" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="Company_Id" />
+            </Principal>
+            <Dependent Role="CrossSell">
+              <PropertyRef Name="Company_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CrossSell_Portfolio_Id">
+          <End Role="Portfolio" Type="Self.Portfolio" Multiplicity="1" />
+          <End Role="CrossSell" Type="Self.CrossSell" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Portfolio">
+              <PropertyRef Name="Portfolio_Id" />
+            </Principal>
+            <Dependent Role="CrossSell">
+              <PropertyRef Name="Protfolio_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Objectives_Company_Id">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="Objectives" Type="Self.Objectives" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="Company_Id" />
+            </Principal>
+            <Dependent Role="Objectives">
+              <PropertyRef Name="Company_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Objectives_Metadata">
+          <End Role="Metadata" Type="Self.Metadata" Multiplicity="1" />
+          <End Role="Objectives" Type="Self.Objectives" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Metadata">
+              <PropertyRef Name="Metadata_Id" />
+            </Principal>
+            <Dependent Role="Objectives">
+              <PropertyRef Name="Metadata_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Objectives_Questioner">
+          <End Role="Questioner" Type="Self.Questioner" Multiplicity="1" />
+          <End Role="Objectives" Type="Self.Objectives" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Questioner">
+              <PropertyRef Name="Questioner_Id" />
+            </Principal>
+            <Dependent Role="Objectives">
+              <PropertyRef Name="Questioner_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Portfolio_Agile_Lab_Company_Id">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="Portfolio_Agile_Lab" Type="Self.Portfolio_Agile_Lab" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="Company_Id" />
+            </Principal>
+            <Dependent Role="Portfolio_Agile_Lab">
+              <PropertyRef Name="Company_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Portfolio_Agile_Lab_Portfolio_Id">
+          <End Role="Portfolio" Type="Self.Portfolio" Multiplicity="1" />
+          <End Role="Portfolio_Agile_Lab" Type="Self.Portfolio_Agile_Lab" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Portfolio">
+              <PropertyRef Name="Portfolio_Id" />
+            </Principal>
+            <Dependent Role="Portfolio_Agile_Lab">
+              <PropertyRef Name="Portfolio_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Questioner_Metadata_Id">
+          <End Role="Metadata" Type="Self.Metadata" Multiplicity="1" />
+          <End Role="Questioner" Type="Self.Questioner" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Metadata">
+              <PropertyRef Name="Metadata_Id" />
+            </Principal>
+            <Dependent Role="Questioner">
+              <PropertyRef Name="Metadata_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserAccess_CompanyId">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="UserAccess" Type="Self.UserAccess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="Company_Id" />
+            </Principal>
+            <Dependent Role="UserAccess">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserAccess_UserRole">
+          <End Role="UserRole" Type="Self.UserRole" Multiplicity="1" />
+          <End Role="UserAccess" Type="Self.UserAccess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserRole">
+              <PropertyRef Name="UserRoleId" />
+            </Principal>
+            <Dependent Role="UserAccess">
+              <PropertyRef Name="UserRoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PAL_DigitalPicModelStoreContainer">
+          <EntitySet Name="Company" EntityType="Self.Company" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CrossSell" EntityType="Self.CrossSell" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Metadata" EntityType="Self.Metadata" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Objectives" EntityType="Self.Objectives" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Portfolio" EntityType="Self.Portfolio" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Portfolio_Agile_Lab" EntityType="Self.Portfolio_Agile_Lab" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Portfolio_Type" EntityType="Self.Portfolio_Type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Questioner" EntityType="Self.Questioner" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserAccess" EntityType="Self.UserAccess" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserRole" EntityType="Self.UserRole" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Portfolio__Portf__1367E606" Association="Self.FK__Portfolio__Portf__1367E606">
+            <End Role="Portfolio_Type" EntitySet="Portfolio_Type" />
+            <End Role="Portfolio" EntitySet="Portfolio" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CrossSell_Company_Id" Association="Self.FK_CrossSell_Company_Id">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="CrossSell" EntitySet="CrossSell" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CrossSell_Portfolio_Id" Association="Self.FK_CrossSell_Portfolio_Id">
+            <End Role="Portfolio" EntitySet="Portfolio" />
+            <End Role="CrossSell" EntitySet="CrossSell" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Objectives_Company_Id" Association="Self.FK_Objectives_Company_Id">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="Objectives" EntitySet="Objectives" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Objectives_Metadata" Association="Self.FK_Objectives_Metadata">
+            <End Role="Metadata" EntitySet="Metadata" />
+            <End Role="Objectives" EntitySet="Objectives" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Objectives_Questioner" Association="Self.FK_Objectives_Questioner">
+            <End Role="Questioner" EntitySet="Questioner" />
+            <End Role="Objectives" EntitySet="Objectives" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Portfolio_Agile_Lab_Company_Id" Association="Self.FK_Portfolio_Agile_Lab_Company_Id">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="Portfolio_Agile_Lab" EntitySet="Portfolio_Agile_Lab" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Portfolio_Agile_Lab_Portfolio_Id" Association="Self.FK_Portfolio_Agile_Lab_Portfolio_Id">
+            <End Role="Portfolio" EntitySet="Portfolio" />
+            <End Role="Portfolio_Agile_Lab" EntitySet="Portfolio_Agile_Lab" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Questioner_Metadata_Id" Association="Self.FK_Questioner_Metadata_Id">
+            <End Role="Metadata" EntitySet="Metadata" />
+            <End Role="Questioner" EntitySet="Questioner" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserAccess_CompanyId" Association="Self.FK_UserAccess_CompanyId">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="UserAccess" EntitySet="UserAccess" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserAccess_UserRole" Association="Self.FK_UserAccess_UserRole">
+            <End Role="UserRole" EntitySet="UserRole" />
+            <End Role="UserAccess" EntitySet="UserAccess" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PAL_DigitalPicModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="Company_Id" />
+          </Key>
+          <Property Name="Company_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Company_Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="Company_Admin" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Company_Contacts" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyColor" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CrossSells" Relationship="Self.FK_CrossSell_Company_Id" FromRole="Company" ToRole="CrossSell" />
+          <NavigationProperty Name="Objectives" Relationship="Self.FK_Objectives_Company_Id" FromRole="Company" ToRole="Objectives" />
+          <NavigationProperty Name="Portfolio_Agile_Lab" Relationship="Self.FK_Portfolio_Agile_Lab_Company_Id" FromRole="Company" ToRole="Portfolio_Agile_Lab" />
+          <NavigationProperty Name="UserAccesses" Relationship="Self.FK_UserAccess_CompanyId" FromRole="Company" ToRole="UserAccess" />
+        </EntityType>
+        <EntityType Name="CrossSell">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Protfolio_Id" Type="Int32" Nullable="false" />
+          <Property Name="Company_Id" Type="Int32" Nullable="false" />
+          <Property Name="Implemented" Type="Int32" Nullable="false" />
+          <Property Name="SME" Type="Boolean" Nullable="false" />
+          <Property Name="Details_Of_Implementation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Future_Scope" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Company" Relationship="Self.FK_CrossSell_Company_Id" FromRole="CrossSell" ToRole="Company" />
+          <NavigationProperty Name="Portfolio" Relationship="Self.FK_CrossSell_Portfolio_Id" FromRole="CrossSell" ToRole="Portfolio" />
+        </EntityType>
+        <EntityType Name="Metadata">
+          <Key>
+            <PropertyRef Name="Metadata_Id" />
+          </Key>
+          <Property Name="Metadata_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Metadata_Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" />
+          <NavigationProperty Name="Objectives" Relationship="Self.FK_Objectives_Metadata" FromRole="Metadata" ToRole="Objectives" />
+          <NavigationProperty Name="Questioners" Relationship="Self.FK_Questioner_Metadata_Id" FromRole="Metadata" ToRole="Questioner" />
+        </EntityType>
+        <EntityType Name="Objective">
+          <Key>
+            <PropertyRef Name="Objective_Id" />
+          </Key>
+          <Property Name="Objective_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Weight" Type="Int32" />
+          <Property Name="Score_Max" Type="Double" />
+          <Property Name="Max" Type="Int32" />
+          <Property Name="Answer" Type="Int32" />
+          <Property Name="Score" Type="Int32" />
+          <Property Name="Level" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Metadata_Id" Type="Int32" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="Questioner_Id" Type="Int32" Nullable="false" />
+          <Property Name="Company_Id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Company" Relationship="Self.FK_Objectives_Company_Id" FromRole="Objectives" ToRole="Company" />
+          <NavigationProperty Name="Metadata" Relationship="Self.FK_Objectives_Metadata" FromRole="Objectives" ToRole="Metadata" />
+          <NavigationProperty Name="Questioner" Relationship="Self.FK_Objectives_Questioner" FromRole="Objectives" ToRole="Questioner" />
+        </EntityType>
+        <EntityType Name="Portfolio">
+          <Key>
+            <PropertyRef Name="Portfolio_Id" />
+          </Key>
+          <Property Name="Portfolio_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Portfolio_Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Portfolio_Type_Id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CrossSells" Relationship="Self.FK_CrossSell_Portfolio_Id" FromRole="Portfolio" ToRole="CrossSell" />
+          <NavigationProperty Name="Portfolio_Type" Relationship="Self.FK__Portfolio__Portf__1367E606" FromRole="Portfolio" ToRole="Portfolio_Type" />
+          <NavigationProperty Name="Portfolio_Agile_Lab" Relationship="Self.FK_Portfolio_Agile_Lab_Portfolio_Id" FromRole="Portfolio" ToRole="Portfolio_Agile_Lab" />
+        </EntityType>
+        <EntityType Name="Portfolio_Agile_Lab">
+          <Key>
+            <PropertyRef Name="Pal_Id" />
+          </Key>
+          <Property Name="Pal_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Company_Id" Type="Int32" Nullable="false" />
+          <Property Name="Portfolio_Id" Type="Int32" Nullable="false" />
+          <Property Name="Current_Usage" Type="Int32" Nullable="false" />
+          <Property Name="Future_Scope" Type="Boolean" Nullable="false" />
+          <Property Name="IsMarketLead" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Company" Relationship="Self.FK_Portfolio_Agile_Lab_Company_Id" FromRole="Portfolio_Agile_Lab" ToRole="Company" />
+          <NavigationProperty Name="Portfolio" Relationship="Self.FK_Portfolio_Agile_Lab_Portfolio_Id" FromRole="Portfolio_Agile_Lab" ToRole="Portfolio" />
+        </EntityType>
+        <EntityType Name="Portfolio_Type">
+          <Key>
+            <PropertyRef Name="Portfolio_Type_Id" />
+          </Key>
+          <Property Name="Portfolio_Type_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Portfolio_Type_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Portfolios" Relationship="Self.FK__Portfolio__Portf__1367E606" FromRole="Portfolio_Type" ToRole="Portfolio" />
+        </EntityType>
+        <EntityType Name="Questioner">
+          <Key>
+            <PropertyRef Name="Questioner_Id" />
+          </Key>
+          <Property Name="Questioner_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Metadata_Id" Type="Int32" Nullable="false" />
+          <Property Name="Questioner1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" />
+          <NavigationProperty Name="Metadata" Relationship="Self.FK_Questioner_Metadata_Id" FromRole="Questioner" ToRole="Metadata" />
+          <NavigationProperty Name="Objectives" Relationship="Self.FK_Objectives_Questioner" FromRole="Questioner" ToRole="Objectives" />
+        </EntityType>
+        <EntityType Name="UserAccess">
+          <Key>
+            <PropertyRef Name="UserAccessId" />
+          </Key>
+          <Property Name="UserAccessId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserRoleId" Type="Int32" Nullable="false" />
+          <Property Name="CompanyId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Company" Relationship="Self.FK_UserAccess_CompanyId" FromRole="UserAccess" ToRole="Company" />
+          <NavigationProperty Name="UserRole" Relationship="Self.FK_UserAccess_UserRole" FromRole="UserAccess" ToRole="UserRole" />
+        </EntityType>
+        <EntityType Name="UserRole">
+          <Key>
+            <PropertyRef Name="UserRoleId" />
+          </Key>
+          <Property Name="UserRoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmailId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsAdmin" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="UserAccesses" Relationship="Self.FK_UserAccess_UserRole" FromRole="UserRole" ToRole="UserAccess" />
+        </EntityType>
+        <Association Name="FK_CrossSell_Company_Id">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="CrossSell" Type="Self.CrossSell" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="Company_Id" />
+            </Principal>
+            <Dependent Role="CrossSell">
+              <PropertyRef Name="Company_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Objectives_Company_Id">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="Objectives" Type="Self.Objective" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="Company_Id" />
+            </Principal>
+            <Dependent Role="Objectives">
+              <PropertyRef Name="Company_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Portfolio_Agile_Lab_Company_Id">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="Portfolio_Agile_Lab" Type="Self.Portfolio_Agile_Lab" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="Company_Id" />
+            </Principal>
+            <Dependent Role="Portfolio_Agile_Lab">
+              <PropertyRef Name="Company_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserAccess_CompanyId">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="UserAccess" Type="Self.UserAccess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="Company_Id" />
+            </Principal>
+            <Dependent Role="UserAccess">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CrossSell_Portfolio_Id">
+          <End Role="Portfolio" Type="Self.Portfolio" Multiplicity="1" />
+          <End Role="CrossSell" Type="Self.CrossSell" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Portfolio">
+              <PropertyRef Name="Portfolio_Id" />
+            </Principal>
+            <Dependent Role="CrossSell">
+              <PropertyRef Name="Protfolio_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Objectives_Metadata">
+          <End Role="Metadata" Type="Self.Metadata" Multiplicity="1" />
+          <End Role="Objectives" Type="Self.Objective" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Metadata">
+              <PropertyRef Name="Metadata_Id" />
+            </Principal>
+            <Dependent Role="Objectives">
+              <PropertyRef Name="Metadata_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Questioner_Metadata_Id">
+          <End Role="Metadata" Type="Self.Metadata" Multiplicity="1" />
+          <End Role="Questioner" Type="Self.Questioner" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Metadata">
+              <PropertyRef Name="Metadata_Id" />
+            </Principal>
+            <Dependent Role="Questioner">
+              <PropertyRef Name="Metadata_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Objectives_Questioner">
+          <End Role="Questioner" Type="Self.Questioner" Multiplicity="1" />
+          <End Role="Objectives" Type="Self.Objective" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Questioner">
+              <PropertyRef Name="Questioner_Id" />
+            </Principal>
+            <Dependent Role="Objectives">
+              <PropertyRef Name="Questioner_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Portfolio__Portf__1367E606">
+          <End Role="Portfolio_Type" Type="Self.Portfolio_Type" Multiplicity="1" />
+          <End Role="Portfolio" Type="Self.Portfolio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Portfolio_Type">
+              <PropertyRef Name="Portfolio_Type_Id" />
+            </Principal>
+            <Dependent Role="Portfolio">
+              <PropertyRef Name="Portfolio_Type_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Portfolio_Agile_Lab_Portfolio_Id">
+          <End Role="Portfolio" Type="Self.Portfolio" Multiplicity="1" />
+          <End Role="Portfolio_Agile_Lab" Type="Self.Portfolio_Agile_Lab" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Portfolio">
+              <PropertyRef Name="Portfolio_Id" />
+            </Principal>
+            <Dependent Role="Portfolio_Agile_Lab">
+              <PropertyRef Name="Portfolio_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserAccess_UserRole">
+          <End Role="UserRole" Type="Self.UserRole" Multiplicity="1" />
+          <End Role="UserAccess" Type="Self.UserAccess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserRole">
+              <PropertyRef Name="UserRoleId" />
+            </Principal>
+            <Dependent Role="UserAccess">
+              <PropertyRef Name="UserRoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PAL_DigitalPicEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Companies" EntityType="Self.Company" />
+          <EntitySet Name="CrossSells" EntityType="Self.CrossSell" />
+          <EntitySet Name="Metadatas" EntityType="Self.Metadata" />
+          <EntitySet Name="Objectives" EntityType="Self.Objective" />
+          <EntitySet Name="Portfolios" EntityType="Self.Portfolio" />
+          <EntitySet Name="Portfolio_Agile_Lab" EntityType="Self.Portfolio_Agile_Lab" />
+          <EntitySet Name="Portfolio_Type" EntityType="Self.Portfolio_Type" />
+          <EntitySet Name="Questioners" EntityType="Self.Questioner" />
+          <EntitySet Name="UserAccesses" EntityType="Self.UserAccess" />
+          <EntitySet Name="UserRoles" EntityType="Self.UserRole" />
+          <AssociationSet Name="FK_CrossSell_Company_Id" Association="Self.FK_CrossSell_Company_Id">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="CrossSell" EntitySet="CrossSells" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Objectives_Company_Id" Association="Self.FK_Objectives_Company_Id">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="Objectives" EntitySet="Objectives" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Portfolio_Agile_Lab_Company_Id" Association="Self.FK_Portfolio_Agile_Lab_Company_Id">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="Portfolio_Agile_Lab" EntitySet="Portfolio_Agile_Lab" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserAccess_CompanyId" Association="Self.FK_UserAccess_CompanyId">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="UserAccess" EntitySet="UserAccesses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CrossSell_Portfolio_Id" Association="Self.FK_CrossSell_Portfolio_Id">
+            <End Role="Portfolio" EntitySet="Portfolios" />
+            <End Role="CrossSell" EntitySet="CrossSells" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Objectives_Metadata" Association="Self.FK_Objectives_Metadata">
+            <End Role="Metadata" EntitySet="Metadatas" />
+            <End Role="Objectives" EntitySet="Objectives" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Questioner_Metadata_Id" Association="Self.FK_Questioner_Metadata_Id">
+            <End Role="Metadata" EntitySet="Metadatas" />
+            <End Role="Questioner" EntitySet="Questioners" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Objectives_Questioner" Association="Self.FK_Objectives_Questioner">
+            <End Role="Questioner" EntitySet="Questioners" />
+            <End Role="Objectives" EntitySet="Objectives" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Portfolio__Portf__1367E606" Association="Self.FK__Portfolio__Portf__1367E606">
+            <End Role="Portfolio_Type" EntitySet="Portfolio_Type" />
+            <End Role="Portfolio" EntitySet="Portfolios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Portfolio_Agile_Lab_Portfolio_Id" Association="Self.FK_Portfolio_Agile_Lab_Portfolio_Id">
+            <End Role="Portfolio" EntitySet="Portfolios" />
+            <End Role="Portfolio_Agile_Lab" EntitySet="Portfolio_Agile_Lab" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserAccess_UserRole" Association="Self.FK_UserAccess_UserRole">
+            <End Role="UserRole" EntitySet="UserRoles" />
+            <End Role="UserAccess" EntitySet="UserAccesses" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PAL_DigitalPicModelStoreContainer" CdmEntityContainer="PAL_DigitalPicEntities">
+          <EntitySetMapping Name="Companies">
+            <EntityTypeMapping TypeName="PAL_DigitalPicModel.Company">
+              <MappingFragment StoreEntitySet="Company">
+                <ScalarProperty Name="Company_Id" ColumnName="Company_Id" />
+                <ScalarProperty Name="Company_Name" ColumnName="Company_Name" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Company_Admin" ColumnName="Company_Admin" />
+                <ScalarProperty Name="Company_Contacts" ColumnName="Company_Contacts" />
+                <ScalarProperty Name="CompanyColor" ColumnName="CompanyColor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CrossSells">
+            <EntityTypeMapping TypeName="PAL_DigitalPicModel.CrossSell">
+              <MappingFragment StoreEntitySet="CrossSell">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Protfolio_Id" ColumnName="Protfolio_Id" />
+                <ScalarProperty Name="Company_Id" ColumnName="Company_Id" />
+                <ScalarProperty Name="Implemented" ColumnName="Implemented" />
+                <ScalarProperty Name="SME" ColumnName="SME" />
+                <ScalarProperty Name="Details_Of_Implementation" ColumnName="Details_Of_Implementation" />
+                <ScalarProperty Name="Future_Scope" ColumnName="Future_Scope" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Metadatas">
+            <EntityTypeMapping TypeName="PAL_DigitalPicModel.Metadata">
+              <MappingFragment StoreEntitySet="Metadata">
+                <ScalarProperty Name="Metadata_Id" ColumnName="Metadata_Id" />
+                <ScalarProperty Name="Metadata_Name" ColumnName="Metadata_Name" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Objectives">
+            <EntityTypeMapping TypeName="PAL_DigitalPicModel.Objective">
+              <MappingFragment StoreEntitySet="Objectives">
+                <ScalarProperty Name="Objective_Id" ColumnName="Objective_Id" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="Weight" ColumnName="Weight" />
+                <ScalarProperty Name="Score_Max" ColumnName="Score_Max" />
+                <ScalarProperty Name="Max" ColumnName="Max" />
+                <ScalarProperty Name="Answer" ColumnName="Answer" />
+                <ScalarProperty Name="Score" ColumnName="Score" />
+                <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="Metadata_Id" ColumnName="Metadata_Id" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Questioner_Id" ColumnName="Questioner_Id" />
+                <ScalarProperty Name="Company_Id" ColumnName="Company_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Portfolios">
+            <EntityTypeMapping TypeName="PAL_DigitalPicModel.Portfolio">
+              <MappingFragment StoreEntitySet="Portfolio">
+                <ScalarProperty Name="Portfolio_Id" ColumnName="Portfolio_Id" />
+                <ScalarProperty Name="Portfolio_Name" ColumnName="Portfolio_Name" />
+                <ScalarProperty Name="Portfolio_Type_Id" ColumnName="Portfolio_Type_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Portfolio_Agile_Lab">
+            <EntityTypeMapping TypeName="PAL_DigitalPicModel.Portfolio_Agile_Lab">
+              <MappingFragment StoreEntitySet="Portfolio_Agile_Lab">
+                <ScalarProperty Name="Pal_Id" ColumnName="Pal_Id" />
+                <ScalarProperty Name="Company_Id" ColumnName="Company_Id" />
+                <ScalarProperty Name="Portfolio_Id" ColumnName="Portfolio_Id" />
+                <ScalarProperty Name="Current_Usage" ColumnName="Current_Usage" />
+                <ScalarProperty Name="Future_Scope" ColumnName="Future_Scope" />
+                <ScalarProperty Name="IsMarketLead" ColumnName="IsMarketLead" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Portfolio_Type">
+            <EntityTypeMapping TypeName="PAL_DigitalPicModel.Portfolio_Type">
+              <MappingFragment StoreEntitySet="Portfolio_Type">
+                <ScalarProperty Name="Portfolio_Type_Id" ColumnName="Portfolio_Type_Id" />
+                <ScalarProperty Name="Portfolio_Type_Name" ColumnName="Portfolio_Type_Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Questioners">
+            <EntityTypeMapping TypeName="PAL_DigitalPicModel.Questioner">
+              <MappingFragment StoreEntitySet="Questioner">
+                <ScalarProperty Name="Questioner_Id" ColumnName="Questioner_Id" />
+                <ScalarProperty Name="Metadata_Id" ColumnName="Metadata_Id" />
+                <ScalarProperty Name="Questioner1" ColumnName="Questioner" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserAccesses">
+            <EntityTypeMapping TypeName="PAL_DigitalPicModel.UserAccess">
+              <MappingFragment StoreEntitySet="UserAccess">
+                <ScalarProperty Name="UserAccessId" ColumnName="UserAccessId" />
+                <ScalarProperty Name="UserRoleId" ColumnName="UserRoleId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserRoles">
+            <EntityTypeMapping TypeName="PAL_DigitalPicModel.UserRole">
+              <MappingFragment StoreEntitySet="UserRole">
+                <ScalarProperty Name="UserRoleId" ColumnName="UserRoleId" />
+                <ScalarProperty Name="EmailId" ColumnName="EmailId" />
+                <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

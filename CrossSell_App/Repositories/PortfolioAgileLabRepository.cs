@@ -1,4 +1,4 @@
-﻿using CrossSell_App.DataAccess;
+﻿using DataAccessLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -66,7 +66,15 @@ namespace CrossSell_App.Repository
 
         public void savePALData(Portfolio_Agile_Lab dataTOsave)
         {
+            try
+            {
+                db.Portfolio_Agile_Lab.Add(dataTOsave);
+                db.SaveChanges();
+            }
+            catch(Exception ex)
+            {
 
+            }
         }
 
         private bool disposed = false;

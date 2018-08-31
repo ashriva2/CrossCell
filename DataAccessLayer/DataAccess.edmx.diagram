@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="686b1146adfc45d7aed557e8f9270f0d" Name="Diagram1">
+        <EntityTypeShape EntityType="PAL_DigitalPicModel.Company" Width="1.5" PointX="0.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PAL_DigitalPicModel.CrossSell" Width="1.5" PointX="3" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PAL_DigitalPicModel.Metadata" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PAL_DigitalPicModel.Objective" Width="1.5" PointX="6" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="PAL_DigitalPicModel.Portfolio" Width="1.5" PointX="0.75" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PAL_DigitalPicModel.Portfolio_Agile_Lab" Width="1.5" PointX="3" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PAL_DigitalPicModel.Portfolio_Type" Width="1.5" PointX="1.5" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="PAL_DigitalPicModel.Questioner" Width="1.5" PointX="3.75" PointY="15.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PAL_DigitalPicModel.UserAccess" Width="1.5" PointX="3" PointY="12.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="PAL_DigitalPicModel.UserRole" Width="1.5" PointX="0.75" PointY="12.25" IsExpanded="true" />
+        <AssociationConnector Association="PAL_DigitalPicModel.FK_CrossSell_Company_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="PAL_DigitalPicModel.FK_Objectives_Company_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="PAL_DigitalPicModel.FK_Portfolio_Agile_Lab_Company_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="PAL_DigitalPicModel.FK_UserAccess_CompanyId" ManuallyRouted="false" />
+        <AssociationConnector Association="PAL_DigitalPicModel.FK_CrossSell_Portfolio_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="PAL_DigitalPicModel.FK_Objectives_Metadata" ManuallyRouted="false" />
+        <AssociationConnector Association="PAL_DigitalPicModel.FK_Questioner_Metadata_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="PAL_DigitalPicModel.FK_Objectives_Questioner" ManuallyRouted="false" />
+        <AssociationConnector Association="PAL_DigitalPicModel.FK__Portfolio__Portf__1367E606" ManuallyRouted="false" />
+        <AssociationConnector Association="PAL_DigitalPicModel.FK_Portfolio_Agile_Lab_Portfolio_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="PAL_DigitalPicModel.FK_UserAccess_UserRole" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

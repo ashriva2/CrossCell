@@ -6,18 +6,20 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using CrossSell_App.DataAccess;
+using DataAccessLayer;
+using DataAccessLayer.Repositories;
+//using CrossSell_App.DataAccess;
 
 namespace CrossSell_App.Controllers
 {
     public class PortfolioTypeController : Controller
     {
         private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
-
+        private PortfolioTypeRepository ptfTypeRepo = new PortfolioTypeRepository();
         // GET: PortfolioType
         public ActionResult Index()
         {
-            return View(db.Portfolio_Type.ToList());
+            return View(ptfTypeRepo.GetPortfolioTypes());
         }
 
         // GET: PortfolioType/Details/5
@@ -27,7 +29,7 @@ namespace CrossSell_App.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Portfolio_Type portfolio_Type = db.Portfolio_Type.Find(id);
+            Portfolio_Type portfolio_Type = ptfTypeRepo.getPortfolioTypebyId(id);
             if (portfolio_Type == null)
             {
                 return HttpNotFound();
@@ -50,8 +52,7 @@ namespace CrossSell_App.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Portfolio_Type.Add(portfolio_Type);
-                db.SaveChanges();
+                ptfTypeRepo.savePortfolioType(portfolio_Type);
                 return RedirectToAction("Index");
             }
 
@@ -65,7 +66,7 @@ namespace CrossSell_App.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Portfolio_Type portfolio_Type = db.Portfolio_Type.Find(id);
+            Portfolio_Type portfolio_Type = ptfTypeRepo.getPortfolioTypebyId(id);
             if (portfolio_Type == null)
             {
                 return HttpNotFound();
@@ -82,8 +83,7 @@ namespace CrossSell_App.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(portfolio_Type).State = EntityState.Modified;
-                db.SaveChanges();
+                ptfTypeRepo.updatePortfolioType(portfolio_Type);
                 return RedirectToAction("Index");
             }
             return View(portfolio_Type);
@@ -96,7 +96,7 @@ namespace CrossSell_App.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Portfolio_Type portfolio_Type = db.Portfolio_Type.Find(id);
+            Portfolio_Type portfolio_Type = ptfTypeRepo.getPortfolioTypebyId(id);
             if (portfolio_Type == null)
             {
                 return HttpNotFound();
@@ -109,19 +109,10 @@ namespace CrossSell_App.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Portfolio_Type portfolio_Type = db.Portfolio_Type.Find(id);
-            db.Portfolio_Type.Remove(portfolio_Type);
-            db.SaveChanges();
+            ptfTypeRepo.deletePortfolioTypes(id);
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+      
     }
 }

@@ -6,7 +6,8 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using CrossSell_App.DataAccess;
+//using CrossSell_App.DataAccess;
+using DataAccessLayer;
 
 namespace CrossSell_App.Controllers
 {

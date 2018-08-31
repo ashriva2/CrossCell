@@ -6,18 +6,21 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using CrossSell_App.DataAccess;
+using CrossSell_App.Repository;
+//using CrossSell_App.DataAccess;
+using DataAccessLayer;
 
 namespace CrossSell_App.Controllers
 {
     public class MetadatasController : Controller
     {
         private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
+        private MetadataRepository metaRepo = new MetadataRepository();
 
         // GET: Metadatas
         public ActionResult Index()
         {
-            return View(db.Metadatas.ToList());
+            return View(metaRepo.GetAllMetadata());
         }
 
         // GET: Metadatas/Details/5
@@ -27,7 +30,7 @@ namespace CrossSell_App.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Metadata metadata = db.Metadatas.Find(id);
+            Metadata metadata = metaRepo.GetMetadatabyId(id);
             if (metadata == null)
             {
                 return HttpNotFound();
@@ -50,8 +53,7 @@ namespace CrossSell_App.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Metadatas.Add(metadata);
-                db.SaveChanges();
+                metaRepo.SaveMetadata(metadata);
                 return RedirectToAction("Index");
             }
 
@@ -65,7 +67,7 @@ namespace CrossSell_App.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Metadata metadata = db.Metadatas.Find(id);
+            Metadata metadata = metaRepo.GetMetadatabyId(id);
             if (metadata == null)
             {
                 return HttpNotFound();
@@ -82,8 +84,7 @@ namespace CrossSell_App.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(metadata).State = EntityState.Modified;
-                db.SaveChanges();
+                metaRepo.UpdateMetadata(metadata);
                 return RedirectToAction("Index");
             }
             return View(metadata);
@@ -96,7 +97,7 @@ namespace CrossSell_App.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Metadata metadata = db.Metadatas.Find(id);
+            Metadata metadata = metaRepo.GetMetadatabyId(id);
             if (metadata == null)
             {
                 return HttpNotFound();
@@ -109,19 +110,10 @@ namespace CrossSell_App.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Metadata metadata = db.Metadatas.Find(id);
-            db.Metadatas.Remove(metadata);
-            db.SaveChanges();
+            metaRepo.DeleteMetadata(id);
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+       
     }
 }

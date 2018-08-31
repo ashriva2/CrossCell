@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.27703.2047
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrossSell_App", "CrossSell_App\CrossSell_App.csproj", "{FE391141-1F84-4D06-A976-7B3D302431C3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DAL", "DAL", "{BB96671C-C70E-44BB-9FDA-4AF0D3189D41}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessLayer", "DataAccessLayer\DataAccessLayer.csproj", "{ECBAFA41-78BC-4998-AC19-AE5FCED3334D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,9 +19,16 @@ Global
 		{FE391141-1F84-4D06-A976-7B3D302431C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE391141-1F84-4D06-A976-7B3D302431C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE391141-1F84-4D06-A976-7B3D302431C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECBAFA41-78BC-4998-AC19-AE5FCED3334D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECBAFA41-78BC-4998-AC19-AE5FCED3334D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECBAFA41-78BC-4998-AC19-AE5FCED3334D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECBAFA41-78BC-4998-AC19-AE5FCED3334D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{ECBAFA41-78BC-4998-AC19-AE5FCED3334D} = {BB96671C-C70E-44BB-9FDA-4AF0D3189D41}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6204129E-2D74-4E5D-AF5E-DE19D3F94A77}

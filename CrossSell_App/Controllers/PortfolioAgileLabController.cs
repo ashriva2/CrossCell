@@ -7,10 +7,11 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using CrossSell_App.DataAccess;
+//using CrossSell_App.DataAccess;
 using CrossSell_App.Models;
 using CrossSell_App.Repository;
 using CrossSell_App.UtilityClasses;
+using DataAccessLayer;
 
 namespace CrossSell_App.Controllers
 {
@@ -19,7 +20,7 @@ namespace CrossSell_App.Controllers
 
         static UserCompaniesInfo userComapniesData;
         private Utility utilObj = new Utility();
-       private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
+      // private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
         private PortfolioAgileLabRepository pfRepo = new PortfolioAgileLabRepository();
 
         static int CompanyId = 0;
@@ -150,11 +151,11 @@ namespace CrossSell_App.Controllers
 
             if (ModelState.IsValid)
             {
-                DAL rep = new DAL();
-                if (!rep.CheckIfPortfolio_CompanyExist(portfolio_Agile_Lab.Portfolio_Id, portfolio_Agile_Lab.Company_Id))
+               
+                if (!pfRepo.CheckIfPortfolio_CompanyExist(portfolio_Agile_Lab.Portfolio_Id, portfolio_Agile_Lab.Company_Id))
                 {
-                    db.Portfolio_Agile_Lab.Add(portfolio_Agile_Lab);
-                    db.SaveChanges();
+                    pfRepo.savePALData(portfolio_Agile_Lab);
+                    
                 }
                 else
                 {
@@ -165,7 +166,7 @@ namespace CrossSell_App.Controllers
                     UpdateData.IsMarketLead = portfolio_Agile_Lab.IsMarketLead;
                     UpdateData.Future_Scope = portfolio_Agile_Lab.Future_Scope;
                     //db.SaveChanges();
-                    //pfRepo.Update_Portfolio_Agile_LabData(UpdateData.Portfolio_Id, UpdateData.Current_Usage, UpdateData.Future_Scope, UpdateData.IsMarketLead, UpdateData.Company_Id);
+                    pfRepo.Update_Portfolio_Agile_LabData(UpdateData.Portfolio_Id, Convert.ToString(UpdateData.Current_Usage), UpdateData.Future_Scope, UpdateData.IsMarketLead, UpdateData.Company_Id);
                 }
                 return RedirectToAction("Index");
             }
@@ -202,7 +203,7 @@ namespace CrossSell_App.Controllers
             }
             ViewBag.Company_Name = portfolio_Agile_Lab[0].Company.Company_Name;
             CompanyId = portfolio_Agile_Lab[0].Company.Company_Id;
-            ViewBag.Company_Id = new SelectList(db.Companies, "Company_Id", "Company_Name", portfolio_Agile_Lab[0].Company_Id);
+            ViewBag.Company_Id = new SelectList(pfRepo.GetAllCompanies(), "Company_Id", "Company_Name", portfolio_Agile_Lab[0].Company_Id);
             //ViewBag.Portfolio_Id = new SelectList(db.Portfolios, "Portfolio_Id", "Portfolio_Name", portfolio_Agile_Lab[0].Portfolio_Id);
             return View(portfolio_Agile_Lab.ToList());
         }
@@ -341,14 +342,7 @@ namespace CrossSell_App.Controllers
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+        
         private List<SelectListItem> FillCompanyDropDown(int companyId)
         {
             List<SelectListItem> listItems = new List<SelectListItem>();

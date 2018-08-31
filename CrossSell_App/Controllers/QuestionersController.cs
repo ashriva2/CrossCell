@@ -6,18 +6,21 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using CrossSell_App.DataAccess;
+//using CrossSell_App.DataAccess;
+using DataAccessLayer;
+using DataAccessLayer.Repositories;
 
 namespace CrossSell_App.Controllers
 {
     public class QuestionersController : Controller
     {
-        private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
+       // private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
+        public QuestionerRepository quesRepo = new QuestionerRepository();
 
         // GET: Questioners
         public ActionResult Index()
         {
-            var questioners = db.Questioners.Include(q => q.Metadata);
+            var questioners = quesRepo.getAllQuestioner();
             return View(questioners.ToList());
         }
 
@@ -28,7 +31,7 @@ namespace CrossSell_App.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Questioner questioner = db.Questioners.Find(id);
+            Questioner questioner =quesRepo.getQuestionerbyId(id);
             if (questioner == null)
             {
                 return HttpNotFound();
@@ -39,7 +42,7 @@ namespace CrossSell_App.Controllers
         // GET: Questioners/Create
         public ActionResult Create()
         {
-            ViewBag.Metadata_Id = new SelectList(db.Metadatas, "Metadata_Id", "Metadata_Name");
+            ViewBag.Metadata_Id = new SelectList(quesRepo.getAllMetadata(), "Metadata_Id", "Metadata_Name");
             return View();
         }
 
@@ -52,12 +55,11 @@ namespace CrossSell_App.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Questioners.Add(questioner);
-                db.SaveChanges();
+                quesRepo.saveQuestioners(questioner);
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Metadata_Id = new SelectList(db.Metadatas, "Metadata_Id", "Metadata_Name", questioner.Metadata_Id);
+            ViewBag.Metadata_Id = new SelectList(quesRepo.getAllMetadata(), "Metadata_Id", "Metadata_Name", questioner.Metadata_Id);
             return View(questioner);
         }
 
@@ -68,12 +70,12 @@ namespace CrossSell_App.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Questioner questioner = db.Questioners.Find(id);
+            Questioner questioner = quesRepo.getQuestionerbyId(id);
             if (questioner == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.Metadata_Id = new SelectList(db.Metadatas, "Metadata_Id", "Metadata_Name", questioner.Metadata_Id);
+            ViewBag.Metadata_Id = new SelectList(quesRepo.getAllMetadata(), "Metadata_Id", "Metadata_Name", questioner.Metadata_Id);
             return View(questioner);
         }
 
@@ -86,11 +88,12 @@ namespace CrossSell_App.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(questioner).State = EntityState.Modified;
-                db.SaveChanges();
+                //db.Entry(questioner).State = EntityState.Modified;
+                //db.SaveChanges();
+                quesRepo.updateQuestioner(questioner);
                 return RedirectToAction("Index");
             }
-            ViewBag.Metadata_Id = new SelectList(db.Metadatas, "Metadata_Id", "Metadata_Name", questioner.Metadata_Id);
+            ViewBag.Metadata_Id = new SelectList(quesRepo.getAllMetadata(), "Metadata_Id", "Metadata_Name", questioner.Metadata_Id);
             return View(questioner);
         }
 
@@ -101,7 +104,7 @@ namespace CrossSell_App.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Questioner questioner = db.Questioners.Find(id);
+            Questioner questioner = quesRepo.getQuestionerbyId(id);
             if (questioner == null)
             {
                 return HttpNotFound();
@@ -114,19 +117,10 @@ namespace CrossSell_App.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Questioner questioner = db.Questioners.Find(id);
-            db.Questioners.Remove(questioner);
-            db.SaveChanges();
+            quesRepo.deleteQuestion(id);
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+       
     }
 }

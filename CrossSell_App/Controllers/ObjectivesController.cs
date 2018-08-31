@@ -6,9 +6,10 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using CrossSell_App.DataAccess;
+//using CrossSell_App.DataAccess;
 using CrossSell_App.Models;
 using CrossSell_App.UtilityClasses;
+using DataAccessLayer;
 
 namespace CrossSell_App.Controllers
 {
@@ -19,11 +20,11 @@ namespace CrossSell_App.Controllers
        static UserCompaniesInfo userComapniesData;
 
         // GET: Objectives
-        public ActionResult Index()
-        {
-            var objectives = db.Objectives.Include(o => o.Company).Include(o => o.Questioner).Include(o => o.Metadata).Include(o => o.Objectives1).Include(o => o.Objective1);
-            return View(objectives.ToList());
-        }
+        //public ActionResult Index()
+        //{
+        //    var objectives = db.Objectives.Include(o => o.Company).Include(o => o.Questioner).Include(o => o.Metadata).Include(o => o.Objectives1).Include(o => o.Objective1);
+        //    return View(objectives.ToList());
+        //}
 
         // GET: Objectives/Details/5
         public ActionResult Details(int? id)

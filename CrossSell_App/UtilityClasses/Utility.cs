@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using CrossSell_App.DataAccess;
+//using CrossSell_App.DataAccess;
 using System.Web.Mvc;
 using CrossSell_App.Models;
+using DataAccessLayer;
 
 namespace CrossSell_App.UtilityClasses
 {

@@ -1,4 +1,4 @@
-﻿using CrossSell_App.DataAccess;
+﻿//using CrossSell_App.DataAccess;
 using CrossSell_App.Models;
 using CrossSell_App.Repository;
 using System;
@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using DataAccessLayer;
 
 namespace CrossSell_App.Controllers
 {
