@@ -153,6 +153,11 @@ namespace CrossSell_App.Controllers
             {
                 DataFromPAL = DataFromPAL.Where(x => compList.Contains(x.Company_Id)).ToList();
             }
+            //else
+            //{
+            //    ViewBag.CompanyList = companyList;
+
+            //}
 
             var PortfoliosList = homeRepo.GetPortfolios();
             //logic for company wise
@@ -174,11 +179,13 @@ namespace CrossSell_App.Controllers
                     CompanyList = userComapniesData.comPanies;
                     companyIds = userComapniesData.companyId;
                     ViewBag.companyIds = userComapniesData.companyId;
-
+                    //ViewBag.CompanyList = userComapniesData.companyId;
+                    ViewBag.CompList = userComapniesData.companyId;
                 }
                 else
                 {
                     CompanyList = homeRepo.GetCompanies();
+                    ViewBag.CompList = CompanyList.Select(x=>x.Company_Id).ToList();
                 }
 
             }
@@ -239,7 +246,7 @@ namespace CrossSell_App.Controllers
                 countOfLeadsToBe++;
             }
 
-            object FinalChartDataSeries = new { a = a, IsLeadOrTobe = IsLeadOrTobe, companyColor = companyColor };
+            object FinalChartDataSeries = new { a = a, IsLeadOrTobe = IsLeadOrTobe, companyColor = companyColor,compList= ViewBag.CompList };
 
 
 
@@ -258,10 +265,13 @@ namespace CrossSell_App.Controllers
             {
                 CompanyList = userComapniesData.comPanies;
                 ViewBag.companyIds = userComapniesData.companyId;
+                ViewBag.CompList= userComapniesData.companyId;
             }
             else
             {
                 CompanyList = homeRepo.GetCompanies();
+                ViewBag.CompList = CompanyList.Select(x=>x.Company_Id).ToList();
+
             }
             //CompanyList = db.Companies.ToList();
             //var companyList = db.Companies.ToList();
@@ -317,7 +327,7 @@ namespace CrossSell_App.Controllers
             }
 
 
-            object FinalChartDataSeries = new { dataseries = dataseries, companyColor = companyColor };
+            object FinalChartDataSeries = new { dataseries = dataseries, companyColor = companyColor,compList = ViewBag.CompList };
 
             return Json(FinalChartDataSeries, JsonRequestBehavior.AllowGet);
         }

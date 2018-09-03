@@ -38,10 +38,12 @@
             <canvas id="chart"></canvas>
             <script type="text/javascript">
 
-                $(document).ready(function () {
-                    UserCompaniesList();
+				$(document).ready(function () {
+
+					//UserCompaniesListIndex();
+					debugger;
                    getData();
-                    getDPBData();
+                   getDPBData();
                 });
                 function getData() {
                  
@@ -70,7 +72,8 @@
                 var CompanyNames = [];
 
 
-                function UserCompaniesList() {
+				function UserCompaniesListIndex() {
+					debugger;
                     $.ajax({
                         type: "POST",
                         url: "/Home/GetUserCompanies",
@@ -83,21 +86,55 @@
                             getData();
                         },
                        
-                        error: function (response) {
-                           // alert(response.responseText);
+						error: function (response) {
+							debugger;
+
+                            alert(response.responseText);
                         }
                     });
                 }
 
                 //var yLable = ['NextGen AMS', 'NextGen SAP', 'DCX', 'Cloud', 'CyberSecurity', 'Digital Mfg', 'AI', 'Chatbots', 'Devops', 'Blockchain', 'End to End Offering']
 
-                function DisplayChart(chartData) {
+				function DisplayChart(chartData) {
+					debugger;
+					var array = @Html.Raw(Json.Encode(@ViewBag.CompList));
+					var compData = [];
+
+					if (array == undefined || array == null) {
+						array = chartData.compList;
+						for (var i = 0; i < array.length; i++) {
+							var data = {
+								backgroundColor: chartData.companyColor[i],
+								borderColor: chartData.companyColor[i],
+								data: chartData.a[i],
+								lbl: chartData.IsLeadOrTobe[i],
+								label: array[i],
+							}
+							compData.push(data);
+						}
+
+					}
+					else {
+						for (var i = 0; i < array.length; i++) {
+							var data = {
+								backgroundColor: chartData.companyColor[i],
+								borderColor: chartData.companyColor[i],
+								data: chartData.a[i],
+								lbl: chartData.IsLeadOrTobe[i],
+								label: array[i].Text,
+							}
+							compData.push(data);
+						}
+					}
+					
                     // var labels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 5];
 
                     //var data = [9, 8, 04, 4, 0, 0, 0, 0, 0, 0, 0];
                     //var data2 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
                     //var data3 = [9, 0, 6, 8, 9, 0, 0, 0, 7, 0, 0];
                     //var data4 = [9, 0, 0, 8, 0, 0, 0, 0, 7, 0, 9];
+					var labels2 = chartData.IsLeadOrTobe;//['*+', '+', '', '+', '', '', '', '', '', '', '', ''];
 
                     //var labels2 = ['*+', '+', '', '+', '', '', '', '', '', '', '', ''];
                     //var labels3 = ['', '', '', '', '', '', '', '', '', '', '', ''];
@@ -161,7 +198,7 @@
                         var labels4 = chartData.IsLeadOrTobe[2];
                         var labels5 = chartData.IsLeadOrTobe[3];
                     }
-
+					
                     var yLable = ['NextGen AMS', 'NextGen SAP', 'DCX', 'Cloud', 'CyberSecurity', 'Digital Mfg', 'AI', 'Chatbots', 'Devops', 'Blockchain', 'End to End Offering'];
 
                     var chart = new Chart('chart', {
@@ -169,34 +206,7 @@
                         data: {
                             labels: yLable,
                             labels2: labels2,
-                            datasets: [{
-                                backgroundColor: '#3dcd58',
-                                borderColor: '#3dcd58',
-                                data: data,
-                                lbl: labels2,
-                                label: 'Schneider',
-                            },
-                            {
-                                backgroundColor: '#7b7c81',
-                                borderColor: '#7b7c81',
-                                data: data2,
-                                lbl: labels3,
-                                label: 'Daimler',
-                            },
-                            {
-                                backgroundColor: '#0795e6',
-                                borderColor: '#0795e6',
-                                data: data3,
-                                lbl: labels4,
-                                label: 'Disney',
-                            },
-                            {
-                                backgroundColor: '	#ffc111',
-                                borderColor: '	#ffc111',
-                                data: data4,
-                                lbl: labels5,
-                                label: 'McDonalds',
-                            }]
+							datasets: compData
                         },
                         options: {
                             legend: {
@@ -283,7 +293,36 @@
 
                 function DisplayDPBChart(chartData) {
 
-                    debugger;
+					debugger;
+					var array = @Html.Raw(Json.Encode(@ViewBag.CompList));
+					var compData = [];
+					if (array == undefined || array == null) {
+						array = chartData.compList;
+						for (var i = 0; i < array.length; i++) {
+							var data = {
+
+								borderColor: chartData.companyColor[i],
+								data: chartData.dataseries[i],
+								fill: false,
+								label: array[i],
+							}
+							compData.push(data);
+						}
+					}
+					else {
+						for (var i = 0; i < array.length; i++) {
+							var data = {
+
+								borderColor: chartData.companyColor[i],
+								data: chartData.dataseries[i],
+								fill: false,
+								label: array[i].Text,
+							}
+							compData.push(data);
+						}
+					}
+
+					debugger;
 
                     if ('@Session["companyId"]' != '') {
                        // var myVal = parseInt('@Session["companyId"]');
@@ -325,30 +364,9 @@
                         type: 'radar',
                         data: {
                             labels: ['Customer', 'Employee', 'Partner', 'CIO', 'CDO', 'CEO'],
-                            datasets: [{
-                                label: 'Schneider',
-                                data: data1,//[53, 69, 35, 43, 50, 75],
-                                borderColor: '#3dcd58',
-                                fill: false,
-                            },
-                            {
-                                label: 'Daimler',
-                                data: data2,//[33, 53, 27, 43, 20, 35],
-                                borderColor: '#7b7c81',
-                                fill: false,
-                            },
-                            {
-                                label: 'Disney',
-                                data: data3,//[61, 78, 48, 71, 67, 72],
-                                borderColor: '#0795e6',
-                                fill: false,
-                            },
-                            {
-                                label: 'McDonalds',
-                                data: data4,//[55, 35, 0, 0, 0, 0],
-                                borderColor: '#ffc111',
-                                fill: false,
-                            }]
+							datasets: compData
+
+                            
                         },
                         options: {
                             legend: {
