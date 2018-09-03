@@ -40,7 +40,7 @@
 
                 $(document).ready(function () {
                     UserCompaniesList();
-                    getData();
+                   getData();
                     getDPBData();
                 });
                 function getData() {
@@ -80,6 +80,7 @@
                         success: function (response) {
                             debugger;
                             CompanyId = response;
+                            getData();
                         },
                        
                         error: function (response) {

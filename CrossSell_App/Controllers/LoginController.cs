@@ -57,7 +57,7 @@ namespace CrossSell_App.Controllers
                         else
                         {
                             //var companyId = db.UserAccesses.Where(x => x.UserRoleId == IsUserexist.UserRoleId).Select(x => x.CompanyId).ToList();
-                            var companyId = loginRepo.GetUsersCompany(IsUserexist.UserRoleId).Select(x=>x.CompanyId).ToList();
+                            var companyId = loginRepo.GetUsersCompany(IsUserexist.UserRoleId).Select(x=>x.CompanyId).Distinct().ToList();
 
                             if (strDDLValue == "Admin")
                                   {

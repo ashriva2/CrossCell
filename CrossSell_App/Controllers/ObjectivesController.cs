@@ -6,8 +6,11 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using AutoMapper;
+
 //using CrossSell_App.DataAccess;
 using CrossSell_App.Models;
+using CrossSell_App.Repository;
 using CrossSell_App.UtilityClasses;
 using DataAccessLayer;
 
@@ -17,6 +20,7 @@ namespace CrossSell_App.Controllers
     {
         private Utility utilObj = new Utility();
         private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
+        private ObjectivesRepository objRepo = new ObjectivesRepository();
        static UserCompaniesInfo userComapniesData;
 
         // GET: Objectives
@@ -27,28 +31,32 @@ namespace CrossSell_App.Controllers
         //}
 
         // GET: Objectives/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Objective objective = db.Objectives.Find(id);
-            if (objective == null)
-            {
-                return HttpNotFound();
-            }
-            return View(objective);
-        }
+        //public ActionResult Details(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    Objective objective = db.Objectives.Find(id);
+        //    if (objective == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(objective);
+        //}
 
         // GET: Objectives/Create
         public ActionResult Create(int id)
         {
             userComapniesData = utilObj.getUsercompanyInfo();
             int companyId = 0;
-            if(id==0)
+            if (id == 0 && userComapniesData.companyId == null)
             {
                 companyId = 1;
+            }
+            else if(id == 0 && userComapniesData!=null && userComapniesData.companyId.Count>0)
+            {
+                companyId = userComapniesData.companyId.FirstOrDefault();
             }
             else
             {
@@ -63,10 +71,18 @@ namespace CrossSell_App.Controllers
             ViewBag.Objective_Id = new SelectList(db.Objectives, "Objective_Id", "Comments");
             ViewBag.Objective_Id = new SelectList(db.Objectives, "Objective_Id", "Comments");
 
-            ObjectivesModel Data = new ObjectivesModel();
+            List<ObjectivesModel> Data = new List<ObjectivesModel>();
             List<ObjectivesModel> DataList = new List<ObjectivesModel>();
             List<SectionModel> SectionModelList = new List<SectionModel>();
-            var sectionList = db.Metadatas.ToList();
+            var sectionList = objRepo.GetMetadatas().ToList();
+            var ALlObjectives = objRepo.getObjectivebyCompany(companyId);
+            var AllQuestioners = objRepo.getAllQuestioner();
+            //Mapper.CreateMap<ALlObjectives, Data>();
+
+
+
+
+
             //checking if the data exists for the particular company id in db
             //Company Id is hardcoded 
             List<Company> CompanyList = new List<Company>();
@@ -84,7 +100,7 @@ namespace CrossSell_App.Controllers
             }
         
            
-            var companyData = db.Objectives.Where(x => x.Company_Id == companyIds.FirstOrDefault()).OrderBy(x => x.Objective_Id).ToList();
+            var companyData = ALlObjectives.Where(x => x.Company_Id == companyId).OrderBy(x => x.Objective_Id).ToList();
 
 
 
@@ -106,14 +122,14 @@ namespace CrossSell_App.Controllers
 
                 ViewBag.SectionList = SectionModelList;
 
-                foreach (var item in db.Metadatas.ToList())
+                foreach (var item in sectionList)
                 {
                     try
                     {
 
 
                         //DataList.Add(DataInput);
-                        var getQuesForMeta = db.Questioners.Where(x => x.Metadata_Id == item.Metadata_Id).ToList();
+                        var getQuesForMeta = AllQuestioners.Where(x => x.Metadata_Id == item.Metadata_Id).ToList();
                         foreach (var ques in getQuesForMeta)
                         {
                             ObjectivesModel DataInput = new ObjectivesModel();
@@ -150,17 +166,17 @@ namespace CrossSell_App.Controllers
 
                 ViewBag.SectionList = SectionModelList;
 
-                foreach (var item in db.Metadatas.ToList())
+                foreach (var item in sectionList)
                 {
                     try
                     {
 
 
                         //DataList.Add(DataInput);
-                        var getQuesForMeta = db.Questioners.Where(x => x.Metadata_Id == item.Metadata_Id).ToList();
+                        var getQuesForMeta =AllQuestioners.Where(x => x.Metadata_Id == item.Metadata_Id).ToList();
                         foreach (var ques in getQuesForMeta)
                         {
-                            var dataExist = db.Objectives.Where(x => x.Metadata_Id == ques.Metadata_Id && x.Questioner_Id == ques.Questioner_Id && x.Company_Id == companyIds.FirstOrDefault()).FirstOrDefault();
+                            var dataExist = ALlObjectives.Where(x => x.Metadata_Id == ques.Metadata_Id && x.Questioner_Id == ques.Questioner_Id && x.Company_Id == companyId).FirstOrDefault();
                             if (dataExist != null)
                             {
                                 ObjectivesModel DataInput = new ObjectivesModel();
@@ -211,6 +227,7 @@ namespace CrossSell_App.Controllers
         {
 
             string message;
+            var ObjectivesbyId = objRepo.getObjectivebyCompany(jsonObj[0].Company_Id);
 
             foreach (var item in jsonObj)
             {
@@ -218,7 +235,7 @@ namespace CrossSell_App.Controllers
                 try
                 {
 
-                    var dataExist = db.Objectives.Where(x => x.Company_Id == item.Company_Id && x.Metadata_Id == item.Metadata_Id && x.Questioner_Id==item.Questioner_Id).FirstOrDefault();
+                    var dataExist = ObjectivesbyId.Where(x=>x.Metadata_Id == item.Metadata_Id && x.Questioner_Id==item.Questioner_Id).FirstOrDefault();
                     if (dataExist == null)
                     {
                         Objective saveData = new Objective()
@@ -238,10 +255,7 @@ namespace CrossSell_App.Controllers
 
                         };
 
-
-                        db.Objectives.Add(saveData);
-                        db.SaveChanges();
-
+                        objRepo.SaveObjective(saveData);
                     }
 
                     else
@@ -258,7 +272,10 @@ namespace CrossSell_App.Controllers
                         dataExist.Weight = item.Weight;
                         dataExist.Answer = item.Answer;
 
-                        db.SaveChanges();
+
+                        objRepo.UpdateObjective(dataExist);
+
+                       
 
 
 
@@ -368,7 +385,7 @@ namespace CrossSell_App.Controllers
             if (userComapniesData.companyId == null)
             {
 
-                companyList = db.Companies.ToList();
+                companyList = objRepo.GetCompanies().ToList();
             }
             else
             {

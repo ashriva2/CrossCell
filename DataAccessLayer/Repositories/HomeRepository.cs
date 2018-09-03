@@ -1,7 +1,7 @@
 ﻿
 //using CrossSell_App.DataAccess;
 using DataAccessLayer;
-using DataAccessLayer;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +18,11 @@ namespace CrossSell_App.Repositories
         public List<Portfolio_Agile_Lab> GetPALData()
         {
             return db.Portfolio_Agile_Lab.ToList().OrderBy(x => x.Portfolio_Id).ToList();
+        }
+
+        public List<Portfolio_Agile_Lab> GetPALDatabyCompanyList(List<int> comapanylst)
+        {
+            return db.Portfolio_Agile_Lab.ToList().Where(c=>comapanylst.Contains(c.Company_Id)).OrderBy(x => x.Portfolio_Id).ToList();
         }
 
         public List<Portfolio> GetPortfolios()

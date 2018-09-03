@@ -11,7 +11,7 @@ namespace CrossSell_App.Models
     {
         private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
 
-        public int Objective_Id { get; set; }   
+        public int Objective_Id { get; set; }
         public string Comments { get; set; }
         public Nullable<int> Weight { get; set; }
         public Nullable<double> Score_Max { get; set; }
@@ -29,17 +29,10 @@ namespace CrossSell_App.Models
 
 
 
-        public List<CompanyModel> Company { get; set; }
+        public List<Company> Company { get; set; }
         public List<Questioner> Questioner { get; set; }
         public List<SectionModel> Metadata { get; set; }
 
-        //public ObjectivesModel()
-        //{
-        //    Company = db.Companies.ToList();
-        //    Questioner = db.Questioners.ToList();
-            
-        //}
-
-
+        
     }
 }
