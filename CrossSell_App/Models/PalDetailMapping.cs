@@ -14,4 +14,5 @@ namespace CrossSell_App.Models
         public List<Portfolio_Agile_Lab> portfolioAgileLab { get; set; }
         public List<Company> companyList { get; set; }
     }
+
 }

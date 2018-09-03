@@ -47,14 +47,20 @@ namespace CrossSell_App.Controllers
 
             companyId.Sort();
             var companyList = db.Companies.Where(c => companyId.Contains(c.Company_Id)).Select(x => new { x.Company_Name, x.Company_Id }).OrderBy(x => x.Company_Id).ToList();
-           
+            
+            Dictionary <  List<int>,string> companyObject = new Dictionary<List<int>, string>();
+
             List<string> cList = new List<string>();
             List<int> compIdList = new List<int>();
             foreach (var c in companyList)
             {
                 cList.Add(c.Company_Name);
                 compIdList.Add(c.Company_Id);
+                List<int> ids = new List<int>();
+                ids.Add(c.Company_Id);
+                companyObject.Add(ids, c.Company_Name);
             }
+            ViewBag.companyObject = companyObject;
             ViewBag.CompanyList = cList;
             ViewBag.CompanyIdList = compIdList;
             //Portfolio portfolio = db.Portfolios.Find(id);
@@ -142,11 +148,16 @@ namespace CrossSell_App.Controllers
 
                 cList = new List<string>();
                 compIdList = new List<int>();
+                companyObject = new Dictionary<List<int>, string>();
                 foreach (var c in companyList)
                 {
                     cList.Add(c.Company_Name);
                     compIdList.Add(c.Company_Id);
+                    List<int> ids = new List<int>();
+                    ids.Add(c.Company_Id);
+                    companyObject.Add(ids, c.Company_Name);
                 }
+                ViewBag.companyObject = companyObject;
                 ViewBag.CompanyList = cList;
                 ViewBag.CompanyIdList = compIdList;
                 var sectionCheck = db.Metadatas.ToList();

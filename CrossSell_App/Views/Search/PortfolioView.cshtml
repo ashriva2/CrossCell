@@ -16,10 +16,11 @@
 
 		<tr>
 			<th style="padding:2%"></th>
-			@foreach (var header in ViewBag.CompanyList)
+			@foreach (var header in ViewBag.companyObject)
 			{
 				<th style="background-color:#0070ad; color:white; text-align:center; padding:2% !important">
-					@header
+					<h4><a href=@Url.Action("PALReport", "Home", new { CompList = Json.Encode(header.Key) }, null) style="color:white">@header.Value</a></h4>
+
 				</th>
 			}
 		</tr>
@@ -27,10 +28,10 @@
 
 			foreach (var item in @ViewBag.portfolioList)
 			{
-				<tr style="border:solid 1px" >
+				<tr style="border:solid 1px">
 					<td align="center" style="border:solid 1px">
 
-						@item.Portfolio_Name
+						<a href=@Url.Action("PALReport", "Home", new { CompList = Json.Encode(@ViewBag.CompanyIdList) }, null)>@item.Portfolio_Name</a>
 					</td>
 					@foreach (var header in ViewBag.CompanyList)
 					{
