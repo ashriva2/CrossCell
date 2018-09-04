@@ -21,7 +21,7 @@ namespace CrossSell_App.Controllers
 
         static UserCompaniesInfo userComapniesData;
 
-
+        [Authorize]
         public ActionResult Index()
         {
             userComapniesData = utilObj.getUsercompanyInfo();
@@ -180,12 +180,12 @@ namespace CrossSell_App.Controllers
                     companyIds = userComapniesData.companyId;
                     ViewBag.companyIds = userComapniesData.companyId;
                     //ViewBag.CompanyList = userComapniesData.companyId;
-                    ViewBag.CompList = userComapniesData.companyId;
+                    ViewBag.CompList = userComapniesData.comPanies.Select(x=>x.Company_Name).ToList();
                 }
                 else
                 {
                     CompanyList = homeRepo.GetCompanies();
-                    ViewBag.CompList = CompanyList.Select(x=>x.Company_Id).ToList();
+                    ViewBag.CompList = CompanyList.Select(x=>x.Company_Name).ToList();
                 }
 
             }
@@ -199,12 +199,6 @@ namespace CrossSell_App.Controllers
                 List<int> CurrentUsagePerCompany = new List<int>();
                 var dalfromPal = DataFromPAL.Where(x => x.Company_Id == item.Company_Id).Select(x => x.Current_Usage).ToList();
 
-                //foreach (var data in DataFromPAL)
-                //{
-                //    if (item.Company_Id == data.Company_Id)
-                //        CurrentUsagePerCompany.Add(data.Current_Usage);
-
-                //}
                 a[countOfUsage] = dalfromPal;// CurrentUsagePerCompany;
                 countOfUsage++;
             }
@@ -234,8 +228,7 @@ namespace CrossSell_App.Controllers
                         else
                             IsFutureScope = "";
 
-                        //string IsMarketLead= data.IsMarketLead ? true ? "*" : "":"";
-                        //string IsFutureScope=data.Future_Scope ? true ? "+" : "":"";
+                        
 
 
                         CurrentUsagePerCompany.Add(IsMarketLead + IsFutureScope);
@@ -246,7 +239,8 @@ namespace CrossSell_App.Controllers
                 countOfLeadsToBe++;
             }
 
-            object FinalChartDataSeries = new { a = a, IsLeadOrTobe = IsLeadOrTobe, companyColor = companyColor,compList= ViewBag.CompList };
+
+            object FinalChartDataSeries = new { a = a, IsLeadOrTobe = IsLeadOrTobe, companyColor = companyColor,compList= ViewBag.CompList ,portfolios= PortfoliosList.Select(x=>x.Portfolio_Name).ToList()};
 
 
 
@@ -265,17 +259,15 @@ namespace CrossSell_App.Controllers
             {
                 CompanyList = userComapniesData.comPanies;
                 ViewBag.companyIds = userComapniesData.companyId;
-                ViewBag.CompList= userComapniesData.companyId;
+                ViewBag.CompList= userComapniesData.comPanies.Select(x=>x.Company_Name).ToList();
             }
             else
             {
                 CompanyList = homeRepo.GetCompanies();
-                ViewBag.CompList = CompanyList.Select(x=>x.Company_Id).ToList();
+                ViewBag.CompList = CompanyList.Select(x=>x.Company_Name).ToList();
 
             }
-            //CompanyList = db.Companies.ToList();
-            //var companyList = db.Companies.ToList();
-            // var metaDataList = db.Metadatas.Where(x => x.Metadata_Id != 7).OrderBy(x => x.Metadata_Id).ToList();
+            
             var metaDataList = homeRepo.GetMetadatas();
             int count = 0;
             List<double?>[] dataseries = new List<double?>[100];
@@ -325,9 +317,9 @@ namespace CrossSell_App.Controllers
                 }
 
             }
+            var metadataForChart = metaDataList.Select(x => x.Metadata_Name).ToList();
 
-
-            object FinalChartDataSeries = new { dataseries = dataseries, companyColor = companyColor,compList = ViewBag.CompList };
+            object FinalChartDataSeries = new { dataseries = dataseries, companyColor = companyColor,compList = ViewBag.CompList , metadataForChart = metadataForChart};
 
             return Json(FinalChartDataSeries, JsonRequestBehavior.AllowGet);
         }

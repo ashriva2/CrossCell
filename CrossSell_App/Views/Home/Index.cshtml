@@ -70,7 +70,7 @@
 
                 var CompanyId = [];
                 var CompanyNames = [];
-
+                var portfolios = [];
 
 				function UserCompaniesListIndex() {
 					debugger;
@@ -100,7 +100,7 @@
 					debugger;
 					var array = @Html.Raw(Json.Encode(@ViewBag.CompList));
 					var compData = [];
-
+                    debugger;
 					if (array == undefined || array == null) {
 						array = chartData.compList;
 						for (var i = 0; i < array.length; i++) {
@@ -126,7 +126,12 @@
 							}
 							compData.push(data);
 						}
-					}
+                    }
+
+                    for (var i = 0; i < chartData.portfolios.length; i++) {
+
+                        portfolios.push(chartData.portfolios[i]);
+                    }
 					
                     // var labels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 5];
 
@@ -142,69 +147,13 @@
                     //var labels5 = ['+', '', '', '+', '+', '', '+', '+', '+', '', '+'];
                     //  var labels = chartData.labels;
                     debugger;
-                    if ('@Session["companyId"]' != '') {
+                             
 
-
-                        //var myVal = parseInt('@Session["companyId"]');
-                        for (i = 0; i < CompanyId.length; i++) {
-
-
-                            if (CompanyId[i] == 1 && CompanyId.length == 1) {
-                                var data = chartData.a[0];
-                                var labels2 = chartData.IsLeadOrTobe[0];
-                            }
-                            else if (CompanyId[i] == 1) {
-                                var data = chartData.a[0];
-                                var labels2 = chartData.IsLeadOrTobe[0];
-                            }
-                            
-                            if (CompanyId[i] == 2 && CompanyId.length == 2) {
-                                var data2 = chartData.a[1];
-                                var labels3 = chartData.IsLeadOrTobe[1];
-                            }
-                            else if (CompanyId[i]==2) {
-                                var data2 = chartData.a[0];
-                                var labels3 = chartData.IsLeadOrTobe[0];
-                            }
-
-                            if (CompanyId[i] == 3 && CompanyId.length == 3) {
-                                var data3 = chartData.a[2];
-                                var labels4 = chartData.IsLeadOrTobe[2];
-                            }
-                            else if (CompanyId[i] == 3) {
-                                var data3 = chartData.a[0];
-                                var labels4 = chartData.IsLeadOrTobe[0];
-                            }
-
-                            if (CompanyId[i] == 4 && CompanyId.length == 4) {
-                                var data4 = chartData.a[3];
-                                var labels5 = chartData.IsLeadOrTobe[3];
-                            }
-                            else if (CompanyId[i] == 4) {
-                                var data4 = chartData.a[0];
-                                var labels5 = chartData.IsLeadOrTobe[0];
-                            }
-                        }
-                    }
-                    else {
-
-                        var data = chartData.a[0];
-                        var data2 = chartData.a[1];
-                        var data3 = chartData.a[2];
-                        var data4 = chartData.a[3];
-
-                        var labels2 = chartData.IsLeadOrTobe[0];
-                        var labels3 = chartData.IsLeadOrTobe[1];
-                        var labels4 = chartData.IsLeadOrTobe[2];
-                        var labels5 = chartData.IsLeadOrTobe[3];
-                    }
-					
-                    var yLable = ['NextGen AMS', 'NextGen SAP', 'DCX', 'Cloud', 'CyberSecurity', 'Digital Mfg', 'AI', 'Chatbots', 'Devops', 'Blockchain', 'End to End Offering'];
 
                     var chart = new Chart('chart', {
                         type: 'bar',
                         data: {
-                            labels: yLable,
+                            labels: portfolios,
                             labels2: labels2,
 							datasets: compData
                         },
@@ -271,7 +220,7 @@
             <canvas id="chart1"></canvas>
             <script>
 
-               
+                var metadata = [];
                 function getDPBData() {
                     $.ajax({
                         type: "POST",
@@ -293,8 +242,11 @@
 
                 function DisplayDPBChart(chartData) {
 
-					debugger;
-					var array = @Html.Raw(Json.Encode(@ViewBag.CompList));
+                    debugger;
+
+                  
+                    var array = @Html.Raw(Json.Encode(@ViewBag.CompList));
+                    
 					var compData = [];
 					if (array == undefined || array == null) {
 						array = chartData.compList;
@@ -320,50 +272,18 @@
 							}
 							compData.push(data);
 						}
-					}
+                    }
+
+                    for (var i = 0; i < chartData.metadataForChart.length; i++) {
+
+                        metadata.push(chartData.metadataForChart[i]);
+                    }
 
 					debugger;
-
-                    if ('@Session["companyId"]' != '') {
-                       // var myVal = parseInt('@Session["companyId"]');
-
-                        for (i = 0; i < CompanyId.length; i++) {
-                            if (CompanyId[i] == 1 && CompanyId.length==1)
-								var data1 = chartData.dataseries[0];
-                            else if (CompanyId[i] == 1)
-								var data1 = chartData.dataseries[0]; 
-                            if (CompanyId[i] == 2 && CompanyId.length == 2)
-								var data2 = chartData.dataseries[1];
-                            else if (CompanyId[i] == 2)
-								var data2 = chartData.dataseries[0];
-                            if (CompanyId[i] == 3 && CompanyId.length == 3)
-								var data3 = chartData.dataseries[2];
-                            else if (CompanyId[i] == 3)
-								var data3 = chartData.dataseries[0];
-
-                            if (CompanyId[i] == 4 && CompanyId.length == 4)
-								var data4 = chartData.dataseries[3];
-                            else if (CompanyId[i] == 4)
-								var data4 = chartData.dataseries[0];
-                        }
-                    
-                       
-                    }
-                    else {
-
-
-						var data1 = chartData.dataseries[0];
-						var data2 = chartData.dataseries[1];
-						var data3 = chartData.dataseries[2];
-						var data4 = chartData.dataseries[3];
-
-                    }
-
-
                     var chart = new Chart('chart1', {
                         type: 'radar',
                         data: {
-                            labels: ['Customer', 'Employee', 'Partner', 'CIO', 'CDO', 'CEO'],
+                            labels: metadata,
 							datasets: compData
 
                             

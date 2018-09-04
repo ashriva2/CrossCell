@@ -64,11 +64,11 @@ namespace CrossSell_App.Controllers
 
             ViewBag.fillCompanyddl = FillCompanyDropDown(companyId);
 
-            ViewBag.Company_Id = new SelectList(db.Companies, "Company_Id", "Company_Name");
-            ViewBag.Questioner_Id = new SelectList(db.Questioners, "Questioner_Id", "Questioner1");
-            ViewBag.Metadata_Id = new SelectList(db.Metadatas, "Metadata_Id", "Metadata_Name");
-            ViewBag.Objective_Id = new SelectList(db.Objectives, "Objective_Id", "Comments");
-            ViewBag.Objective_Id = new SelectList(db.Objectives, "Objective_Id", "Comments");
+            //ViewBag.Company_Id = new SelectList(db.Companies, "Company_Id", "Company_Name");
+            //ViewBag.Questioner_Id = new SelectList(db.Questioners, "Questioner_Id", "Questioner1");
+            //ViewBag.Metadata_Id = new SelectList(db.Metadatas, "Metadata_Id", "Metadata_Name");
+            //ViewBag.Objective_Id = new SelectList(db.Objectives, "Objective_Id", "Comments");
+            //ViewBag.Objective_Id = new SelectList(db.Objectives, "Objective_Id", "Comments");
 
             List<ObjectivesModel> Data = new List<ObjectivesModel>();
             List<ObjectivesModel> DataList = new List<ObjectivesModel>();
@@ -99,7 +99,7 @@ namespace CrossSell_App.Controllers
             }
         
            
-            var companyData = ALlObjectives.Where(x => x.Company_Id == companyId).OrderBy(x => x.Objective_Id).ToList();
+              var companyData = ALlObjectives.Where(x => x.Company_Id == companyId).OrderBy(x => x.Objective_Id).ToList();
 
 
 

@@ -30,7 +30,7 @@
                 getData();
                 var CompanyId = [];
                 var CompanyNames = [];
-
+                var metadata = [];
 
                 function UserCompaniesList() {
                     $.ajax({
@@ -77,7 +77,8 @@
 						}),
                         success: function (response) {
                             debugger;
-                            initializeChartSeries(response);
+                            //initializeChartSeries(response);
+                            DisplayChart(response);
                         },
                         failure: function (response) {
                             alert(response.responseText);
@@ -87,44 +88,9 @@
                         }
                     });
                 }
-                function initializeChartSeries(chartData) {
-                    debugger;
+              
 
-                     if ('@Session["companyId"]' != '') {
-                        for (i = 0; i < CompanyId.length; i++) {
-                            if (CompanyId[i] == 1 && CompanyId.length == 1)
-                                var data1 = chartData[0];
-                            else if (CompanyId[i] == 1)
-                                var data1 = chartData[0];
-                            if (CompanyId[i] == 2 && CompanyId.length == 2)
-                                var data2 = chartData[1];
-                            else if (CompanyId[i] == 2)
-                                var data2 = chartData[0];
-                            if (CompanyId[i] == 3 && CompanyId.length == 3)
-                                var data3 = chartData[2];
-                            else if (CompanyId[i] == 3)
-                                var data3 = chartData[0];
-
-                            if (CompanyId[i] == 4 && CompanyId.length == 4)
-                                var data4 = chartData[3];
-                            else if (CompanyId[i] == 4)
-                                var data4 = chartData[0];
-                        }
-                    }
-                    else {
-
-
-                         data1 = chartData[0];
-                         data2 = chartData[1];
-                         data3 = chartData[2];
-                         data4 = chartData[3];
-
-                    }
-                    
-					DisplayChart(data1, data2, data3, data4, chartData);
-                }
-
-				function DisplayChart(dpbData1, dpbData2, dpbData3, dpbData4, chartData) {
+				function DisplayChart(chartData) {
 					debugger;
 					var array = @Html.Raw(Json.Encode(@ViewBag.CompList));
 					var compData = [];
@@ -140,35 +106,15 @@
 						compData.push(data);
 					}
 
-					//[{
-					//	label: 'Schneider',
-					//	data: dpbData1,//[53, 69, 35, 43, 50, 75],
-					//	borderColor: '#3dcd58',
-					//	fill: false,
-					//},
-					//	{
-					//		label: 'Daimler',
-					//		data: dpbData2,//[33, 53, 27, 43, 20, 35],
-					//		borderColor: '#7b7c81',
-					//		fill: false,
-					//	},
-					//	{
-					//		label: 'Disney',
-					//		data: dpbData3,//[61, 78, 48, 71, 67, 72],
-					//		borderColor: '#0795e6',
-					//		fill: false,
-					//	},
-					//	{
-					//		label: 'McDonalds',
-					//		data: dpbData4,//[55, 35, 0, 0, 0, 0],
-					//		borderColor: '#ffc111',
-					//		fill: false,
-					//	}]
+                    for (var i = 0; i < chartData.metadataForChart.length; i++) {
 
+                        metadata.push(chartData.metadataForChart[i]);
+                    }
+					
                     var chart = new Chart('chart1', {
                         type: 'radar',
                         data: {
-                            labels: ['Customer', 'Employee', 'Partner', 'CIO', 'CDO', 'CEO'],
+                            labels: metadata,
                             datasets: compData
                         },
                         options: {
@@ -217,45 +163,7 @@
                 function showDPBGraph(ele) {
 					debugger;
 					window.location.href = '/Home/DPBReport?CompList=' + ele;
-                    //if (ele !== "") {
-
-                    //    if (ele == 1) {
-                    //        var dpbData1 = data1;
-                    //        var dpbData2 = [];
-                    //        var dpbData3 = [];
-                    //        var dpbData4 = [];
-                    //        DisplayChart(dpbData1, dpbData2, dpbData3, dpbData4)
-                    //    }
-
-                    //    if (ele == 2) {
-                    //        var dpbData1 = [];
-                    //        var dpbData2 = data2;
-                    //        var dpbData3 = [];
-                    //        var dpbData4 = [];
-                    //        DisplayChart(dpbData1, dpbData2, dpbData3, dpbData4)
-                    //    }
-
-                    //    if (ele == 3) {
-                    //        var dpbData1 = [];
-                    //        var dpbData2 = [];
-                    //        var dpbData3 = data3;
-                    //        var dpbData4 = [];
-                    //        DisplayChart(dpbData1, dpbData2, dpbData3, dpbData4)
-                    //    }
-                    //    if (ele == 4) {
-                    //        var dpbData1 = [];
-                    //        var dpbData2 = [];
-                    //        var dpbData3 = [];
-                    //        var dpbData4 = data4;
-                    //        DisplayChart(dpbData1, dpbData2, dpbData3, dpbData4)
-                    //    }
-                    //} else {
-                    //    var dpbData1 = data1;
-                    //    var dpbData2 = data2;
-                    //    var dpbData3 = data3;
-                    //    var dpbData4 = data4;
-                    //    DisplayChart(dpbData1, dpbData2, dpbData3, dpbData4)
-                    //}
+                   
                 }
 
             </script>

@@ -66,7 +66,7 @@ namespace CrossSell_App.Controllers
             if (TempData.ContainsKey("saveMessage"))
                 ViewBag.Message = TempData["saveMessage"].ToString();
 
-            return View(portfolio_Agile_LabData.ToList());
+            return View(portfolio_Agile_LabData.ToList()) ;
         }
 
         public ActionResult PalDetails(int id)
@@ -91,13 +91,24 @@ namespace CrossSell_App.Controllers
             {
                 companyIds.Add(id);
             }
-            if (companyId == 0 && companyIds.Count == 1 && companyIds[0] == 0)
+            if ((companyId == 0 && companyIds.Count == 1 && companyIds[0] == 0 ) &&(userComapniesData.comPanies==null))
             {
                 // portfolio_Agile_LabData = db.Portfolio_Agile_Lab.Include(p => p.Company).Include(p => p.Portfolio);
                 objDetails.companyList = pfRepo.GetAllCompanies();
                 objDetails.portfolioAgileLab = pfRepo.GetAllPAL().ToList();
                 //portfolio_Agile_Lab_.Add(portfolio_Agile_LabData);
 
+            }
+            else if(companyId!=0 && companyIds.Count == 1 && userComapniesData.comPanies == null)
+            {
+                objDetails.companyList = pfRepo.GetAllCompanies().Where(x=>x.Company_Id== companyId).ToList();
+                objDetails.portfolioAgileLab = pfRepo.GetAllPAL().Where(x=>x.Company_Id==companyId).ToList();
+            }
+
+            else if (companyId != 0 && companyIds.Count == 1 && userComapniesData.comPanies != null)
+            {
+                objDetails.companyList = userComapniesData.comPanies.Where(x => x.Company_Id == companyId).ToList();
+                objDetails.portfolioAgileLab = pfRepo.GetAllPAL().Where(x => x.Company_Id == companyId).ToList();
             }
 
             else
