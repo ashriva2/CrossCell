@@ -15,7 +15,7 @@ namespace CrossSell_App.Controllers
 {
     public class PortfolioTypeController : Controller
     {
-        private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
+       // private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
         private PortfolioTypeRepository ptfTypeRepo = new PortfolioTypeRepository();
         // GET: PortfolioType
         public ActionResult Index()

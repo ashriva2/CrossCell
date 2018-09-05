@@ -17,7 +17,7 @@ namespace CrossSell_App.Controllers
 {
     public class SearchController : Controller
     {
-        private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
+        //private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
         private HomeRepository homeRepo = new HomeRepository();
         private Utility utilObj = new Utility();
         // GET: Search
@@ -47,7 +47,7 @@ namespace CrossSell_App.Controllers
             //companyId.Add(3);
 
             companyId.Sort();
-            var companyList = db.Companies.Where(c => companyId.Contains(c.Company_Id)).Select(x => new { x.Company_Name, x.Company_Id }).OrderBy(x => x.Company_Id).ToList();
+            var companyList = homeRepo.GetCompanies().Where(c => companyId.Contains(c.Company_Id)).Select(x => new { x.Company_Name, x.Company_Id }).OrderBy(x => x.Company_Id).ToList();
             
             Dictionary <  List<int>,string> companyObject = new Dictionary<List<int>, string>();
 
@@ -65,7 +65,7 @@ namespace CrossSell_App.Controllers
             ViewBag.CompanyList = cList;
             ViewBag.CompanyIdList = compIdList;
             //Portfolio portfolio = db.Portfolios.Find(id);
-            var portfolioList = db.Portfolios.ToList();
+            var portfolioList = homeRepo.GetPortfolios().ToList();
 
             var selectedCompanyList = companyList.Where(x => x.Company_Name.ToLower().Contains(searchKey.ToLower())).ToList();
            
@@ -103,7 +103,7 @@ namespace CrossSell_App.Controllers
             {
                 if (searchKey.ToLower().Contains("section") || searchKey.ToLower().Contains("dpb") || "digital".Contains(searchKey.ToLower()) || "picture".Contains(searchKey.ToLower()) || "benchmark".Contains(searchKey.ToLower()))
                 {
-                    var sectionCheck = db.Metadatas.ToList();
+                    var sectionCheck = homeRepo.GetMetadatas().ToList();
                     if (sectionCheck.Count > 0)
                     {
                         var sectionList = sectionCheck;
@@ -118,7 +118,7 @@ namespace CrossSell_App.Controllers
                 }
                 else if (!isSection && !isCompany)
                 {
-                    var sectionCheck = db.Metadatas.Where(x => x.Metadata_Name.ToLower().Contains(searchKey.ToLower())).ToList();
+                    var sectionCheck = homeRepo.GetMetadatas().Where(x => x.Metadata_Name.ToLower().Contains(searchKey.ToLower())).ToList();
                     if (sectionCheck.Count > 0)
                     {
                         var sectionList = sectionCheck;
@@ -138,7 +138,7 @@ namespace CrossSell_App.Controllers
             {
                 
                 ViewBag.PortFolioList = portfolioList;
-                var portfolio_Agile_Lab_byComp = db.Portfolio_Agile_Lab.Include(p => p.Company).Include(p => p.Portfolio).ToList();
+                var portfolio_Agile_Lab_byComp = homeRepo.GetPALData();
 
 
                 SearchByCompany searchByComp = new SearchByCompany();
@@ -161,7 +161,7 @@ namespace CrossSell_App.Controllers
                 ViewBag.companyObject = companyObject;
                 ViewBag.CompanyList = cList;
                 ViewBag.CompanyIdList = compIdList;
-                var sectionCheck = db.Metadatas.ToList();
+                var sectionCheck = homeRepo.GetMetadatas();
                 if (sectionCheck.Count > 0)
                 {
                     var sectionList = sectionCheck;
@@ -196,7 +196,7 @@ namespace CrossSell_App.Controllers
 
                     foreach (var secitem in sectionCheck)
                     {
-                        var tempcompQ = db.Objectives.Where(x => x.Metadata_Id == secitem.Metadata_Id && x.Company_Id == compIdByComp.Company_Id).ToList();
+                        var tempcompQ = homeRepo.GetAllObjectives().Where(x => x.Metadata_Id == secitem.Metadata_Id && x.Company_Id == compIdByComp.Company_Id).ToList();
                         SearchBySection SearchCompBySection = new SearchBySection();
 
                         double score = 0;
@@ -226,7 +226,7 @@ namespace CrossSell_App.Controllers
 
 
 
-                var portfolio_Agile_Lab = db.Portfolio_Agile_Lab.Include(p => p.Company).Include(p => p.Portfolio).ToList();//.Where(t => companyId.Contains(t.Company_Id)).ToList();
+                var portfolio_Agile_Lab = homeRepo.GetPALData();//.Where(t => companyId.Contains(t.Company_Id)).ToList();
 
                 List<SearchPortfolio> searchPortfolio = new List<SearchPortfolio>();
                 foreach (var compId in companyList)
@@ -254,12 +254,12 @@ namespace CrossSell_App.Controllers
             {
                 List<SearchBySection> searchBySec = new List<SearchBySection>();
 
-                var sectionList = db.Metadatas.ToList();
+                var sectionList = homeRepo.GetMetadatas();
                 // var objectives = db.Objectives.Include(o => o.Company).Include(o => o.Metadata).Include(o => o.Objectives1).ToList();
 
                 if (isSectionByName)
                 {
-                    sectionList = db.Metadatas.Where(x => x.Metadata_Name.ToLower().Contains(searchKey)).ToList();
+                    sectionList = homeRepo.GetMetadatas().Where(x => x.Metadata_Name.ToLower().Contains(searchKey)).ToList();
 
                 }
                 foreach (var compId in companyList)
@@ -267,7 +267,7 @@ namespace CrossSell_App.Controllers
 
                     foreach (var secitem in sectionList)
                     {
-                        var tempQ = db.Objectives.Where(x => x.Metadata_Id == secitem.Metadata_Id && x.Company_Id == compId.Company_Id).ToList();
+                        var tempQ = homeRepo.GetAllObjectives().Where(x => x.Metadata_Id == secitem.Metadata_Id && x.Company_Id == compId.Company_Id).ToList();
                         SearchBySection searchbySec = new SearchBySection();
 
                         double score = 0;

@@ -15,7 +15,7 @@ namespace CrossSell_App.Controllers
 {
     public class MetadatasController : Controller
     {
-        private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
+        //private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
         private MetadataRepository metaRepo = new MetadataRepository();
 
         // GET: Metadatas
