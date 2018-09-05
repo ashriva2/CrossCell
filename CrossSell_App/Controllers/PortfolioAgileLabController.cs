@@ -12,6 +12,7 @@ using CrossSell_App.Models;
 using CrossSell_App.Repository;
 using CrossSell_App.UtilityClasses;
 using DataAccessLayer;
+using DTO;
 
 namespace CrossSell_App.Controllers
 {
@@ -46,8 +47,8 @@ namespace CrossSell_App.Controllers
             }
 
             ViewBag.fillCompanyddl = FillCompanyDropDown(companyId);
-            IQueryable<Portfolio_Agile_Lab> portfolio_Agile_LabData = null;
-            List<IQueryable> portfolio_Agile_Lab_ = new List<IQueryable>();
+            List<PortfolioAgileLabTO> portfolio_Agile_LabData = null;
+            //List<IQueryable> portfolio_Agile_Lab_ = new List<IQueryable>();
             if (companyId == 0 && companyIds.Count == 1 && companyIds[0] == 0)
             {
                 portfolio_Agile_LabData = pfRepo.GetAllPAL();
@@ -58,7 +59,7 @@ namespace CrossSell_App.Controllers
 
             else
             {
-                portfolio_Agile_LabData = pfRepo.GetAllPAL().Where(x => companyIds.Contains(x.Company_Id));
+                portfolio_Agile_LabData = pfRepo.GetAllPAL().Where(x => companyIds.Contains(x.Company_Id)).ToList();
 
             }
 
@@ -79,7 +80,7 @@ namespace CrossSell_App.Controllers
             
 
 
-            List<Company> CompanyList = new List<Company>();
+            List<CompanyTO> CompanyList = new List<CompanyTO>();
             List<Int32> companyIds = new List<Int32>();
             userComapniesData = utilObj.getUsercompanyInfo();
             if (userComapniesData.companyId != null && companyId == 0)
@@ -136,7 +137,7 @@ namespace CrossSell_App.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Portfolio_Agile_Lab portfolio_Agile_Lab = pfRepo.getPalbyId(id);
+            PortfolioAgileLabTO portfolio_Agile_Lab = pfRepo.getPalbyId(id);
             if (portfolio_Agile_Lab == null)
             {
                 return HttpNotFound();
@@ -157,7 +158,7 @@ namespace CrossSell_App.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Pal_Id,Company_Id,Portfolio_Id,Current_Usage,Future_Scope,IsMarketLead")] Portfolio_Agile_Lab portfolio_Agile_Lab)
+        public ActionResult Create([Bind(Include = "Pal_Id,Company_Id,Portfolio_Id,Current_Usage,Future_Scope,IsMarketLead")] PortfolioAgileLabTO portfolio_Agile_Lab)
         {
 
             if (ModelState.IsValid)
@@ -171,7 +172,7 @@ namespace CrossSell_App.Controllers
                 else
                 {
                     //db.Entry(portfolio_Agile_Lab).State = EntityState.Modified;
-                    Portfolio_Agile_Lab UpdateData = new Portfolio_Agile_Lab();
+                    PortfolioAgileLabTO UpdateData = new PortfolioAgileLabTO();
                     UpdateData = pfRepo.GetAllPAL().Where(x => x.Portfolio_Id == portfolio_Agile_Lab.Portfolio_Id && x.Company_Id == portfolio_Agile_Lab.Company_Id).FirstOrDefault();
                     UpdateData.Current_Usage = portfolio_Agile_Lab.Current_Usage;
                     UpdateData.IsMarketLead = portfolio_Agile_Lab.IsMarketLead;
@@ -207,13 +208,13 @@ namespace CrossSell_App.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            List<Portfolio_Agile_Lab> portfolio_Agile_Lab = pfRepo.GetPALByCompanyId(id);
+            List<PortfolioAgileLabTO> portfolio_Agile_Lab = pfRepo.GetPALByCompanyId(id);
             if (portfolio_Agile_Lab == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.Company_Name = portfolio_Agile_Lab[0].Company.Company_Name;
-            CompanyId = portfolio_Agile_Lab[0].Company.Company_Id;
+            ViewBag.Company_Name = pfRepo.getAllCompanybyId(portfolio_Agile_Lab[0].Company_Id).Company_Name;
+            CompanyId = portfolio_Agile_Lab[0].Company_Id;
             ViewBag.Company_Id = new SelectList(pfRepo.GetAllCompanies(), "Company_Id", "Company_Name", portfolio_Agile_Lab[0].Company_Id);
             //ViewBag.Portfolio_Id = new SelectList(db.Portfolios, "Portfolio_Id", "Portfolio_Name", portfolio_Agile_Lab[0].Portfolio_Id);
             return View(portfolio_Agile_Lab.ToList());
@@ -336,7 +337,7 @@ namespace CrossSell_App.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Portfolio_Agile_Lab portfolio_Agile_Lab = pfRepo.getPalbyId(id);
+            PortfolioAgileLabTO portfolio_Agile_Lab = pfRepo.getPalbyId(id);
             if (portfolio_Agile_Lab == null)
             {
                 return HttpNotFound();
@@ -357,7 +358,7 @@ namespace CrossSell_App.Controllers
         private List<SelectListItem> FillCompanyDropDown(int companyId)
         {
             List<SelectListItem> listItems = new List<SelectListItem>();
-            List<Company> companyList = new List<Company>();
+            List<CompanyTO> companyList = new List<CompanyTO>();
             List<Int32> companyIds = new List<Int32>();
             if (userComapniesData.companyId == null)
             {

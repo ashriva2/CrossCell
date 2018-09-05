@@ -9,6 +9,7 @@ using System.Web.Mvc;
 //using CrossSell_App.DataAccess;
 using DataAccessLayer;
 using DataAccessLayer.Repositories;
+using DTO;
 
 namespace CrossSell_App.Controllers
 {
@@ -31,7 +32,7 @@ namespace CrossSell_App.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Company company = cmpRepo.getAllCompanybyId(id);
+            CompanyTO company = cmpRepo.getAllCompanybyId(id);
             if (company == null)
             {
                 return HttpNotFound();
@@ -50,18 +51,21 @@ namespace CrossSell_App.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Company_Id,Company_Name,IsActive,Company_Contacts,Company_Admin,CompanyColor")] Company company)
+        public ActionResult Create([Bind(Include = "Company_Id,Company_Name,IsActive,Company_Contacts,Company_Admin,CompanyColor")] CompanyTO company)
         {
-            if (ModelState.IsValid)
+            if (company.Company_Name!="" && company.CompanyColor!="")
             {
                 var Color_exist = cmpRepo.getAllCompanies().Where(x => x.CompanyColor == company.CompanyColor).FirstOrDefault();
-                if(Color_exist!= null && Color_exist.Company_Id != company.Company_Id)
+                if (Color_exist != null && Color_exist.Company_Id != company.Company_Id)
                 {
-                    ModelState.AddModelError(string.Empty, "There is something wrong with Foo.");
+                    ModelState.AddModelError(string.Empty, "Please choose different color");
                     return View(company);
                 }
                 //logic to enter the users 
-                cmpRepo.saveCompany(company);
+                else
+                {
+                    cmpRepo.saveCompany(company);
+                }
              
 
 
@@ -94,7 +98,7 @@ namespace CrossSell_App.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Company company = cmpRepo.getAllCompanybyId(id);
+            CompanyTO company = cmpRepo.getAllCompanybyId(id);
 
             List<UserAccess> userAccess= cmpRepo.getAllUserAccess().Where(x => x.CompanyId == id).ToList();
             List<int> userRoleId = new List<int>();
@@ -124,7 +128,7 @@ namespace CrossSell_App.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Company_Id,Company_Name,IsActive,Company_Contacts,Company_Admin,CompanyColor")] Company company)
         {
-            if (ModelState.IsValid)
+            if (company.Company_Name != "" && company.CompanyColor != "")
             {
                 var Color_exist = cmpRepo.getAllCompanies().Where(x => x.CompanyColor == company.CompanyColor).FirstOrDefault();
                 if (Color_exist != null && Color_exist.Company_Id!=company.Company_Id)
@@ -182,7 +186,7 @@ namespace CrossSell_App.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Company company =cmpRepo.getAllCompanybyId(id);
+            CompanyTO company =cmpRepo.getAllCompanybyId(id);
             if (company == null)
             {
                 return HttpNotFound();

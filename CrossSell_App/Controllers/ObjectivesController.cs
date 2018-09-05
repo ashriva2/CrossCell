@@ -12,13 +12,14 @@ using CrossSell_App.Models;
 using CrossSell_App.Repository;
 using CrossSell_App.UtilityClasses;
 using DataAccessLayer;
+using DTO;
 
 namespace CrossSell_App.Controllers
 {
     public class ObjectivesController : Controller
     {
         private Utility utilObj = new Utility();
-        private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
+     //   private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
         private ObjectivesRepository objRepo = new ObjectivesRepository();
        static UserCompaniesInfo userComapniesData;
 
@@ -64,15 +65,11 @@ namespace CrossSell_App.Controllers
 
             ViewBag.fillCompanyddl = FillCompanyDropDown(companyId);
 
-            //ViewBag.Company_Id = new SelectList(db.Companies, "Company_Id", "Company_Name");
-            //ViewBag.Questioner_Id = new SelectList(db.Questioners, "Questioner_Id", "Questioner1");
-            //ViewBag.Metadata_Id = new SelectList(db.Metadatas, "Metadata_Id", "Metadata_Name");
-            //ViewBag.Objective_Id = new SelectList(db.Objectives, "Objective_Id", "Comments");
-            //ViewBag.Objective_Id = new SelectList(db.Objectives, "Objective_Id", "Comments");
+            
 
-            List<ObjectivesModel> Data = new List<ObjectivesModel>();
-            List<ObjectivesModel> DataList = new List<ObjectivesModel>();
-            List<SectionModel> SectionModelList = new List<SectionModel>();
+            List<ObjectiveTO> Data = new List<ObjectiveTO>();
+            List<ObjectiveTO> DataList = new List<ObjectiveTO>();
+            List<SectionsTO> SectionModelList = new List<SectionsTO>();
             var sectionList = objRepo.GetMetadatas().ToList();
             var ALlObjectives = objRepo.getObjectivebyCompany(companyId);
             var AllQuestioners = objRepo.getAllQuestioner();
@@ -84,7 +81,7 @@ namespace CrossSell_App.Controllers
 
             //checking if the data exists for the particular company id in db
             //Company Id is hardcoded 
-            List<Company> CompanyList = new List<Company>();
+            List<CompanyTO> CompanyList = new List<CompanyTO>();
             List<Int32> companyIds = new List<Int32>();
     
             
@@ -107,7 +104,7 @@ namespace CrossSell_App.Controllers
             {
                 foreach (var sect in sectionList)
                 {
-                    SectionModel obj = new SectionModel()
+                    SectionsTO obj = new SectionsTO()
                     {
                         Metadata_Id = sect.Metadata_Id,
                         Metadata_Name = sect.Metadata_Name,
@@ -131,7 +128,7 @@ namespace CrossSell_App.Controllers
                         var getQuesForMeta = AllQuestioners.Where(x => x.Metadata_Id == item.Metadata_Id).ToList();
                         foreach (var ques in getQuesForMeta)
                         {
-                            ObjectivesModel DataInput = new ObjectivesModel();
+                            ObjectiveTO DataInput = new ObjectiveTO();
                             DataInput.MetaDataText = item.Metadata_Name;
 
                             DataInput.QuestionText = ques.Questioner1;
@@ -151,7 +148,7 @@ namespace CrossSell_App.Controllers
             {
                 foreach (var sect in sectionList)
                 {
-                    SectionModel obj = new SectionModel()
+                    SectionsTO obj = new SectionsTO()
                     {
                         Metadata_Id = sect.Metadata_Id,
                         Metadata_Name = sect.Metadata_Name,
@@ -178,7 +175,7 @@ namespace CrossSell_App.Controllers
                             var dataExist = ALlObjectives.Where(x => x.Metadata_Id == ques.Metadata_Id && x.Questioner_Id == ques.Questioner_Id && x.Company_Id == companyId).FirstOrDefault();
                             if (dataExist != null)
                             {
-                                ObjectivesModel DataInput = new ObjectivesModel();
+                                ObjectiveTO DataInput = new ObjectiveTO();
                                 DataInput.MetaDataText = item.Metadata_Name;
 
                                 DataInput.QuestionText = ques.Questioner1;
@@ -195,7 +192,7 @@ namespace CrossSell_App.Controllers
                             }
                             else
                             {
-                                ObjectivesModel DataInput = new ObjectivesModel();
+                                ObjectiveTO DataInput = new ObjectiveTO();
                                 DataInput.MetaDataText = item.Metadata_Name;
 
                                 DataInput.QuestionText = ques.Questioner1;
@@ -222,7 +219,7 @@ namespace CrossSell_App.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public ActionResult CreateData(List<ObjectivesModel> jsonObj)
+        public ActionResult CreateData(List<ObjectiveTO> jsonObj)
         {
 
             string message;
@@ -237,7 +234,7 @@ namespace CrossSell_App.Controllers
                     var dataExist = ObjectivesbyId.Where(x=>x.Metadata_Id == item.Metadata_Id && x.Questioner_Id==item.Questioner_Id).FirstOrDefault();
                     if (dataExist == null)
                     {
-                        Objective saveData = new Objective()
+                        ObjectiveTO saveData = new ObjectiveTO()
                         {
                             Company_Id = item.Company_Id,
                             Metadata_Id = item.Metadata_Id,
@@ -298,87 +295,87 @@ namespace CrossSell_App.Controllers
         }
 
         // GET: Objectives/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Objective objective = db.Objectives.Find(id);
-            if (objective == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.Company_Id = new SelectList(db.Companies, "Company_Id", "Company_Name", objective.Company_Id);
-            ViewBag.Questioner_Id = new SelectList(db.Questioners, "Questioner_Id", "Questioner1", objective.Questioner_Id);
-            ViewBag.Metadata_Id = new SelectList(db.Metadatas, "Metadata_Id", "Metadata_Name", objective.Metadata_Id);
-            ViewBag.Objective_Id = new SelectList(db.Objectives, "Objective_Id", "Comments", objective.Objective_Id);
-            ViewBag.Objective_Id = new SelectList(db.Objectives, "Objective_Id", "Comments", objective.Objective_Id);
-            return View(objective);
-        }
+        //public ActionResult Edit(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    Objective objective = db.Objectives.Find(id);
+        //    if (objective == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    ViewBag.Company_Id = new SelectList(db.Companies, "Company_Id", "Company_Name", objective.Company_Id);
+        //    ViewBag.Questioner_Id = new SelectList(db.Questioners, "Questioner_Id", "Questioner1", objective.Questioner_Id);
+        //    ViewBag.Metadata_Id = new SelectList(db.Metadatas, "Metadata_Id", "Metadata_Name", objective.Metadata_Id);
+        //    ViewBag.Objective_Id = new SelectList(db.Objectives, "Objective_Id", "Comments", objective.Objective_Id);
+        //    ViewBag.Objective_Id = new SelectList(db.Objectives, "Objective_Id", "Comments", objective.Objective_Id);
+        //    return View(objective);
+        //}
 
         // POST: Objectives/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Objective_Id,Comments,Weight,Score_Max,Max,Answer,Score,Level,Metadata_Id,IsActive,Questioner_Id,Company_Id")] Objective objective)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(objective).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.Company_Id = new SelectList(db.Companies, "Company_Id", "Company_Name", objective.Company_Id);
-            ViewBag.Questioner_Id = new SelectList(db.Questioners, "Questioner_Id", "Questioner1", objective.Questioner_Id);
-            ViewBag.Metadata_Id = new SelectList(db.Metadatas, "Metadata_Id", "Metadata_Name", objective.Metadata_Id);
-            ViewBag.Objective_Id = new SelectList(db.Objectives, "Objective_Id", "Comments", objective.Objective_Id);
-            ViewBag.Objective_Id = new SelectList(db.Objectives, "Objective_Id", "Comments", objective.Objective_Id);
-            return View(objective);
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        ////public ActionResult Edit([Bind(Include = "Objective_Id,Comments,Weight,Score_Max,Max,Answer,Score,Level,Metadata_Id,IsActive,Questioner_Id,Company_Id")] Objective objective)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        db.Entry(objective).State = EntityState.Modified;
+        //        db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
+        //    ViewBag.Company_Id = new SelectList(db.Companies, "Company_Id", "Company_Name", objective.Company_Id);
+        //    ViewBag.Questioner_Id = new SelectList(db.Questioners, "Questioner_Id", "Questioner1", objective.Questioner_Id);
+        //    ViewBag.Metadata_Id = new SelectList(db.Metadatas, "Metadata_Id", "Metadata_Name", objective.Metadata_Id);
+        //    ViewBag.Objective_Id = new SelectList(db.Objectives, "Objective_Id", "Comments", objective.Objective_Id);
+        //    ViewBag.Objective_Id = new SelectList(db.Objectives, "Objective_Id", "Comments", objective.Objective_Id);
+        //    return View(objective);
+        //}
 
         // GET: Objectives/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Objective objective = db.Objectives.Find(id);
-            if (objective == null)
-            {
-                return HttpNotFound();
-            }
-            return View(objective);
-        }
+        //public ActionResult Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    Objective objective = db.Objectives.Find(id);
+        //    if (objective == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(objective);
+        //}
 
-        // POST: Objectives/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Objective objective = db.Objectives.Find(id);
-            db.Objectives.Remove(objective);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+        //// POST: Objectives/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult DeleteConfirmed(int id)
+        //{
+        //    Objective objective = db.Objectives.Find(id);
+        //    db.Objectives.Remove(objective);
+        //    db.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+        //protected override void Dispose(bool disposing)
+        //{
+        //    if (disposing)
+        //    {
+        //        db.Dispose();
+        //    }
+        //    base.Dispose(disposing);
+        //}
 
         private List<SelectListItem> FillCompanyDropDown(int val)
         {
 
             List<SelectListItem> listItems = new List<SelectListItem>();
             //var companyList = db.Companies.ToList();
-            List<Company> companyList = new List<Company>();
+            List<CompanyTO> companyList = new List<CompanyTO>();
             List<Int32> companyIds = new List<Int32>();
             
             if (userComapniesData.companyId == null)

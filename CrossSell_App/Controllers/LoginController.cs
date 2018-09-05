@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using DataAccessLayer;
+using DTO;
 
 namespace CrossSell_App.Controllers
 {
@@ -22,7 +23,7 @@ namespace CrossSell_App.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult Index(UserDetails model, FormCollection form,string returnUrl)
+        public ActionResult Index(UserDeatilsTO model, FormCollection form,string returnUrl)
         {
             
 
@@ -32,6 +33,13 @@ namespace CrossSell_App.Controllers
                 string userName = Convert.ToString(Request.Form["UserName"]);
                 string password = Convert.ToString(Request.Form["Password"]);
 
+                if(userName=="" || password == "")
+                {
+
+                    ViewBag.Message = "Please fill all the details";
+                    return View(model);
+
+                }
 
                 //var IsUserexist = db.UserRoles.Where(x => x.EmailId == userName).FirstOrDefault();
                 var IsUserexist = loginRepo.GetUser(userName);

@@ -96,7 +96,6 @@
     <Compile Include="Repositories\MetadataRepository.cs" />
     <Compile Include="Repositories\ObjectivesRepository.cs" />
     <Compile Include="Repositories\PortfolioAgileLabRepository.cs" />
-    <Compile Include="Repositories\PortfolioControllerRepository.cs" />
     <Compile Include="Repositories\PortfoliosRepository.cs" />
     <Compile Include="Repositories\PortfolioTypeRepository.cs" />
     <Compile Include="Repositories\QuestionerRepository.cs" />
@@ -133,6 +132,12 @@
       <DependentUpon>DataAccess.edmx</DependentUpon>
       <LastGenOutput>DataAccess.cs</LastGenOutput>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DTO\DTO.csproj">
+      <Project>{a56b2707-c58c-40a6-8349-2d0ae268b0ca}</Project>
+      <Name>DTO</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

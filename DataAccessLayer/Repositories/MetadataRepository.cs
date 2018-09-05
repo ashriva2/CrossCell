@@ -1,5 +1,6 @@
 ﻿
 using DataAccessLayer;
+using DTO;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -12,23 +13,47 @@ namespace CrossSell_App.Repository
     {
 
         private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
-        public List<Metadata> GetAllMetadata()
+        public List<MetadataTO> GetAllMetadata()
         {
-            return db.Metadatas.ToList();
+            var data = db.Metadatas.ToList().Where(x => x.Metadata_Id != 7 && x.IsActive==true).OrderBy(x => x.Metadata_Id).ToList();
+
+
+
+            var dataToReturn = data.Select(p => new MetadataTO()
+            {
+                 Metadata_Name=p.Metadata_Name,
+                 Metadata_Id=p.Metadata_Id,
+                 IsActive=p.IsActive
+               
+            }).ToList();
+
+            return dataToReturn;
         }
 
 
-        public Metadata GetMetadatabyId( int? metadaId)
+        public MetadataTO GetMetadatabyId( int? metadaId)
         {
-            return db.Metadatas.Where(x=>x.Metadata_Id==metadaId).FirstOrDefault();
+            return db.Metadatas.Where(x=>x.Metadata_Id==metadaId).Select(p=> new MetadataTO {
+                 Metadata_Name=p.Metadata_Name,
+                 Metadata_Id=p.Metadata_Id,
+                 IsActive=p.IsActive
+            }).FirstOrDefault();
         }
 
 
-        public void SaveMetadata(Metadata data)
+        public void SaveMetadata(MetadataTO data)
         {
+            Metadata datatoSave = new Metadata()
+            {
+                Metadata_Id = data.Metadata_Id,
+                Metadata_Name = data.Metadata_Name,
+                IsActive = true
+            };
+            
+
             try
             {
-                db.Metadatas.Add(data);
+                db.Metadatas.Add(datatoSave);
                 db.SaveChanges();
             }
             catch(Exception ex)
@@ -37,7 +62,7 @@ namespace CrossSell_App.Repository
             }
         }
 
-        public void UpdateMetadata(Metadata metadata)
+        public void UpdateMetadata(MetadataTO metadata)
         {
             Metadata dataToupdate = db.Metadatas.Where(x => x.Metadata_Id == metadata.Metadata_Id).FirstOrDefault();
             try
@@ -57,10 +82,11 @@ namespace CrossSell_App.Repository
         public void DeleteMetadata(int id)
         {
             Metadata metadata = db.Metadatas.Find(id);
+            metadata.IsActive = false;
             try
             {
              
-                db.Metadatas.Remove(metadata);
+              //  db.Metadatas.Remove(metadata);
                 db.SaveChanges();
             }
             catch (Exception ex)

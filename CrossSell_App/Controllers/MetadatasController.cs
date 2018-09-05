@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using CrossSell_App.Repository;
 //using CrossSell_App.DataAccess;
 using DataAccessLayer;
+using DTO;
 
 namespace CrossSell_App.Controllers
 {
@@ -30,7 +31,7 @@ namespace CrossSell_App.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Metadata metadata = metaRepo.GetMetadatabyId(id);
+            MetadataTO metadata = metaRepo.GetMetadatabyId(id);
             if (metadata == null)
             {
                 return HttpNotFound();
@@ -49,9 +50,9 @@ namespace CrossSell_App.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Metadata_Id,Metadata_Name,IsActive")] Metadata metadata)
+        public ActionResult Create([Bind(Include = "Metadata_Id,Metadata_Name,IsActive")] MetadataTO metadata)
         {
-            if (ModelState.IsValid)
+            if (metadata.Metadata_Name!="" && metadata.Metadata_Name != null)
             {
                 metaRepo.SaveMetadata(metadata);
                 return RedirectToAction("Index");
@@ -67,7 +68,7 @@ namespace CrossSell_App.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Metadata metadata = metaRepo.GetMetadatabyId(id);
+            MetadataTO metadata = metaRepo.GetMetadatabyId(id);
             if (metadata == null)
             {
                 return HttpNotFound();
@@ -80,9 +81,9 @@ namespace CrossSell_App.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Metadata_Id,Metadata_Name,IsActive")] Metadata metadata)
+        public ActionResult Edit([Bind(Include = "Metadata_Id,Metadata_Name,IsActive")] MetadataTO metadata)
         {
-            if (ModelState.IsValid)
+            if (metadata.Metadata_Name != "" && metadata.Metadata_Name != null)
             {
                 metaRepo.UpdateMetadata(metadata);
                 return RedirectToAction("Index");
@@ -97,7 +98,7 @@ namespace CrossSell_App.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Metadata metadata = metaRepo.GetMetadatabyId(id);
+            MetadataTO metadata = metaRepo.GetMetadatabyId(id);
             if (metadata == null)
             {
                 return HttpNotFound();

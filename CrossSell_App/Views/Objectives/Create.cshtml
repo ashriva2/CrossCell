@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CrossSell_App.Models.ObjectivesModel>
+﻿@model IEnumerable<DTO.ObjectiveTO>
 
 @{
     ViewBag.Title = "Create";
@@ -43,7 +43,7 @@
             </tr>
 
 
-            @foreach (CrossSell_App.Models.ObjectivesModel ques in secData)
+            @foreach (DTO.ObjectiveTO ques in secData)
             {
                 var count = @ques.Questioner_Id;
                 <tr class="objective_data" id="@ques.Questioner_Id">

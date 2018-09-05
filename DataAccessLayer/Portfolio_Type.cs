@@ -22,6 +22,7 @@ namespace DataAccessLayer
     
         public int Portfolio_Type_Id { get; set; }
         public string Portfolio_Type_Name { get; set; }
+        public Nullable<bool> IsActive { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Portfolio> Portfolios { get; set; }

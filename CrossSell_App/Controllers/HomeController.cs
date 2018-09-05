@@ -11,6 +11,7 @@ using System.Web.Mvc;
 using System.Web.Caching;
 using CrossSell_App.Repository;
 using CrossSell_App.Repositories;
+using DTO;
 
 namespace CrossSell_App.Controllers
 {
@@ -162,7 +163,7 @@ namespace CrossSell_App.Controllers
             var PortfoliosList = homeRepo.GetPortfolios();
             //logic for company wise
 
-            List<Company> CompanyList = new List<Company>();
+            List<CompanyTO> CompanyList = new List<CompanyTO>();
             List<Int32> companyIds = new List<Int32>();
             List<string> companyColor = new List<string>();
             // userComapniesData = utilObj.getUsercompanyInfo();
@@ -252,7 +253,7 @@ namespace CrossSell_App.Controllers
         public JsonResult GetDPBReportData(List<int> compList)
         {
             var objectivesList = homeRepo.GetAllObjectives();
-            List<Company> CompanyList = new List<Company>();
+            List<CompanyTO> CompanyList = new List<CompanyTO>();
             List<Int32> companyIds = new List<Int32>();
             List<string> companyColor = new List<string>();
             if (userComapniesData.companyId != null && userComapniesData.companyId.Count > 0)
@@ -330,7 +331,7 @@ namespace CrossSell_App.Controllers
             List<SelectListItem> listItems = new List<SelectListItem>();
 
             // var companyList = db.Companies.ToList();
-            List<Company> CompanyList = new List<Company>();
+            List<CompanyTO> CompanyList = new List<CompanyTO>();
             List<Int32> companyIds = new List<Int32>();
 
 

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DataAccessLayer.Portfolio>
+﻿@model IEnumerable<DTO.PortfolioTO>
 
 @{
     ViewBag.Title = "Index";
@@ -27,7 +27,7 @@
             @Html.DisplayFor(modelItem => item.Portfolio_Name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Portfolio_Type.Portfolio_Type_Name)
+            @Html.DisplayFor(modelItem => item.Portfolio_Type_Name)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Portfolio_Id }) |

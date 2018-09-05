@@ -1,4 +1,6 @@
-﻿@model IEnumerable<DataAccessLayer.Company>
+﻿@*@model IEnumerable<DataAccessLayer.Company>*@
+
+@model IEnumerable<DTO.CompanyTO>
 
 @{
     ViewBag.Title = "Index";
@@ -21,20 +23,21 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Company_Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsActive)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Company_Id }) |
-          
-            @Html.ActionLink("Delete", "Delete", new { id=item.Company_Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Company_Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsActive)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Company_Id }) |
+
+                @Html.ActionLink("Delete", "Delete", new { id = item.Company_Id })
+            </td>
+        </tr>
+    }
 
 </table>

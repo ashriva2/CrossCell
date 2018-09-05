@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="PAL_DigitalPicModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="PAL_DigitalPicModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Company">
           <Key>
             <PropertyRef Name="Company_Id" />
@@ -60,6 +60,7 @@
           <Property Name="Portfolio_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Portfolio_Name" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Portfolio_Type_Id" Type="int" Nullable="false" />
+          <Property Name="IsActive" Type="bit" />
         </EntityType>
         <EntityType Name="Portfolio_Agile_Lab">
           <Key>
@@ -78,6 +79,7 @@
           </Key>
           <Property Name="Portfolio_Type_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Portfolio_Type_Name" Type="nvarchar" MaxLength="100" />
+          <Property Name="IsActive" Type="bit" />
         </EntityType>
         <EntityType Name="Questioner">
           <Key>
@@ -292,8 +294,7 @@
             <End Role="UserAccess" EntitySet="UserAccess" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="PAL_DigitalPicModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -366,6 +367,7 @@
           <NavigationProperty Name="CrossSells" Relationship="Self.FK_CrossSell_Portfolio_Id" FromRole="Portfolio" ToRole="CrossSell" />
           <NavigationProperty Name="Portfolio_Type" Relationship="Self.FK__Portfolio__Portf__1367E606" FromRole="Portfolio" ToRole="Portfolio_Type" />
           <NavigationProperty Name="Portfolio_Agile_Lab" Relationship="Self.FK_Portfolio_Agile_Lab_Portfolio_Id" FromRole="Portfolio" ToRole="Portfolio_Agile_Lab" />
+          <Property Name="IsActive" Type="Boolean" />
         </EntityType>
         <EntityType Name="Portfolio_Agile_Lab">
           <Key>
@@ -387,6 +389,7 @@
           <Property Name="Portfolio_Type_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Portfolio_Type_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Portfolios" Relationship="Self.FK__Portfolio__Portf__1367E606" FromRole="Portfolio_Type" ToRole="Portfolio" />
+          <Property Name="IsActive" Type="Boolean" />
         </EntityType>
         <EntityType Name="Questioner">
           <Key>
@@ -667,6 +670,7 @@
           <EntitySetMapping Name="Portfolios">
             <EntityTypeMapping TypeName="PAL_DigitalPicModel.Portfolio">
               <MappingFragment StoreEntitySet="Portfolio">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="Portfolio_Id" ColumnName="Portfolio_Id" />
                 <ScalarProperty Name="Portfolio_Name" ColumnName="Portfolio_Name" />
                 <ScalarProperty Name="Portfolio_Type_Id" ColumnName="Portfolio_Type_Id" />
@@ -688,6 +692,7 @@
           <EntitySetMapping Name="Portfolio_Type">
             <EntityTypeMapping TypeName="PAL_DigitalPicModel.Portfolio_Type">
               <MappingFragment StoreEntitySet="Portfolio_Type">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="Portfolio_Type_Id" ColumnName="Portfolio_Type_Id" />
                 <ScalarProperty Name="Portfolio_Type_Name" ColumnName="Portfolio_Type_Name" />
               </MappingFragment>

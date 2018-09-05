@@ -9,6 +9,7 @@ using System.Web.Mvc;
 //using CrossSell_App.DataAccess;
 using DataAccessLayer;
 using DataAccessLayer.Repositories;
+using DTO;
 
 namespace CrossSell_App.Controllers
 {
@@ -31,7 +32,7 @@ namespace CrossSell_App.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Questioner questioner =quesRepo.getQuestionerbyId(id);
+            QuestionerTO questioner =quesRepo.getQuestionerbyId(id);
             if (questioner == null)
             {
                 return HttpNotFound();
@@ -51,9 +52,9 @@ namespace CrossSell_App.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Questioner_Id,Metadata_Id,Questioner1,IsActive")] Questioner questioner)
+        public ActionResult Create([Bind(Include = "Questioner_Id,Metadata_Id,Questioner1,IsActive")] QuestionerTO questioner)
         {
-            if (ModelState.IsValid)
+            if (questioner.Questioner1!="" && questioner.Questioner1 !=null)
             {
                 quesRepo.saveQuestioners(questioner);
                 return RedirectToAction("Index");
@@ -70,7 +71,7 @@ namespace CrossSell_App.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Questioner questioner = quesRepo.getQuestionerbyId(id);
+            QuestionerTO questioner = quesRepo.getQuestionerbyId(id);
             if (questioner == null)
             {
                 return HttpNotFound();
@@ -84,9 +85,9 @@ namespace CrossSell_App.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Questioner_Id,Metadata_Id,Questioner1,IsActive")] Questioner questioner)
+        public ActionResult Edit([Bind(Include = "Questioner_Id,Metadata_Id,Questioner1,IsActive")] QuestionerTO questioner)
         {
-            if (ModelState.IsValid)
+            if (questioner.Questioner1 != "" && questioner.Questioner1 != null)
             {
                 //db.Entry(questioner).State = EntityState.Modified;
                 //db.SaveChanges();
@@ -104,7 +105,7 @@ namespace CrossSell_App.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Questioner questioner = quesRepo.getQuestionerbyId(id);
+            QuestionerTO questioner = quesRepo.getQuestionerbyId(id);
             if (questioner == null)
             {
                 return HttpNotFound();

@@ -9,18 +9,19 @@ using System.Web.Mvc;
 //using CrossSell_App.DataAccess;
 using DataAccessLayer;
 using DataAccessLayer.Repositories;
+using DTO;
 
 namespace CrossSell_App.Controllers
 {
     public class PortfoliosController : Controller
     {
-        private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
+       // private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
         private PortfoliosRepository pfRepo = new PortfoliosRepository();
 
         // GET: Portfolios
         public ActionResult Index()
         {
-            var portfolios = db.Portfolios.Include(p => p.Portfolio_Type);
+            var portfolios = pfRepo.GetPortfolios();
             return View(portfolios.ToList());
         }
 
@@ -31,7 +32,7 @@ namespace CrossSell_App.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Portfolio portfolio = db.Portfolios.Find(id);
+            PortfolioTO portfolio = pfRepo.GetPortfoliobyId(id);
             if (portfolio == null)
             {
                 return HttpNotFound();
@@ -42,7 +43,7 @@ namespace CrossSell_App.Controllers
         // GET: Portfolios/Create
         public ActionResult Create()
         {
-            ViewBag.Portfolio_Type_Id = new SelectList(db.Portfolio_Type, "Portfolio_Type_Id", "Portfolio_Type_Name");
+            ViewBag.Portfolio_Type_Id = new SelectList(pfRepo.GetPortfolioTypes(), "Portfolio_Type_Id", "Portfolio_Type_Name");
             return View();
         }
 
@@ -51,9 +52,9 @@ namespace CrossSell_App.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Portfolio_Id,Portfolio_Name,Portfolio_Type_Id")] Portfolio portfolio)
+        public ActionResult Create([Bind(Include = "Portfolio_Id,Portfolio_Name,Portfolio_Type_Id")] PortfolioTO portfolio)
         {
-            if (ModelState.IsValid)
+            if (portfolio.Portfolio_Name== "" && portfolio.Portfolio_Name != null)
             {
                 pfRepo.savePortfolios(portfolio);
                 return RedirectToAction("Index");
@@ -70,7 +71,7 @@ namespace CrossSell_App.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Portfolio portfolio = pfRepo.GetPortfoliobyId(id);
+            PortfolioTO portfolio = pfRepo.GetPortfoliobyId(id);
             if (portfolio == null)
             {
                 return HttpNotFound();
@@ -84,9 +85,9 @@ namespace CrossSell_App.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Portfolio_Id,Portfolio_Name,Portfolio_Type_Id")] Portfolio portfolio)
+        public ActionResult Edit([Bind(Include = "Portfolio_Id,Portfolio_Name,Portfolio_Type_Id")] PortfolioTO portfolio)
         {
-            if (ModelState.IsValid)
+            if (portfolio.Portfolio_Name == "" && portfolio.Portfolio_Name !=null)
             {
                 pfRepo.updatePortfolio(portfolio);
                 
@@ -103,7 +104,7 @@ namespace CrossSell_App.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Portfolio portfolio = pfRepo.GetPortfoliobyId(id);
+            PortfolioTO portfolio = pfRepo.GetPortfoliobyId(id);
             if (portfolio == null)
             {
                 return HttpNotFound();

@@ -1,4 +1,4 @@
-﻿@model DataAccessLayer.Portfolio
+﻿@model DTO.PortfolioTO
 
 @{
     ViewBag.Title = "Details";
@@ -24,7 +24,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Portfolio_Type.Portfolio_Type_Name)
+            @Html.DisplayFor(model => model.Portfolio_Type_Name)
         </dd>
 
     </dl>

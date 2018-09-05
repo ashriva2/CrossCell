@@ -1,16 +1,14 @@
-﻿//using CrossSell_App.DataAccess;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using DataAccessLayer;
+using System.Text;
+using System.Threading.Tasks;
+using static System.Collections.Specialized.BitVector32;
 
-namespace CrossSell_App.Models
+namespace DTO
 {
-    public class ObjectivesModel
+    public class ObjectiveTO
     {
-        private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
-
         public int Objective_Id { get; set; }
         public string Comments { get; set; }
         public Nullable<int> Weight { get; set; }
@@ -29,10 +27,8 @@ namespace CrossSell_App.Models
 
 
 
-        public List<Company> Company { get; set; }
-        public List<Questioner> Questioner { get; set; }
-        public List<SectionModel> Metadata { get; set; }
-
-        
+        //public List<CompanyTO> Company { get; set; }
+        //public List<QuestionerTO> Questioner { get; set; }
+        //public List<SectionsTO> Metadata { get; set; }
     }
 }

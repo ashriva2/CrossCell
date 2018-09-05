@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using DataAccessLayer;
 using DataAccessLayer.Repositories;
+using DTO;
 //using CrossSell_App.DataAccess;
 
 namespace CrossSell_App.Controllers
@@ -29,7 +30,7 @@ namespace CrossSell_App.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Portfolio_Type portfolio_Type = ptfTypeRepo.getPortfolioTypebyId(id);
+            PortfolioTypeTO portfolio_Type = ptfTypeRepo.getPortfolioTypebyId(id);
             if (portfolio_Type == null)
             {
                 return HttpNotFound();
@@ -48,9 +49,9 @@ namespace CrossSell_App.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Portfolio_Type_Id,Portfolio_Type_Name")] Portfolio_Type portfolio_Type)
+        public ActionResult Create([Bind(Include = "Portfolio_Type_Id,Portfolio_Type_Name")] PortfolioTypeTO portfolio_Type)
         {
-            if (ModelState.IsValid)
+            if (portfolio_Type.Portfolio_Type_Name!="" && portfolio_Type.Portfolio_Type_Name != null)
             {
                 ptfTypeRepo.savePortfolioType(portfolio_Type);
                 return RedirectToAction("Index");
@@ -66,7 +67,7 @@ namespace CrossSell_App.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Portfolio_Type portfolio_Type = ptfTypeRepo.getPortfolioTypebyId(id);
+            PortfolioTypeTO portfolio_Type = ptfTypeRepo.getPortfolioTypebyId(id);
             if (portfolio_Type == null)
             {
                 return HttpNotFound();
@@ -79,9 +80,9 @@ namespace CrossSell_App.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Portfolio_Type_Id,Portfolio_Type_Name")] Portfolio_Type portfolio_Type)
+        public ActionResult Edit([Bind(Include = "Portfolio_Type_Id,Portfolio_Type_Name")] PortfolioTypeTO portfolio_Type)
         {
-            if (ModelState.IsValid)
+            if (portfolio_Type.Portfolio_Type_Name != "" || portfolio_Type.Portfolio_Type_Name != null)
             {
                 ptfTypeRepo.updatePortfolioType(portfolio_Type);
                 return RedirectToAction("Index");
@@ -96,7 +97,7 @@ namespace CrossSell_App.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Portfolio_Type portfolio_Type = ptfTypeRepo.getPortfolioTypebyId(id);
+            PortfolioTypeTO portfolio_Type = ptfTypeRepo.getPortfolioTypebyId(id);
             if (portfolio_Type == null)
             {
                 return HttpNotFound();
