@@ -22,7 +22,6 @@ namespace CrossSell_App.Controllers
 
         static UserCompaniesInfo userComapniesData;
 
-        [Authorize]
         public ActionResult Index()
         {
             userComapniesData = utilObj.getUsercompanyInfo();

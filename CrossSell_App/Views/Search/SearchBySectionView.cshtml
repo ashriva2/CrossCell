@@ -1,4 +1,5 @@
-﻿@model IEnumerable<CrossSell_App.Models.SearchBySection>
+﻿@*@model IEnumerable<CrossSell_App.Models.SearchBySection>*@
+@model IEnumerable<DTO.SearchBySection>
 
 @{
 	ViewBag.Title = "SearchBySectionView";
@@ -21,12 +22,12 @@
 			@foreach (var header in ViewBag.companyObject)
 			{
 				@*<th style="background-color:#0070ad; color:white; text-align:center; padding:2% !important">
-					@header
-				</th>*@
+						@header
+					</th>*@
 				<th style="background-color:#0070ad; color:white; text-align:center; padding:2% !important">
-				<h4><a href=@Url.Action("DPBReport", "Home", new { CompList = Json.Encode(header.Key) }, null) style="color:white">@header.Value</a></h4>
-				
-			</th>
+					<h4><a href=@Url.Action("DPBReport", "Home", new { CompList = Json.Encode(header.Key) }, null) style="color:white">@header.Value</a></h4>
+
+				</th>
 			}
 		</tr>
 		@{
@@ -35,8 +36,8 @@
 			{
 				<tr style="border:solid 1px">
 					<td align="center" style="border:solid 1px">
-						<a href=@Url.Action("DPBReport", "Home", new { CompList = Json.Encode(@ViewBag.CompanyIdList) }, null) style="color:white">@item</a>
-						
+						<a href=@Url.Action("DPBReport", "Home", new { CompList = Json.Encode(@ViewBag.CompanyIdList) }, null)>@item</a>
+
 					</td>
 					@foreach (var header in ViewBag.CompanyList)
 					{
