@@ -33,7 +33,7 @@
             @*<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>*@
             <script src="~/Scripts/jquery.min.js"></script>
             @*<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>*@
-            <canvas id="chart" style="height:500px !important"></canvas>
+            <canvas id="chart"></canvas>
             <script>
                 var data1 = [];
                 var data2 = [];
@@ -249,7 +249,14 @@
                            
                         }
                     };
-                }
+				}
+
+				$(document).ready(function () {
+					debugger;
+					var canvas = document.getElementById("chart");
+					canvas.height =100;
+
+				});
 
                 function showPALGraph(ele) {
 					debugger;
