@@ -1,4 +1,4 @@
-﻿using DTO;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,36 +10,36 @@ namespace DataAccessLayer.Repositories
     public class PortfoliosRepository
     {
         private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
-        public List<PortfolioTO> GetPortfolios()
+        public List<Portfolio> GetPortfolios()
         {
 
-            var data = db.Portfolios.Where(x => x.IsActive == true).ToList();
+            return db.Portfolios.Where(x => x.IsActive == true).ToList();
 
-            var dataToReturn = data.Select(x => new PortfolioTO
-            {
-                Portfolio_Id = x.Portfolio_Id,
-                Portfolio_Name = x.Portfolio_Name,
-                Portfolio_Type_Id = x.Portfolio_Type_Id,
-                Portfolio_Type_Name=db.Portfolio_Type.Where(c=>c.Portfolio_Type_Id==x.Portfolio_Type_Id && c.IsActive==true).Select(y=>y.Portfolio_Type_Name).FirstOrDefault()
-            });
-            return dataToReturn.ToList();
+            //var dataToReturn = data.Select(x => new Portfolio
+            //{
+            //    Portfolio_Id = x.Portfolio_Id,
+            //    Portfolio_Name = x.Portfolio_Name,
+            //    Portfolio_Type_Id = x.Portfolio_Type_Id,
+            //    Portfolio_Type_Name=db.Portfolio_Type.Where(c=>c.Portfolio_Type_Id==x.Portfolio_Type_Id && c.IsActive==true).Select(y=>y.Portfolio_Type_Name).FirstOrDefault()
+            //});
+            //return dataToReturn.ToList();
         }
 
-        public PortfolioTO GetPortfoliobyId(int? id)
+        public Portfolio GetPortfoliobyId(int? id)
         {
-            return db.Portfolios.Where(x => x.Portfolio_Id == id).Select(x=>
-                new PortfolioTO()
-                {
-                    Portfolio_Id = x.Portfolio_Id,
-                    Portfolio_Name = x.Portfolio_Name,
-                    Portfolio_Type_Id = x.Portfolio_Type_Id,
-                     Portfolio_Type_Name=x.Portfolio_Type.Portfolio_Type_Name
+            return db.Portfolios.Where(x => x.Portfolio_Id == id).FirstOrDefault();
+                //new Portfolio()
+                //{
+                //    Portfolio_Id = x.Portfolio_Id,
+                //    Portfolio_Name = x.Portfolio_Name,
+                //    Portfolio_Type_Id = x.Portfolio_Type_Id,
+                //     Portfolio_Type_Name=x.Portfolio_Type.Portfolio_Type_Name
                    
 
-                }).FirstOrDefault();
+                //}).FirstOrDefault();
         }
 
-        public void updatePortfolio(PortfolioTO portfolio)
+        public void updatePortfolio(Portfolio portfolio)
         {
             Portfolio dataToUpdate = db.Portfolios.Where(x => x.Portfolio_Id == portfolio.Portfolio_Id).FirstOrDefault();
             dataToUpdate.Portfolio_Name = portfolio.Portfolio_Name;
@@ -61,10 +61,10 @@ namespace DataAccessLayer.Repositories
         }
 
 
-        public List<PortfolioTypeTO> GetPortfolioTypes()
+        public List<Portfolio_Type> GetPortfolioTypes()
         {
             return db.Portfolio_Type.Where(x=>x.IsActive==true).ToList().OrderBy(x => x.Portfolio_Type_Id).Select(
-                 x => new PortfolioTypeTO()
+                 x => new Portfolio_Type()
                  {
                      Portfolio_Type_Id = x.Portfolio_Type_Id,
                      Portfolio_Type_Name = x.Portfolio_Type_Name
@@ -73,7 +73,7 @@ namespace DataAccessLayer.Repositories
                  ).ToList();
         }
 
-        public void savePortfolios(PortfolioTO portfolio)
+        public void savePortfolios(Portfolio portfolio)
         {
             Portfolio dataToSave = new Portfolio()
             {

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace CrossSell_App.Repository
+namespace DataAccessLayer.Repository
 {
     public class LoginRepository:IDisposable
     {

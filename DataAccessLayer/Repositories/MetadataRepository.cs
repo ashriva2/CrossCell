@@ -1,6 +1,6 @@
 ﻿
 using DataAccessLayer;
-using DTO;
+
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -13,35 +13,31 @@ namespace CrossSell_App.Repository
     {
 
         private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
-        public List<MetadataTO> GetAllMetadata()
+        public List<Metadata> GetAllMetadata()
         {
-            var data = db.Metadatas.ToList().Where(x => x.Metadata_Id != 7 && x.IsActive==true).OrderBy(x => x.Metadata_Id).ToList();
+       return db.Metadatas.ToList().Where(x => x.Metadata_Id != 7 && x.IsActive==true).OrderBy(x => x.Metadata_Id).ToList();
 
 
 
-            var dataToReturn = data.Select(p => new MetadataTO()
-            {
-                 Metadata_Name=p.Metadata_Name,
-                 Metadata_Id=p.Metadata_Id,
-                 IsActive=p.IsActive
+            //var dataToReturn = data.Select(p => new MetadataTO()
+            //{
+            //     Metadata_Name=p.Metadata_Name,
+            //     Metadata_Id=p.Metadata_Id,
+            //     IsActive=p.IsActive
                
-            }).ToList();
+            //}).ToList();
 
-            return dataToReturn;
+            //return dataToReturn;
         }
 
 
-        public MetadataTO GetMetadatabyId( int? metadaId)
+        public Metadata GetMetadatabyId( int? metadaId)
         {
-            return db.Metadatas.Where(x=>x.Metadata_Id==metadaId).Select(p=> new MetadataTO {
-                 Metadata_Name=p.Metadata_Name,
-                 Metadata_Id=p.Metadata_Id,
-                 IsActive=p.IsActive
-            }).FirstOrDefault();
+            return db.Metadatas.Where(x => x.Metadata_Id == metadaId).FirstOrDefault();
         }
 
 
-        public void SaveMetadata(MetadataTO data)
+        public void SaveMetadata(Metadata data)
         {
             Metadata datatoSave = new Metadata()
             {
@@ -62,7 +58,7 @@ namespace CrossSell_App.Repository
             }
         }
 
-        public void UpdateMetadata(MetadataTO metadata)
+        public void UpdateMetadata(Metadata metadata)
         {
             Metadata dataToupdate = db.Metadatas.Where(x => x.Metadata_Id == metadata.Metadata_Id).FirstOrDefault();
             try

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Data.Entity;
 using DataAccessLayer;
-using DTO;
+
 
 namespace CrossSell_App.Repository
 {
@@ -13,11 +13,11 @@ namespace CrossSell_App.Repository
     {
         private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
 
-        public List<PortfolioAgileLabTO> GetAllPAL()
+        public List<Portfolio_Agile_Lab> GetAllPAL()
         {
-            var data = db.Portfolio_Agile_Lab.Include(p => p.Company).Include(p => p.Portfolio);
+            var data = db.Portfolio_Agile_Lab.Include(p => p.Company).Include(p => p.Portfolio).ToList();
 
-            var dataToReturn = data.Select(x => new PortfolioAgileLabTO
+            var dataToReturn = data.Select(x => new Portfolio_Agile_Lab
             {
 
                 Company_Id = x.Company_Id,
@@ -27,117 +27,96 @@ namespace CrossSell_App.Repository
                 Pal_Id = x.Pal_Id,
                 Portfolio_Id = x.Portfolio_Id
 
-            });
-            return dataToReturn.ToList();
+            }).ToList();
+            return dataToReturn;
         }
 
-        public List<PortfolioAgileLabTO> GetPALByCompanyId(int? id)
+        public List<Portfolio_Agile_Lab> GetPALByCompanyId(int? id)
         {
             var data = db.Portfolio_Agile_Lab.Where(x => x.Company_Id == id).Include(p => p.Company).Include(p => p.Portfolio).ToList();
 
-            var result = data.Select(x=> new PortfolioAgileLabTO(){
+            var result = data.Select(x=> new Portfolio_Agile_Lab(){
                 Company_Id = x.Company_Id,                   
                 Current_Usage = x.Current_Usage,
                 Future_Scope = x.Future_Scope,
                 IsMarketLead = x.IsMarketLead,
                 Pal_Id = x.Pal_Id,
-                Portfolio=new PortfolioTO {
+                Portfolio=new Portfolio {
                     Portfolio_Id = x.Portfolio_Id,
                     Portfolio_Name = x.Portfolio.Portfolio_Name                                      
                 },
                 Portfolio_Id = x.Portfolio_Id }).ToList();
 
-           
-
-               
-
-           
             return result;
         }
 
 
 
-        public CompanyTO getAllCompanybyId(int? id)
+        public Company getAllCompanybyId(int? id)
         {
 
-            return db.Companies.Where(x => x.Company_Id == id).Select(p => new CompanyTO()
-            {
-                Company_Name = p.Company_Name,
-                CompanyColor = p.CompanyColor,
-                Company_Admin = p.Company_Admin,
-                Company_Contacts = p.Company_Contacts,
-                Company_Id = p.Company_Id,
-                IsActive = p.IsActive
-
-            }).FirstOrDefault();
+            return db.Companies.Where(x => x.Company_Id == id).FirstOrDefault();
         }
 
 
-        public List<PortfolioTypeTO> GetAllPortfolioType()
+        public List<Portfolio_Type> GetAllPortfolioType()
         {
-            return db.Portfolio_Type.ToList().OrderBy(x => x.Portfolio_Type_Id).Select(
-                 x => new PortfolioTypeTO()
-                 {
-                     Portfolio_Type_Id = x.Portfolio_Type_Id,
-                     Portfolio_Type_Name = x.Portfolio_Type_Name
-                 }
-
-                 ).ToList();
+            return db.Portfolio_Type.ToList();
         }
 
-        public List<PortfolioTO> GetAllPortfolio()
+        public List<Portfolio> GetAllPortfolio()
         {
-            var data = db.Portfolios.Where(x => x.IsActive == true).ToList();
+           return db.Portfolios.Where(x => x.IsActive == true).ToList();
 
-            var dataToReturn = data.Select(x => new PortfolioTO
-            {
-                Portfolio_Id = x.Portfolio_Id,
-                Portfolio_Name = x.Portfolio_Name,
-                Portfolio_Type_Id = x.Portfolio_Type_Id
+            //var dataToReturn = data.Select(x => new PortfolioTO
+            //{
+            //    Portfolio_Id = x.Portfolio_Id,
+            //    Portfolio_Name = x.Portfolio_Name,
+            //    Portfolio_Type_Id = x.Portfolio_Type_Id
 
-            });
-            return dataToReturn.ToList();
+            //});
+            //return dataToReturn.ToList();
         }
 
-        public List<CompanyTO> GetAllCompanies()
+        public List<Company> GetAllCompanies()
         {
             //return db.Companies.OrderBy(t=>t.Company_Id).ToList();
-            var data = db.Companies.Where(x=>x.IsActive == true).ToList().OrderBy(x => x.Company_Id).ToList();
+            return db.Companies.Where(x=>x.IsActive == true).ToList().OrderBy(x => x.Company_Id).ToList();
 
 
 
-            var dataToReturn = data.Select(p => new CompanyTO()
-            {
-                Company_Name = p.Company_Name,
-                CompanyColor = p.CompanyColor,
-                Company_Admin = p.Company_Admin,
-                Company_Contacts = p.Company_Contacts,
-                Company_Id = p.Company_Id,
-                IsActive = p.IsActive,
-                //Objectives = p.Objectives.Select(x=> new ObjectiveTO { Company_Id=x.Company_Id, }).ToList(),
+            //var dataToReturn = data.Select(p => new CompanyTO()
+            //{
+            //    Company_Name = p.Company_Name,
+            //    CompanyColor = p.CompanyColor,
+            //    Company_Admin = p.Company_Admin,
+            //    Company_Contacts = p.Company_Contacts,
+            //    Company_Id = p.Company_Id,
+            //    IsActive = p.IsActive,
+            //    //Objectives = p.Objectives.Select(x=> new ObjectiveTO { Company_Id=x.Company_Id, }).ToList(),
 
 
-            }).ToList();
+            //}).ToList();
 
-            return dataToReturn;
+            //return dataToReturn;
         }
 
 
-        public PortfolioAgileLabTO getPalbyId(int? id)
+        public Portfolio_Agile_Lab getPalbyId(int? id)
         {
-            var data = db.Portfolio_Agile_Lab.Where(x => x.Pal_Id == id).Include(p => p.Company).Include(p => p.Portfolio).Select(x => new
+            return db.Portfolio_Agile_Lab.Where(x => x.Pal_Id == id).FirstOrDefault();
 
-                 PortfolioAgileLabTO()
-            {
+            //     PortfolioAgileLabTO()
+            //{
 
-                Company_Id = x.Company_Id,
-                Current_Usage = x.Current_Usage,
-                Future_Scope = x.Future_Scope,
-                IsMarketLead = x.IsMarketLead,
-                Pal_Id = x.Pal_Id,
-                Portfolio_Id = x.Portfolio_Id
-            }).FirstOrDefault();
-            return data;
+            //    Company_Id = x.Company_Id,
+            //    Current_Usage = x.Current_Usage,
+            //    Future_Scope = x.Future_Scope,
+            //    IsMarketLead = x.IsMarketLead,
+            //    Pal_Id = x.Pal_Id,
+            //    Portfolio_Id = x.Portfolio_Id
+            //}).FirstOrDefault();
+            //return data;
         }
 
         public void DeletePAL(int? id)
@@ -162,7 +141,7 @@ namespace CrossSell_App.Repository
         }
 
 
-        public void savePALData(PortfolioAgileLabTO dataTOsave)
+        public void savePALData(Portfolio_Agile_Lab dataTOsave)
         {
             Portfolio_Agile_Lab dataTosave = new Portfolio_Agile_Lab()
             {

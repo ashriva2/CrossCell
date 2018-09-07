@@ -6,17 +6,18 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using CrossSell_App.Manager;
+using CrossSell_App.Models;
 //using CrossSell_App.DataAccess;
 using DataAccessLayer;
 using DataAccessLayer.Repositories;
-using DTO;
 
 namespace CrossSell_App.Controllers
 {
     public class CompaniesController : Controller
     {
         //private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
-        private CompaniesRepository cmpRepo = new CompaniesRepository();
+        private CompaniesManager cmpRepo = new CompaniesManager();
 
       
         // GET: Companies
@@ -33,6 +34,8 @@ namespace CrossSell_App.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             CompanyTO company = cmpRepo.getAllCompanybyId(id);
+           
+
             if (company == null)
             {
                 return HttpNotFound();
@@ -53,7 +56,7 @@ namespace CrossSell_App.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Company_Id,Company_Name,IsActive,Company_Contacts,Company_Admin,CompanyColor")] CompanyTO company)
         {
-            if (company.Company_Name!="" && company.CompanyColor!="")
+            if (ModelState.IsValid)
             {
                 var Color_exist = cmpRepo.getAllCompanies().Where(x => x.CompanyColor == company.CompanyColor).FirstOrDefault();
                 if (Color_exist != null && Color_exist.Company_Id != company.Company_Id)
@@ -76,19 +79,19 @@ namespace CrossSell_App.Controllers
             return View(company);
         }
 
-        public void UpdateUserAccess(UserAccess role)
-        {
-            cmpRepo.updateUserAccess(role);
-        }
-        public void saveContactsOrAdminToUserAccess(UserAccess role)
-        {
-            cmpRepo.saveUserAccess(role);
-        }
+        //public void UpdateUserAccess(UserAccessTO role)
+        //{
+        //    cmpRepo.updateUserAccess(role);
+        //}
+        //public void saveContactsOrAdminToUserAccess(UserAccessTO role)
+        //{
+        //    cmpRepo.saveUserAccess(role);
+        //}
 
-        public void SaveAdminAndContacts(UserRole users)
-        {
-            cmpRepo.saveUserrole(users);
-        }
+        //public void SaveAdminAndContacts(UserRole users)
+        //{
+        //    cmpRepo.saveUserrole(users);
+        //}
 
 
         // GET: Companies/Edit/5
@@ -100,7 +103,7 @@ namespace CrossSell_App.Controllers
             }
             CompanyTO company = cmpRepo.getAllCompanybyId(id);
 
-            List<UserAccess> userAccess= cmpRepo.getAllUserAccess().Where(x => x.CompanyId == id).ToList();
+            List<UserAccessTO> userAccess= cmpRepo.getAllUserAccess().Where(x => x.CompanyId == id).ToList();
             List<int> userRoleId = new List<int>();
             foreach(var item in userAccess)
             {
@@ -126,9 +129,9 @@ namespace CrossSell_App.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Company_Id,Company_Name,IsActive,Company_Contacts,Company_Admin,CompanyColor")] Company company)
+        public ActionResult Edit([Bind(Include = "Company_Id,Company_Name,IsActive,Company_Contacts,Company_Admin,CompanyColor")] CompanyTO company)
         {
-            if (company.Company_Name != "" && company.CompanyColor != "")
+            if (ModelState.IsValid)
             {
                 var Color_exist = cmpRepo.getAllCompanies().Where(x => x.CompanyColor == company.CompanyColor).FirstOrDefault();
                 if (Color_exist != null && Color_exist.Company_Id!=company.Company_Id)
@@ -137,42 +140,7 @@ namespace CrossSell_App.Controllers
                     return View(company);
                 }
 
-                if (company.Company_Admin != "")
-                {
-                    UserRole users = new UserRole();
-                    users.EmailId = company.Company_Admin;
-                    users.IsAdmin = true;
-                    SaveAdminAndContacts(users);
-
-                    UserAccess Role = new UserAccess()
-                    {
-
-                        CompanyId = company.Company_Id,
-                        UserRoleId = cmpRepo.getAllUserrole().Where(x => x.EmailId == company.Company_Contacts).Select(x => x.UserRoleId).FirstOrDefault()
-
-
-                    };
-                    UpdateUserAccess(Role);
-                }
-
-                if (company.Company_Contacts != "")
-                {
-                    UserRole users = new UserRole();
-                    users.EmailId = company.Company_Admin;
-                    users.IsAdmin = false;
-                    SaveAdminAndContacts(users);
-
-
-                    UserAccess Role = new UserAccess()
-                    {
-
-                        CompanyId = company.Company_Id,
-                        UserRoleId = cmpRepo.getAllUserrole().Where(x => x.EmailId == company.Company_Contacts).Select(x => x.UserRoleId).FirstOrDefault()
-
-
-                    };
-                    UpdateUserAccess(Role);
-                }
+               
                 cmpRepo.updateCompany(company);
                 return RedirectToAction("Index");
             }

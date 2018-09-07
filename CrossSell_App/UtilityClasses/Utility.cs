@@ -4,10 +4,11 @@ using System.Linq;
 using System.Web;
 //using CrossSell_App.DataAccess;
 using System.Web.Mvc;
+using CrossSell_App.Manager;
 using CrossSell_App.Models;
 using DataAccessLayer;
 using DataAccessLayer.Repositories;
-using DTO;
+
 
 namespace CrossSell_App.UtilityClasses
 {
@@ -15,7 +16,7 @@ namespace CrossSell_App.UtilityClasses
     {
        // private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
         UserCompaniesInfo userComapniesData = new UserCompaniesInfo();
-        private CompaniesRepository cmpRepo = new CompaniesRepository();
+        private CompaniesManager cmpRepo = new CompaniesManager();
         public UserCompaniesInfo getUsercompanyInfo()
         {
             

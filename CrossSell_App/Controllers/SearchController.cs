@@ -8,17 +8,17 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using CrossSell_App.Models;
-using CrossSell_App.Repositories;
+
 using CrossSell_App.UtilityClasses;
 using DataAccessLayer;
-using DTO;
+using CrossSell_App.Manager;
 
 namespace CrossSell_App.Controllers
 {
     public class SearchController : Controller
     {
         //private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
-        private HomeRepository homeRepo = new HomeRepository();
+        private HomeManager homeRepo = new HomeManager();
         private Utility utilObj = new Utility();
         // GET: Search
         public ActionResult SearchAlgorithm(string searchKey)

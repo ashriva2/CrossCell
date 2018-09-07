@@ -8,13 +8,13 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using DataAccessLayer;
-using DTO;
+using CrossSell_App.Manager;
 
 namespace CrossSell_App.Controllers
 {
     public class LoginController : Controller
     {
-        LoginRepository loginRepo = new LoginRepository();
+        LoginManager loginRepo = new LoginManager();
         //private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
         // GET: Login
         public ActionResult Index()

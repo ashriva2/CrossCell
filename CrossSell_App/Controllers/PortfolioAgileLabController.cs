@@ -7,12 +7,13 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using CrossSell_App.Manager;
 //using CrossSell_App.DataAccess;
 using CrossSell_App.Models;
 using CrossSell_App.Repository;
 using CrossSell_App.UtilityClasses;
 using DataAccessLayer;
-using DTO;
+
 
 namespace CrossSell_App.Controllers
 {
@@ -22,7 +23,7 @@ namespace CrossSell_App.Controllers
         static UserCompaniesInfo userComapniesData;
         private Utility utilObj = new Utility();
       // private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
-        private PortfolioAgileLabRepository pfRepo = new PortfolioAgileLabRepository();
+        private PortfolioAgileLabManager pfRepo = new PortfolioAgileLabManager();
 
         static int CompanyId = 0;
 

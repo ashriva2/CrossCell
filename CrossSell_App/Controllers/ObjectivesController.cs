@@ -6,13 +6,14 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using CrossSell_App.Manager;
 
 //using CrossSell_App.DataAccess;
 using CrossSell_App.Models;
 using CrossSell_App.Repository;
 using CrossSell_App.UtilityClasses;
 using DataAccessLayer;
-using DTO;
+
 
 namespace CrossSell_App.Controllers
 {
@@ -20,7 +21,7 @@ namespace CrossSell_App.Controllers
     {
         private Utility utilObj = new Utility();
      //   private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
-        private ObjectivesRepository objRepo = new ObjectivesRepository();
+        private ObjectiveManager objRepo = new ObjectiveManager();
        static UserCompaniesInfo userComapniesData;
 
         // GET: Objectives

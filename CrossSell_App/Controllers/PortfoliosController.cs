@@ -6,17 +6,19 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using CrossSell_App.Manager;
+using CrossSell_App.Models;
 //using CrossSell_App.DataAccess;
 using DataAccessLayer;
 using DataAccessLayer.Repositories;
-using DTO;
+
 
 namespace CrossSell_App.Controllers
 {
     public class PortfoliosController : Controller
     {
        // private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
-        private PortfoliosRepository pfRepo = new PortfoliosRepository();
+        private PortfolioManager pfRepo = new PortfolioManager();
 
         // GET: Portfolios
         public ActionResult Index()
@@ -54,7 +56,7 @@ namespace CrossSell_App.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Portfolio_Id,Portfolio_Name,Portfolio_Type_Id")] PortfolioTO portfolio)
         {
-            if (portfolio.Portfolio_Name== "" && portfolio.Portfolio_Name != null)
+            if (ModelState.IsValid)
             {
                 pfRepo.savePortfolios(portfolio);
                 return RedirectToAction("Index");
@@ -87,7 +89,7 @@ namespace CrossSell_App.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Portfolio_Id,Portfolio_Name,Portfolio_Type_Id")] PortfolioTO portfolio)
         {
-            if (portfolio.Portfolio_Name == "" && portfolio.Portfolio_Name !=null)
+            if (ModelState.IsValid)
             {
                 pfRepo.updatePortfolio(portfolio);
                 

@@ -174,6 +174,31 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Manager\CompaniesManager.cs" />
+    <Compile Include="Manager\HomeManager.cs" />
+    <Compile Include="Manager\LoginManager.cs" />
+    <Compile Include="Manager\MetadatasManager.cs" />
+    <Compile Include="Manager\ObjectiveManager.cs" />
+    <Compile Include="Manager\PortfolioAgileLabManager.cs" />
+    <Compile Include="Manager\PortfolioManager.cs" />
+    <Compile Include="Manager\PortfolioTypeManager.cs" />
+    <Compile Include="Manager\QuestionerManager.cs" />
+    <Compile Include="Models\CompanyTO.cs" />
+    <Compile Include="Models\MetadataTO.cs" />
+    <Compile Include="Models\ObjectiveTO.cs" />
+    <Compile Include="Models\PalDetailMapping.cs" />
+    <Compile Include="Models\PortfolioAgileLabTO.cs" />
+    <Compile Include="Models\PortfolioTO.cs" />
+    <Compile Include="Models\PortfolioTypeTO.cs" />
+    <Compile Include="Models\QuestionerTO.cs" />
+    <Compile Include="Models\SearchByCompany.cs" />
+    <Compile Include="Models\SearchBySection.cs" />
+    <Compile Include="Models\SearchPortfolio.cs" />
+    <Compile Include="Models\SectionsTO.cs" />
+    <Compile Include="Models\UserAccessTO.cs" />
+    <Compile Include="Models\UserCompaniesInfo.cs" />
+    <Compile Include="Models\UserDeatilsTO.cs" />
+    <Compile Include="Models\UserRoleTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UtilityClasses\Utility.cs" />
   </ItemGroup>
@@ -196,7 +221,9 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Properties\PublishProfiles\CrossselApp2 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\CrossSell - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\CrossSell - FTP1.pubxml" />
     <None Include="Properties\PublishProfiles\CrossSell - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\Chart.js" />
@@ -300,9 +327,9 @@
       <Project>{ecbafa41-78bc-4998-ac19-ae5fced3334d}</Project>
       <Name>DataAccessLayer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DTO\DTO.csproj">
-      <Project>{a56b2707-c58c-40a6-8349-2d0ae268b0ca}</Project>
-      <Name>DTO</Name>
+    <ProjectReference Include="..\Services\Services.csproj">
+      <Project>{0b56a177-2bcd-4530-8561-25983a20c07f}</Project>
+      <Name>Services</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

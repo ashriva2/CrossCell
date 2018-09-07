@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessLayer", "DataAcce
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BusinessLayer", "BusinessLayer", "{8B95EF1A-D1FF-42DC-9057-5F2E9D3628EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTO", "DTO\DTO.csproj", "{A56B2707-C58C-40A6-8349-2D0AE268B0CA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{0B56A177-2BCD-4530-8561-25983A20C07F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,17 +27,17 @@ Global
 		{ECBAFA41-78BC-4998-AC19-AE5FCED3334D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ECBAFA41-78BC-4998-AC19-AE5FCED3334D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ECBAFA41-78BC-4998-AC19-AE5FCED3334D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A56B2707-C58C-40A6-8349-2D0AE268B0CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A56B2707-C58C-40A6-8349-2D0AE268B0CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A56B2707-C58C-40A6-8349-2D0AE268B0CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A56B2707-C58C-40A6-8349-2D0AE268B0CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B56A177-2BCD-4530-8561-25983A20C07F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B56A177-2BCD-4530-8561-25983A20C07F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B56A177-2BCD-4530-8561-25983A20C07F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B56A177-2BCD-4530-8561-25983A20C07F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{ECBAFA41-78BC-4998-AC19-AE5FCED3334D} = {BB96671C-C70E-44BB-9FDA-4AF0D3189D41}
-		{A56B2707-C58C-40A6-8349-2D0AE268B0CA} = {8B95EF1A-D1FF-42DC-9057-5F2E9D3628EA}
+		{0B56A177-2BCD-4530-8561-25983A20C07F} = {8B95EF1A-D1FF-42DC-9057-5F2E9D3628EA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6204129E-2D74-4E5D-AF5E-DE19D3F94A77}

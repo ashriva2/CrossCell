@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DTO.ObjectiveTO>
+﻿@model IEnumerable<CrossSell_App.Models.ObjectiveTO>
 
 @{
     ViewBag.Title = "Create";
@@ -43,7 +43,7 @@
             </tr>
 
 
-            @foreach (DTO.ObjectiveTO ques in secData)
+            @foreach (CrossSell_App.Models.ObjectiveTO ques in secData)
             {
                 var count = @ques.Questioner_Id;
                 <tr class="objective_data" id="@ques.Questioner_Id">
@@ -103,7 +103,7 @@
         <div>
             @*<input type="button" value="Save" id="save_objective" class="btn btn-primary cgiButton" />*@
             <input type="button" value="Save" id="save_objective" class="btn btn-primary cgiButton" />
-            @Html.ActionLink("Back to List", "Index")
+            @*@Html.ActionLink("Back to List", "Index")*@
         </div>
 @*<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>*@
 <script src="~/Scripts/jquery-3.3.1.min.js"></script>

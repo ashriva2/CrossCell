@@ -6,17 +6,19 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using CrossSell_App.Manager;
+using CrossSell_App.Models;
 //using CrossSell_App.DataAccess;
 using DataAccessLayer;
 using DataAccessLayer.Repositories;
-using DTO;
+
 
 namespace CrossSell_App.Controllers
 {
     public class QuestionersController : Controller
     {
        // private PAL_DigitalPicEntities db = new PAL_DigitalPicEntities();
-        public QuestionerRepository quesRepo = new QuestionerRepository();
+        public QuestionerManager quesRepo = new QuestionerManager();
 
         // GET: Questioners
         public ActionResult Index()
@@ -54,7 +56,7 @@ namespace CrossSell_App.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Questioner_Id,Metadata_Id,Questioner1,IsActive")] QuestionerTO questioner)
         {
-            if (questioner.Questioner1!="" && questioner.Questioner1 !=null)
+            if (ModelState.IsValid)
             {
                 quesRepo.saveQuestioners(questioner);
                 return RedirectToAction("Index");
@@ -87,7 +89,7 @@ namespace CrossSell_App.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Questioner_Id,Metadata_Id,Questioner1,IsActive")] QuestionerTO questioner)
         {
-            if (questioner.Questioner1 != "" && questioner.Questioner1 != null)
+            if (ModelState.IsValid)
             {
                 //db.Entry(questioner).State = EntityState.Modified;
                 //db.SaveChanges();

@@ -9,15 +9,15 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Caching;
-using CrossSell_App.Repository;
-using CrossSell_App.Repositories;
-using DTO;
+using CrossSell_App.Manager;
+
+
 
 namespace CrossSell_App.Controllers
 {
     public class HomeController : Controller
     {
-        private HomeRepository homeRepo = new HomeRepository();
+        private HomeManager homeRepo = new HomeManager();
         private Utility utilObj = new Utility();
 
         static UserCompaniesInfo userComapniesData;
