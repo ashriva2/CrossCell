@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 using static System.Collections.Specialized.BitVector32;
 
 namespace CrossSell_App.Models
@@ -25,7 +26,7 @@ namespace CrossSell_App.Models
         public string QuestionText { get; set; }
         public string MetaDataText { get; set; }
 
-
+        public List<SelectListItem> CompList { get; set; }
 
         //public List<CompanyTO> Company { get; set; }
         //public List<QuestionerTO> Questioner { get; set; }

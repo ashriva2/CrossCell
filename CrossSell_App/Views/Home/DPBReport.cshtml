@@ -1,31 +1,42 @@
 ﻿
-@{
-    ViewBag.Title = "DPBReport";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+@*@{
+	ViewBag.Title = "DPBReport";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}*@
 
 <h3 style="text-align:center;">Portfolio Agile Report</h3>
 <style type="text/css">
-    #block_container, #chart1 {
-        display: inline;
-    }
+	#block_container, #chart1 {
+		display: inline;
+	}
 </style>
+<script src="~/Scripts/Multiselect/jquery-1.8.3.min.js"></script>
+<link href="~/Scripts/Multiselect/bootstrap-3.0.3.min.css" rel="stylesheet" />
+<link href="~/Scripts/Multiselect/bootstrap-multiselect.css" rel="stylesheet" />
+@*<script src="~/Scripts/Multiselect/bootstrap-3.0.3.min.js"></script>*@
+<script src="~/Scripts/Multiselect/bootstrap-multiselect.js"></script>
 <script src="~/Scripts/Chart.js"></script>
 <script src="~/Scripts/chartjs-plugin-datalabels.js"></script>
-<script src="~/Scripts/jquery.min.js"></script>
-<div style="width: 50%;float: right;">
-    @{ var ddlCompanyId = 0;}
-    @Html.DropDownListFor(model => ddlCompanyId, (List<SelectListItem>)@ViewBag.fillCompanyddl, "-- Select Company --", new { @class = "form-control", @style = "float: right; width: 30%;margin-bottom: 2px;MARGIN-TOP: -46PX;height: 31px;", @onchange = "showDPBGraph(this.value)", value = '0' })
+
+<div style="width: 50%;float: right; margin-right:-39%">
+	@{ var ddlCompanyId = 0;
+		var citems = (List<SelectListItem>)@ViewBag.fillCompanyddl;
+		var cids = citems.Select(x => x.Value).ToList();
+	}
+	@*@Html.DropDownListFor(model => ddlCompanyId, (List<SelectListItem>)@ViewBag.fillCompanyddl, "-- Select Company --", new { @class = "form-control", @style = "float: right; width: 30%;margin-bottom: 2px;MARGIN-TOP: -46PX;height: 31px;", @onchange = "showDPBGraph(this.value)", value = '0' })*@
+	@Html.ListBoxFor(model => citems, (List<SelectListItem>)@ViewBag.fillCompanyddl, new { @class = "form-control listbox" })
+	<input type="button" id="go" onclick="showDPBGraph()" value="Go" style="width:5%;background-color:lightgreen" />
+
 </div>
 <div id="block_container">
 
-    <div style="width:100% !important;float:left">
-        @*<div class="lead" style="margin-left:50px;text-align: center;">
-            Digital Picture Benchmark (DPB)
-        </div>*@
-        <div>
-            <canvas id="chart1"></canvas>
-            <script>
+	<div style="width:100% !important;float:left">
+		@*<div class="lead" style="margin-left:50px;text-align: center;">
+				Digital Picture Benchmark (DPB)
+			</div>*@
+		<div>
+			<canvas id="chart1"></canvas>
+			<script>
                 UserCompaniesList();
                 getData();
                 var CompanyId = [];
@@ -63,7 +74,7 @@
 					var array = @Html.Raw(Json.Encode(@ViewBag.CompList));
 					var compList = [];
 					for (var i = 0; i < array.length; i++) {
-						
+
 						compList.push(array[i].Value);
 					}
 
@@ -88,7 +99,7 @@
                         }
                     });
                 }
-              
+
 
 				function DisplayChart(chartData) {
 					debugger;
@@ -97,7 +108,7 @@
 
 					for (var i = 0; i < array.length; i++) {
 						var data = {
-							
+
 							borderColor: chartData.companyColor[i],
 							data: chartData.dataseries[i],
 							fill: false,
@@ -110,7 +121,7 @@
 
                         metadata.push(chartData.metadataForChart[i]);
                     }
-					
+
                     var chart = new Chart('chart1', {
                         type: 'radar',
                         data: {
@@ -151,22 +162,45 @@
                         if (activePoint) {
                             debugger;
                             var companyId = parseInt(activePoint[0]._datasetIndex)+1;
-                            
+
                             window.location.href = "/Objectives/Create?id=" + companyId;
-                           
+
                         }
                     }
 
                 }
-
-
-                function showDPBGraph(ele) {
+				$(document).ready(function () {
 					debugger;
-					window.location.href = '/Home/DPBReport?CompList=' + ele;
-                   
+					var canvas = document.getElementById("chart1");
+					canvas.height = 100;
+					$('.listbox').multiselect({
+						includeSelectAllOption: true,
+						//onDropdownShow: function (event) {
+						//	alert('Dropdown shown.');
+					});
+				});
+
+
+                function showDPBGraph() {
+					debugger;
+					
+					debugger;
+					var val = [];
+					$(':checkbox:checked').each(function (i) {
+						val[i] = $(this).val();
+					});
+					if (val.length > 0) {
+					
+						window.location.href = '/Home/DPBReport?CompList=' + val;
+					}
+					else {
+						alert("Please select the company");
+						return false;
+					}
+
                 }
 
-            </script>
-        </div>
-    </div>
+			</script>
+		</div>
+	</div>
 </div>

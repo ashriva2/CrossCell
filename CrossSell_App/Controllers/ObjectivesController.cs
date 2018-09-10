@@ -66,7 +66,7 @@ namespace CrossSell_App.Controllers
 
             ViewBag.fillCompanyddl = FillCompanyDropDown(companyId);
 
-            
+            List<SelectListItem> comp = ViewBag.fillCompanyddl;
 
             List<ObjectiveTO> Data = new List<ObjectiveTO>();
             List<ObjectiveTO> DataList = new List<ObjectiveTO>();
@@ -135,6 +135,7 @@ namespace CrossSell_App.Controllers
                             DataInput.QuestionText = ques.Questioner1;
                             DataInput.Questioner_Id = ques.Questioner_Id;
                             DataInput.Metadata_Id = item.Metadata_Id;
+                            DataInput.CompList = comp;
                             DataList.Add(DataInput);
                         }
                     }
@@ -189,6 +190,8 @@ namespace CrossSell_App.Controllers
                                 DataInput.Score_Max = dataExist.Score_Max;
                                 DataInput.Max = dataExist.Max;
                                 DataInput.Comments = dataExist.Comments;
+                                DataInput.CompList = comp;
+
                                 DataList.Add(DataInput);
                             }
                             else
@@ -199,6 +202,8 @@ namespace CrossSell_App.Controllers
                                 DataInput.QuestionText = ques.Questioner1;
                                 DataInput.Questioner_Id = ques.Questioner_Id;
                                 DataInput.Metadata_Id = item.Metadata_Id;
+                                DataInput.CompList = comp;
+
                                 DataList.Add(DataInput);
                             }
                         }

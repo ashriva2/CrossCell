@@ -1,124 +1,141 @@
 ﻿@model IEnumerable<CrossSell_App.Models.ObjectiveTO>
 
-@{
-    ViewBag.Title = "Create";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+@*@{
+	ViewBag.Title = "Create";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}*@
 @*<script src="~/Scripts/CustomScripts.js"></script>*@
-<style>
 
-    
+
+
+
+
+<script src="~/Scripts/Multiselect/jquery-1.8.3.min.js"></script>
+<link href="~/Scripts/Multiselect/bootstrap-3.0.3.min.css" rel="stylesheet" />
+<link href="~/Scripts/Multiselect/bootstrap-multiselect.css" rel="stylesheet" />
+@*<script src="~/Scripts/Multiselect/bootstrap-3.0.3.min.js"></script>*@
+<script src="~/Scripts/Multiselect/bootstrap-multiselect.js"></script>
+
+<style>
 </style>
 <h2>Create</h2>
 @using (Html.BeginForm())
 {
-    @Html.AntiForgeryToken()
-    <div style="width: 50%;float: right;">
-        @{ var ddlCompanyId = 0;}
-        @Html.DropDownListFor(model => ddlCompanyId, (List<SelectListItem>)@ViewBag.fillCompanyddl, new { @class = "form-control", @style = "float: right; width: 50%;margin-bottom: 10px;MARGIN-TOP: 20PX;" })
+	@Html.AntiForgeryToken()
+<div style="width: 50%;float: right;">
+	@{ var ddlCompanyId = 0;
+		var citems = Model.Select(x => x.CompList).FirstOrDefault();
+		var cids = citems.Select(x => x.Value).ToList();
+		}
+	@Html.DropDownListFor(model => ddlCompanyId, (List<SelectListItem>)@ViewBag.fillCompanyddl, new { @class = "form-control", @style = "float: right; width: 50%;margin-bottom: 10px;MARGIN-TOP: 20PX;" })
+	@*@Html.ListBoxFor(model => citems, (List<SelectListItem>)@ViewBag.fillCompanyddl, new { @class = "listbox", @style = "float: right; width: 50%;margin-bottom: 10px;MARGIN-TOP: 20PX;" })*@
 
-    </div>
-    var counter = 0;
+</div>
+	var counter = 0;
 
-    foreach (var item in ViewBag.SectionList)
-    {
-        counter++;
-        var secData = Model.Where(x => x.Metadata_Id == item.Metadata_Id).ToList();
-        <table class="table" border="1" id="table_@counter">
-            <tr name="@item.Metadata_Id">
-                <th colspan="8" name="@item.Metadata_Id" style="background-color:#0070ad; color:white; text-align:center;">
-                    @item.Metadata_Name
-                </th>
-            </tr>
-            <tr>
+	foreach (var item in ViewBag.SectionList)
+	{
+		counter++;
+		var secData = Model.Where(x => x.Metadata_Id == item.Metadata_Id).ToList();
+		<table class="table" border="1" id="table_@counter">
+			<tr name="@item.Metadata_Id">
+				<th colspan="8" name="@item.Metadata_Id" style="background-color:#0070ad; color:white; text-align:center;">
+					@item.Metadata_Name
+				</th>
+			</tr>
+			<tr>
 
-                <th style="width:36%;">Questions</th>
-                <th>Comments</th>
-                <th>Level</th>
-                <th style="width:5%;">Weight</th>
-                <th style="width:8%;">Answer(1-3)</th>
-                <th>Score</th>
-                <th>Max</th>
-                <th style="width: 8%;">Score of Max</th>
-            </tr>
-
-
-            @foreach (CrossSell_App.Models.ObjectiveTO ques in secData)
-            {
-                var count = @ques.Questioner_Id;
-                <tr class="objective_data" id="@ques.Questioner_Id">
-                    <td id="QuestionText" style="width:27%">
-
-                        @Html.DisplayFor(modelitem => ques.QuestionText, "")
+				<th style="width:36%;">Questions</th>
+				<th>Comments</th>
+				<th>Level</th>
+				<th style="width:5%;">Weight</th>
+				<th style="width:8%;">Answer(1-3)</th>
+				<th>Score</th>
+				<th>Max</th>
+				<th style="width: 8%;">Score of Max</th>
+			</tr>
 
 
-                    </td>
-                    <td>
-                        @Html.EditorFor(modelitem => ques.Comments, new { htmlattributes = new { id = string.Format("ques_Comments{0}", count), @style = "width:100%" } })
-                    </td>
-                    <td>
-                        @Html.EditorFor(modelitem => ques.Level, new { htmlattributes = new { id = "ques_Level" + count, @class = "level", @style = "width:100%" } })
-                    </td>
-                    <td>
-                        @*@Html.EditorFor(modelitem => ques.Weight, new { id = "ques_Weight" + count, @class = "weight" style = "" })*@
-                        @Html.EditorFor(modelitem => ques.Weight, new { htmlAttributes = new { id = "ques_Weight" + count, @class = "weight" ,@style="width:100%" } })
-                    </td>
-                    <td class="ques_answer">
-                        @*@Html.TextBoxFor(modelitem => ques.Answer, new { id = "ques_Answer" + count, @class = "answer", @style = "width:100%" })*@
-                        @Html.EditorFor(modelitem => ques.Answer, new { htmlAttributes = new { id = "ques_Answer" + count, @class = "answer", @style = "width:100%" } })
-                    </td>
-                    <td>
-                        <div id="ques_Score_@count" class="ques_score">
-                            @Html.DisplayFor(modelitem => ques.Score, new { id = "ques_Score" + count, @class = "score", @style = "width:100%" })
-                        </div>
-                    </td>
-                    <td>
-                        <div id="ques_max_@count" class="ques_max">
-                            @Html.DisplayFor(modelitem => ques.Max, new { id = "ques_Max" + count, @class = "max" })
-                        </div>
-                    </td>
-                    <td>
-                        <div id="score_max_@count" class="score_max">
-                            @Html.DisplayFor(modelitem => ques.Score_Max, new { id = "ques_Score_Max" + count, @class = "maxscore" })
-                        </div>
-                    </td>
-                </tr>
+			@foreach (CrossSell_App.Models.ObjectiveTO ques in secData)
+			{
+				var count = @ques.Questioner_Id;
+				<tr class="objective_data" id="@ques.Questioner_Id">
+					<td id="QuestionText" style="width:27%">
+
+						@Html.DisplayFor(modelitem => ques.QuestionText, "")
 
 
-            }
-            <tr>
-                <td colspan="5" id="total">
-                    Total @item.Metadata_Name
-                </td>
-                <td id="total_score_table_@counter">
-                    @*24*@
-                    </td>
-                <td id="total_Max_table_@counter"></td>
-                <td id="total_ScoreMax_table_@counter"></td>
-            </tr>
-        </table>
+					</td>
+					<td>
+						@Html.EditorFor(modelitem => ques.Comments, new { htmlattributes = new { id = string.Format("ques_Comments{0}", count), @style = "width:100%" } })
+					</td>
+					<td>
+						@Html.EditorFor(modelitem => ques.Level, new { htmlattributes = new { id = "ques_Level" + count, @class = "level", @style = "width:100%" } })
+					</td>
+					<td>
+						@*@Html.EditorFor(modelitem => ques.Weight, new { id = "ques_Weight" + count, @class = "weight" style = "" })*@
+						@Html.EditorFor(modelitem => ques.Weight, new { htmlAttributes = new { id = "ques_Weight" + count, @class = "weight", @style = "width:100%" } })
+					</td>
+					<td class="ques_answer">
+						@*@Html.TextBoxFor(modelitem => ques.Answer, new { id = "ques_Answer" + count, @class = "answer", @style = "width:100%" })*@
+						@Html.EditorFor(modelitem => ques.Answer, new { htmlAttributes = new { id = "ques_Answer" + count, @class = "answer", @style = "width:100%" } })
+					</td>
+					<td>
+						<div id="ques_Score_@count" class="ques_score">
+							@Html.DisplayFor(modelitem => ques.Score, new { id = "ques_Score" + count, @class = "score", @style = "width:100%" })
+						</div>
+					</td>
+					<td>
+						<div id="ques_max_@count" class="ques_max">
+							@Html.DisplayFor(modelitem => ques.Max, new { id = "ques_Max" + count, @class = "max" })
+						</div>
+					</td>
+					<td>
+						<div id="score_max_@count" class="score_max">
+							@Html.DisplayFor(modelitem => ques.Score_Max, new { id = "ques_Score_Max" + count, @class = "maxscore" })
+						</div>
+					</td>
+				</tr>
 
-    }
+
+			}
+			<tr>
+				<td colspan="5" id="total">
+					Total @item.Metadata_Name
+				</td>
+				<td id="total_score_table_@counter">
+					@*24*@
+				</td>
+				<td id="total_Max_table_@counter"></td>
+				<td id="total_ScoreMax_table_@counter"></td>
+			</tr>
+		</table>
+
+	}
 }
-        <div>
-            @*<input type="button" value="Save" id="save_objective" class="btn btn-primary cgiButton" />*@
-            <input type="button" value="Save" id="save_objective" class="btn btn-primary cgiButton" />
-            @*@Html.ActionLink("Back to List", "Index")*@
-        </div>
-@*<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>*@
-<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<div>
+	@*<input type="button" value="Save" id="save_objective" class="btn btn-primary cgiButton" />*@
+	<input type="button" value="Save" id="save_objective" class="btn btn-primary cgiButton" />
+	@*@Html.ActionLink("Back to List", "Index")*@
+</div>
+
 <script type="text/javascript">
 
 
     $(document).ready(function () {
-
+		$('.listbox').multiselect({
+			includeSelectAllOption: true,
+			//onDropdownShow: function (event) {
+			//	alert('Dropdown shown.');
+			//}
+		});
 
         //give class to inputs
-       
-      
-       
-       
-    
+
+
+
+
+
 
         $(".answer").on("change", function (event) {
 
