@@ -9,6 +9,16 @@
 <link href="~/Scripts/Multiselect/bootstrap-multiselect.css" rel="stylesheet" />
 @*<script src="~/Scripts/Multiselect/bootstrap-3.0.3.min.js"></script>*@
 <script src="~/Scripts/Multiselect/bootstrap-multiselect.js"></script>
+
+<div style="width: 50%;float: right; margin-right:-39%">
+	@{ var ddlCompanyId = 0;
+		var citems = Model.companyList.ToList();
+		//var cids = citems.Select(x => x.Value).ToList();
+	}
+	@Html.ListBoxFor(model => citems, (List<SelectListItem>)@ViewBag.fillCompanyddl, new { @class = "form-control listbox" })
+	<input type="button" id="go" onclick="selectCompanies()" value="Go" style="width:5%;background-color:lightgreen" />
+
+</div>
 <div class="col-md-12 top-30">
 	<div class="col-md-12 palheaderdiv"><h4>PAL (Portofolio Agile Lab)</h4></div>
 
@@ -53,10 +63,10 @@
 							@foreach (var company in Model.companyList)
 							{
 								var pal = portfolioAgileLab.Where(t => t.Company_Id == company.Company_Id).FirstOrDefault();
-								string isFutureScope = pal.Future_Scope ? "+" : "";
-								string IsMarketLead = pal.IsMarketLead ? "*" : "";
+								string isFutureScope = pal!=null?pal.Future_Scope ? "+" : "":"";
+								string IsMarketLead = pal!=null?pal.IsMarketLead ? "*" : "":"";
 								var dispalyValue = IsMarketLead + isFutureScope;
-								var curUsage = pal.Current_Usage;
+								var curUsage = pal!=null?pal.Current_Usage:0;
 								<td class="text-center">
 									<span class="">@curUsage</span><span class="marketleadicon">@IsMarketLead</span><span class="futurescopeicon">@isFutureScope</span>
 								</td>
@@ -66,118 +76,7 @@
 				}
 			}
 
-			@*<tr>
-					<td rowspan="2">
-						Established
-					</td>
-					<td class="remove-border">
-						NextGen AMS
-					</td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td class="remove-border">
-						NextGen SAP
-					</td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td rowspan="2">
-						Fast Growing
-					</td>
-					<td>
-						DCX
-					</td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>
-						Cloud
-					</td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td rowspan="3">
-						Emerging Technology
-					</td>
-					<td>
-						CyberSecurity
-					</td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>
-						Digital Mfg
-					</td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>
-						AI
-					</td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td rowspan="3">
-						Others
-					</td>
-					<td>
-						Chatbots
-					</td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>
-						Devops
-					</td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>
-						Blockchain
-					</td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td></td>
-					<td>
-						End to End Offering
-					</td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>*@
+
 		</tbody>
 		<tfoot>
 			<tr>
@@ -197,15 +96,42 @@
 	<div class="margin-top-30 ">    <span style="color:blue;font-weight:bolder">+</span>  “To Be” – Future scope exists in the account</div>
 	<div>     <span style="color:green;font-weight:bolder">*</span>   “Lead”  – Most mature account in the tech, to help other accounts</div>
 </div>
-<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+@*<script src="~/Scripts/jquery-3.3.1.min.js"></script>*@
 <script type="text/javascript">
     $(document).ready(function () {
         if ('@ViewBag.Message' != '') {
             debugger;
             var msg = '@ViewBag.Message';
             alert(msg);
-        }
-    })
+		}
+		$('.listbox').multiselect({
+			includeSelectAllOption: true,
+
+		});
+	})
+
+	function selectCompanies(ele) {
+		debugger;
+		var val = [];
+		count = 0;
+		$(':checkbox:checked').each(function (i) {
+			if ($(this).val().indexOf("multi") < 0) {
+
+				val[count] = $(this).val();
+				count++;
+			}
+		});
+		if (val.length > 0) {
+			test = JSON.stringify({ 'CompList': val });
+			//window.location.href = '/Home/PALReport?CompList="' + ele + '"';
+			window.location.href = '/PortfolioAgileLab/PalDetails?id=' + val;
+		}
+		else {
+			alert("Please select the company");
+			return false;
+		}
+
+	}
 </script>
 
 

@@ -71,10 +71,16 @@ namespace CrossSell_App.Controllers
             return View(portfolio_Agile_LabData.ToList()) ;
         }
 
-        public ActionResult PalDetails(int id)
+        public ActionResult PalDetails(string id)
         {
+
+            //string CompList
             // IQueryable<Portfolio_Agile_Lab> portfolio_Agile_Lab = null;
-            int companyId = id;
+            int companyId = 0;
+            if (id!=null && !id.Contains(","))
+            {
+                companyId = Convert.ToInt32(id);
+            }
             PalDetailMapping objDetails = new PalDetailMapping();
             objDetails.portfolioTypeList = pfRepo.GetAllPortfolioType();
             objDetails.portfolioList = pfRepo.GetAllPortfolio();
@@ -91,7 +97,15 @@ namespace CrossSell_App.Controllers
             }
             else
             {
-                companyIds.Add(id);
+                if (id!=null && id.Contains(","))
+                {
+                    companyIds = id.Split(',').Select(Int32.Parse).ToList();
+                }
+                else
+                {
+                    companyIds.Add(Convert.ToInt32(id));
+
+                }
             }
             if ((companyId == 0 && companyIds.Count == 1 && companyIds[0] == 0 ) &&(userComapniesData.comPanies==null))
             {
@@ -116,7 +130,7 @@ namespace CrossSell_App.Controllers
             else
             {
                 //portfolio_Agile_LabData = db.Portfolio_Agile_Lab.Include(p => p.Company).Include(p => p.Portfolio).Where(x => companyIds.Contains(x.Company_Id));
-                objDetails.companyList = userComapniesData.comPanies;
+                objDetails.companyList = userComapniesData.comPanies == null ? pfRepo.GetAllCompanies().Where(x => companyIds.Contains(x.Company_Id)).ToList() : userComapniesData.comPanies;
                 objDetails.portfolioAgileLab = pfRepo.GetAllPAL().Where(x => companyIds.Contains(x.Company_Id)).ToList();
             }
 
@@ -125,7 +139,21 @@ namespace CrossSell_App.Controllers
             if (TempData.ContainsKey("saveMessage"))
 
            ViewBag.Message = TempData["saveMessage"].ToString();
+            List<SelectListItem> listItems = new List<SelectListItem>();
+            //if (CompList.Contains("["))
+            //{
+            var co = userComapniesData.comPanies == null ? pfRepo.GetAllCompanies() : userComapniesData.comPanies;
+            foreach (var item in co)
+            {
+                listItems.Add(new SelectListItem
+                {
+                    Text = item.Company_Name,
+                    Value = Convert.ToString(item.Company_Id),
+                });
 
+
+            }
+            ViewBag.fillCompanyddl = listItems;
             return View(objDetails);
         }
 
@@ -313,7 +341,7 @@ namespace CrossSell_App.Controllers
             //ViewBag.Company_Id = new SelectList(db.Companies, "Company_Id", "Company_Name", portfolio_Agile_Lab.Company_Id);
             //ViewBag.Portfolio_Id = new SelectList(db.Portfolios, "Portfolio_Id", "Portfolio_Name", portfolio_Agile_Lab.Portfolio_Id);
             //  return RedirectToAction("Index/"+ CompanyId);
-            return RedirectToAction("PalDetails", new { id = 0 });
+            return RedirectToAction("PalDetails", new { id = "0" });
         }
 
 

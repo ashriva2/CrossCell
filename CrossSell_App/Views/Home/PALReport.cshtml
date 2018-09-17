@@ -276,8 +276,13 @@
                 function showPALGraph(ele) {
 					debugger;
 					var val = [];
+					count = 0;
 					$(':checkbox:checked').each(function (i) {
-						val[i] = $(this).val();
+						if ($(this).val().indexOf("multi") < 0) {
+
+							val[count] = $(this).val();
+							count++;
+						}
 					});
 					if (val.length > 0) {
 						test = JSON.stringify({ 'CompList': val });
