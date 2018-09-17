@@ -11,9 +11,15 @@
         display: inline;
     }
 </style>
-<div style="width: 50%;float: right;">
-    @{ var ddlCompanyId = 0;}
-    @Html.DropDownListFor(model => ddlCompanyId, (List<SelectListItem>)@ViewBag.fillCompanyddl, "-- Select Company --", new { @class = "form-control", @style = "float: right; width: 30%;margin-bottom: 2px;MARGIN-TOP: -46PX;height: 30PX", @onchange = "showPALGraph(this.value)", value = '0' })
+<div style="width: 50%;float: right;margin-top:1%;margin-right:-40%">
+	@{ var ddlCompanyId = 0;
+		var citems = (List<SelectListItem>)@ViewBag.fillCompanyddl;
+		var cids = citems.Select(x => x.Value).ToList();
+	}
+	@*@Html.DropDownListFor(model => ddlCompanyId, (List<SelectListItem>)@ViewBag.fillCompanyddl, "-- Select Company --", new { @class = "form-control", @style = "float: right; width: 30%;margin-bottom: 2px;MARGIN-TOP: -46PX;height: 30PX", @onchange = "showPALGraph(this.value)", value = '0' })*@
+	@Html.ListBoxFor(model => citems, (List<SelectListItem>)@ViewBag.fillCompanyddl, new { @class = "form-control listbox" })
+	@*@Html.ActionLink("Go", "PALReport", "Home", new { CompList = Json.Encode(@ViewBag.CompanyIdList) }, null)*@
+	<input type="button" id="go" onclick="showPALGraph()" value="Go" style="width:5%;background-color:lightgreen"/>
 </div>
 
 <div id="block_container">
@@ -26,24 +32,19 @@
             * : Leader
             + : Growth Potential
         </div>
-        <div class="wrapper" id="bloc1">
-
-            <script src="~/Scripts/Chart.js"></script>
-            <script src="~/Scripts/chartjs-plugin-datalabels.js"></script>
-
-            <script src="~/Scripts/jquery.min.js"></script>
+		<div class="wrapper" id="bloc1">
 
 
-            @*<link href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-            <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
-            <link href="http://cdn.rawgit.com/davidstutz/bootstrap-multiselect/master/dist/css/bootstrap-multiselect.css"
-                  rel="stylesheet" type="text/css" />
 
-            <script src="http://cdn.rawgit.com/davidstutz/bootstrap-multiselect/master/dist/js/bootstrap-multiselect.js"
-                    type="text/javascript"></script>*@
-
-            <canvas id="chart" style="height:500px !important"></canvas>
-            <script>
+			<script src="~/Scripts/Multiselect/jquery-1.8.3.min.js"></script>
+			<link href="~/Scripts/Multiselect/bootstrap-3.0.3.min.css" rel="stylesheet" />
+			<link href="~/Scripts/Multiselect/bootstrap-multiselect.css" rel="stylesheet" />
+			@*<script src="~/Scripts/Multiselect/bootstrap-3.0.3.min.js"></script>*@
+			<script src="~/Scripts/Multiselect/bootstrap-multiselect.js"></script>
+			<script src="~/Scripts/Chart.js"></script>
+			<script src="~/Scripts/chartjs-plugin-datalabels.js"></script>
+			<canvas id="chart" style="height:500px !important"></canvas>
+			<script>
                 var data1 = [];
                 var data2 = [];
                 var data3 = [];
@@ -260,85 +261,43 @@
                     };
                 }
 
+				$(document).ready(function () {
+					debugger;
+					var canvas = document.getElementById("chart");
+					canvas.height =200;
+					$('.listbox').multiselect({
+						includeSelectAllOption: true,
+						//onDropdownShow: function (event) {
+						//	alert('Dropdown shown.');
+					});
+				});
+				
+
                 function showPALGraph(ele) {
 					debugger;
-					test = JSON.stringify({ 'CompList': ele });
-					//window.location.href = '/Home/PALReport?CompList="' + ele + '"';
-					window.location.href = '/Home/PALReport?CompList=' + ele ;
-					//getData(ele);
-                    //if (ele !== "") {
+					var val = [];
+					count = 0;
+					$(':checkbox:checked').each(function (i) {
+						if ($(this).val().indexOf("multi") < 0) {
 
-                    //    if (ele == 1) {
-                    //        var paldata1 = data1;
-                    //        var paldata2 = [];
-                    //        var paldata3 = [];
-                    //        var paldata4 = [];
-
-                    //        var pallabels2 = labels2;
-                    //        var pallabels3 = [];
-                    //        var pallabels4 = [];
-                    //        var pallabels5 = [];
-
-                    //        DisplayChart(paldata1, paldata2, paldata3, paldata4, pallabels2, pallabels3, pallabels4, pallabels5);
-                    //    }
-
-                    //    if (ele == 2) {
-                    //        var paldata1 = [];
-                    //        var paldata2 = data2;
-                    //        var paldata3 = [];
-                    //        var paldata4 = [];
-
-                    //        var pallabels2 = [];
-                    //        var pallabels3 = labels3;
-                    //        var pallabels4 = [];
-                    //        var pallabels5 = [];
-
-                    //        DisplayChart(paldata1, paldata2, paldata3, paldata4, pallabels2, pallabels3, pallabels4, pallabels5);
-                    //    }
-
-                    //    if (ele == 3) {
-                    //        var paldata1 = [];
-                    //        var paldata2 = [];
-                    //        var paldata3 = data3;
-                    //        var paldata4 = [];
-
-                    //        var pallabels2 = [];
-                    //        var pallabels3 = [];
-                    //        var pallabels4 = labels4;
-                    //        var pallabels5 = [];
-
-                    //        DisplayChart(paldata1, paldata2, paldata3, paldata4, pallabels2, pallabels3, pallabels4, pallabels5);
-                    //    }
-                    //    if (ele == 4) {
-                    //        var paldata1 = [];
-                    //        var paldata2 = [];
-                    //        var paldata3 = [];
-                    //        var paldata4 = data4;
-
-                    //        var pallabels2 = [];
-                    //        var pallabels3 = [];
-                    //        var pallabels4 = [];
-                    //        var pallabels5 = labels5;
-                    //        DisplayChart(paldata1, paldata2, paldata3, paldata4, pallabels2, pallabels3, pallabels4, pallabels5);
-                    //    }
-                    //} else {
-
-                    //    var paldata1 = data1;
-                    //    var paldata2 = data2;
-                    //    var paldata3 = data3;
-                    //    var paldata4 = data4;
-
-                    //    var pallabels2 = labels2;
-                    //    var pallabels3 = labels3;
-                    //    var pallabels4 = labels4;
-                    //    var pallabels5 = labels5;
-
-                    //    DisplayChart(paldata1, paldata2, paldata3, paldata4, pallabels2, pallabels3, pallabels4, pallabels5);
-                    //}
+							val[count] = $(this).val();
+							count++;
+						}
+					});
+					if (val.length > 0) {
+						test = JSON.stringify({ 'CompList': val });
+						//window.location.href = '/Home/PALReport?CompList="' + ele + '"';
+						window.location.href = '/Home/PALReport?CompList=' + val;
+					}
+					else {
+						alert("Please select the company");
+						return false;
+					}
+					
                 }
 
-            </script>
-        </div>
+			</script>
+		</div>
     </div>
 
 </div>

@@ -80,7 +80,7 @@ namespace CrossSell_App.Controllers
 
         public ActionResult PALReport(string CompList)
         {
-            if (CompList != null)
+            if (CompList != null && CompList!= "undefined")
             {
                 List<int> result = new List<int>();
                 if (CompList.Contains("["))
@@ -332,16 +332,18 @@ namespace CrossSell_App.Controllers
             // var companyList = db.Companies.ToList();
             List<CompanyTO> CompanyList = new List<CompanyTO>();
             List<Int32> companyIds = new List<Int32>();
-
-
-            if (userComapniesData.companyId == null)
+            if (userComapniesData != null)
             {
 
-                CompanyList = homeRepo.GetCompanies();
-            }
-            else
-            {
-                CompanyList = userComapniesData.comPanies;
+                if (userComapniesData.companyId == null)
+                {
+
+                    CompanyList = homeRepo.GetCompanies();
+                }
+                else
+                {
+                    CompanyList = userComapniesData.comPanies;
+                }
             }
 
             foreach (var item in CompanyList)
