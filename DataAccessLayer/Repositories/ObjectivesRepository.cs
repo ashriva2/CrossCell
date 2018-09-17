@@ -155,7 +155,7 @@ namespace CrossSell_App.Repository
         }
         public List<Questioner> getAllQuestioner()
         {
-            var data = db.Questioners.Where(x => x.IsActive == true).Include(x => x.Metadata).ToList();
+            var data = db.Questioners.Where(x => x.IsActive == true).ToList();
             var result=data.Select(x =>
             new Questioner()
             {

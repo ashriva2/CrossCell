@@ -19,7 +19,7 @@ namespace DataAccessLayer.Repositories
 
         public List<Portfolio_Agile_Lab> GetPALData()
         {
-         var data= db.Portfolio_Agile_Lab.Include(p => p.Company).Include(p => p.Portfolio).ToList();
+         var data= db.Portfolio_Agile_Lab.ToList();
 
             var dataToReturn = data.Select(x => new Portfolio_Agile_Lab
             {
